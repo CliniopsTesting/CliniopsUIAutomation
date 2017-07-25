@@ -27,7 +27,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 WebDriver dr;  
     
 	
-    @BeforeMethod
+    @BeforeMethod    
 	@Parameters({"browser"})
 	public void selectBrowser(String browser){
 		if(browser.equalsIgnoreCase("firefox")){
@@ -124,7 +124,7 @@ WebDriver dr;
 			
 		 }
 		 @Test
-			public void auto_clini_login_009() throws IOException{
+			public void auto_clini_login_004() throws IOException{
 				dr.get("https://bridgetherapeutics.cliniops.com/login");
 				WebElement selectstudy=dr.findElement(By.id("investigator_study"));
 				checkDisabled(selectstudy,"Select Study");			

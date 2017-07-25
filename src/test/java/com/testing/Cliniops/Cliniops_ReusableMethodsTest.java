@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Cliniops_ReusableMethodsTest {   
   
-	static WebDriver driver ;
+	static WebDriver driver ;  
 	static String htmlname;
 	static Date cur_dt = null;
 	static BufferedWriter bw = null;
