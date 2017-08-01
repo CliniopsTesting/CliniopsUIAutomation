@@ -3,8 +3,6 @@ package com.testing.Cliniops;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.apache.tools.ant.taskdefs.UpToDate;
 import org.testng.annotations.Test;
 
 public class Cliniops_DriverScriptTest {  
@@ -18,46 +16,35 @@ public class Cliniops_DriverScriptTest {
 		String testDataPath = ".\\cliniops_AutomationScripts_Execution.xls";
 		String reportsPath=".\\test-output\\Suite\\";
 		String testDataSheet="Sheet1";
-		
 		String[][] recData = Cliniops_ReusableMethodsTest.readSheet(testDataPath, testDataSheet);
-
 		String tc = null;
 		//looping through the rows
 		for(int i=0; i<recData.length; i++){
 			if (recData[i][1].equalsIgnoreCase("y")){
-
 				tc = recData[i][2];
 				System.out.println("Testcase to run: "+recData[i][2]);
 				//we are getting handle to the method for invoking...
 				Method testcase = Cliniops_AutomationScriptsTest.class.getMethod(tc);
 				//invoke---executes the method
-				if(recData[i][3].equalsIgnoreCase("Y"))
-				{
+				if(recData[i][3]!= null && recData[i][3].equalsIgnoreCase("Y")){
 					Cliniops_ReusableMethodsTest.startReport(tc, reportsPath,"FIREFOX");
 					casObject.selectBrowser("firefox");
 					testcase.invoke(casObject);
 					casObject.closeBrowser();
-					//closing bufferwriter
-					//Cliniops_ReusableMethodsTest.bw.close();
 				}
-
-				if(recData[i][4].equalsIgnoreCase("Y"))
-				{
+				if(recData[i][4]!= null && recData[i][4].equalsIgnoreCase("Y")){
 					Cliniops_ReusableMethodsTest.startReport(tc, reportsPath,"CHROME");
 					casObject.selectBrowser("chrome");
 					testcase.invoke(casObject);
 					casObject.closeBrowser();
-					//Cliniops_ReusableMethodsTest.bw.close();
-
 				}
-				if(recData[i][5].equalsIgnoreCase("Y"))
-				{
+				if(recData[i][5] != null && recData[i][5].equalsIgnoreCase("Y")){
 					Cliniops_ReusableMethodsTest.startReport(tc, reportsPath,"IE");
 					casObject.selectBrowser("IE");
 					testcase.invoke(casObject);
 					casObject.closeBrowser();
-					//Cliniops_ReusableMethodsTest.bw.close();
 				}
+				//Close report after running tests for all required browsers
 				Cliniops_ReusableMethodsTest.closeReport();				
 			}
 			else if(recData[i][1].equalsIgnoreCase("n")){
