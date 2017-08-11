@@ -591,12 +591,20 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 			 WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
 			 clickElement(configure_tab, "configureTab", "click configureTab", dr);
 			 Thread.sleep(4000);
+			 
 			 //Verify appearance of Download file link.
-			 String expectedFileLink = "ICF - Interview...cians_v8.pdf";
-			 WebElement FileLink = dr.findElement(By.xpath(" //*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/span"));
+			 String expectedFileLink = "Download File";
+			 WebElement FileLink = dr.findElement(By.xpath(" //*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/p/a"));
 			 String actualFileLink = FileLink.getText();
 			 System.out.println(actualFileLink);
-			 checkContentsMatch(actualFileLink, expectedFileLink, "DownLoad File Link", "DownLoad File Link", dr);       
+			 checkContentsMatch(actualFileLink, expectedFileLink, "DownLoad File Link", "DownLoad File Link", dr);
+			
+			 // verify appearance of Download file
+			 String expectedFile = "ICF - Interview...cians_v8.pdf";
+			 WebElement File = dr.findElement(By.xpath(" //*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/span"));
+			 String actualFile = File.getText();
+			 System.out.println(actualFile);
+			 checkContentsMatch(actualFile, expectedFile, "DownLoad File in pdf", "DownLoad File in pdf", dr); 
 
 		 }
 
