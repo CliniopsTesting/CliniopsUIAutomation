@@ -1,24 +1,15 @@
 package com.testing.Cliniops;
 
-
-
 import java.io.BufferedWriter;
-
 import java.io.File;
-
 import java.io.FileInputStream;
-
 import java.io.FileWriter;
-
 import java.io.IOException;
-
 import java.lang.reflect.Method;
-
 import java.text.DateFormat;
-
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -32,9 +23,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 public class Cliniops_ReusableMethodsTest {   
-
     static String htmlName=null;
 	static BufferedWriter bw = null;
 	static String exeStatus = "True";
@@ -43,6 +32,40 @@ public class Cliniops_ReusableMethodsTest {
 	private static String browserName=null;
 	private static int reportFlag=0;
 	static String strTime;
+	/**
+	 * 
+	 * @param expectedTextColor
+	 * @param actualTextColor
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 * */
+	
+	public static void checkHighlightText(String expectedTextColor,String actualTextColor,String stepName,WebDriver dr) throws IOException
+	{if(expectedTextColor.trim().equals(actualTextColor.trim())){
+		updateReport("Pass",stepName, "Text highlighted",dr);
+	}else{
+		updateReport("Fail",stepName, "Text not highlighted",dr);
+	}
+		
+	}
+	/**
+	 * 
+	 * @param actualText
+	 * @param expectedText
+	 * @param objName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void checkContentsMatch(String actualText, String expectedText, String objName,String stepName, WebDriver dr) throws IOException{
+		if(expectedText.equals(actualText.trim())){
+			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+		}else{
+			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
+		}
+	}
+
 
 	/**
 	 * Check if the object is enabled or not
@@ -50,7 +73,6 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param objName
 	 * @throws IOException
     */		
-
 	public static void checkDisabled(WebElement obj,String objName,WebDriver dr) throws IOException{
 	    if(obj.getAttribute("disabled").trim().contains("true")){
 		    updateReport("Pass","Checkdisabled",objName+" is disabled",dr);
@@ -59,14 +81,13 @@ public class Cliniops_ReusableMethodsTest {
 		    updateReport("Fail","Checkdisabled",objName+" is not disabled",dr);
 	    }
 	}
-
+	
     /**
      * To click on specific object
      * @param obj:WebElement to be clicked
      * @param objName:Name of WebElement to be clicked
      * @throws IOException
      */ 
-
     public static void clickElement(WebElement obj, String objName,String stepName,WebDriver dr) throws IOException{
 	    if(obj.isDisplayed()){
 		    obj.click();
@@ -76,6 +97,7 @@ public class Cliniops_ReusableMethodsTest {
 		    updateReport("Fail", stepName, "Not clicked on selected object",dr);
 		}
     }
+
 	
     /**
      * To Select the dropdown
@@ -83,7 +105,6 @@ public class Cliniops_ReusableMethodsTest {
      * @param index:Index of element to be selected
      * @throws IOException
      */ 
-
     public static void dropDown(WebElement dd, int index,WebDriver dr) throws IOException{
         Select select = new Select(dd);
 		if(dd.isDisplayed()){
@@ -103,7 +124,6 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param stepName:Name of step
 	 * @throws IOException
 	 */
-
     public static void enterText(WebElement obj, String textVal, String objName,String stepName,WebDriver dr) throws IOException{
 	    if(obj.isDisplayed()){
 		    obj.sendKeys(textVal);
@@ -112,7 +132,8 @@ public class Cliniops_ReusableMethodsTest {
 		    updateReport("Fail",stepName,objName+" field is not displayed,please check application",dr);
         }
     }
-
+	
+    
     /** 
 	 * To validate if the text on element matches expectedTest
 	 * @param obj:WebElement whose text needs to be verified
@@ -121,11 +142,10 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param stepName:Step Name
 	 * @param dr:Web driver
 	 */	
-
     public static void validateText(WebElement obj, String expectedText, String objName,String stepName,WebDriver dr) throws IOException{
 	    if(obj.isDisplayed()){
 		    String actualText = obj.getText().trim();
-			if((expectedText.trim()).equals(actualText)){
+			if(expectedText.equals(actualText)){
 			    updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
 			}else{
 				updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
@@ -143,40 +163,21 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void readingCheckbox(WebElement obj,String expectedText,String objName,WebDriver dr) throws IOException{
 		if(obj.isDisplayed())
 		{
-		String Actualtext=obj.getAttribute("checked").trim();
+			String Actualtext=obj.getAttribute("checked").trim();
 			if(expectedText.equals(Actualtext)){
-			updateReport("Pass","readingCheckbox",objName+" is checked",dr);
+				updateReport("Pass","readingCheckbox",objName+" is checked",dr);
 			}
 			else{
-			updateReport("Fail","readingCheckbox",objName+" is not checked",dr);
+				updateReport("Fail","readingCheckbox",objName+" is not checked",dr);
 			}
 		}
 		else{
 			updateReport("Fail","readingCheckbox",objName+" is not displayed,please check your application",dr);
 		}
 	}
-
-    /**
-      * 
-      * @param expectedTextColor
-      * @param actualTextColor
-      * @param stepName
-      * @param dr
-      * @throws IOException
-      * */
-    
-    public static void checkHighlightText(String expectedTextColor,String actualTextColor,String stepName,WebDriver dr) throws IOException
-    {
-     if(expectedTextColor.trim().equals(actualTextColor.trim())){
-    	 updateReport("Pass",stepName, "Text highlighted",dr);
-     }
-     else{
-    	 updateReport("Fail",stepName, "Text not highlighted",dr);}
-    }
     
     /**
      * Read text box value
@@ -185,21 +186,21 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void readingText(WebElement obj,String objName,WebDriver dr) throws IOException{
 	    if(obj.isDisplayed())
 		{
 		    String Actualtext=obj.getText().trim();
-		    if(Actualtext.isEmpty())
+			if(Actualtext.isEmpty())
 			{
-			updateReport("Fail","ReadingText",objName+" has No data",dr);
+				updateReport("Fail","ReadingText",objName+" has No data",dr);
 			}
 			else{
-			updateReport("Pass","ReadingText",objName+" contains "+Actualtext,dr);
+				updateReport("Pass","ReadingText",objName+" contains "+Actualtext,dr);
 			}
 		}
     }
-
+    
+    
     /**
      * Validate message displayed on the web page
      * @param obj
@@ -210,20 +211,20 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void validateTextAttribute(WebElement obj, String expectedText, String objName,String attributeName,String stepName,WebDriver dr) throws IOException{
 		if(obj.isEnabled()){	
 			String actualText = obj.getAttribute(attributeName);
 			if(expectedText.equals(actualText)){
-			updateReport("Pass","validateMsg_Attribute","Actual message matching with expected message:"+ actualText,dr);
+				updateReport("Pass","validateMsg_Attribute","Actual message matching with expected message:"+ actualText,dr);
 			}else{
-			updateReport("Fail","validateMsg_Attribute","Actual message not matching with expected message:"+actualText,dr);
+				updateReport("Fail","validateMsg_Attribute","Actual message not matching with expected message:"+actualText,dr);
 			}
 		}else{
 			updateReport("Fail","validateMsg_Attribute",objName +"is not displayed, please check your application",dr);
 		}
 	}
 
+    
     /**
      * Check if an object is displayed
      * @param obj
@@ -240,7 +241,7 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail", stepName, objName+" not displayed",dr);
 		}
 	}
-
+    
     /**
      * 
      * @param obj
@@ -248,7 +249,6 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void checkEnabled(WebElement obj,String objName,WebDriver dr) throws IOException{
 		if(obj.isEnabled()){
 			updateReport("Pass","checkEnabled",objName+" is enabled",dr);
@@ -265,8 +265,8 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void dropDownByValue(WebElement dd, String value,WebDriver dr) throws IOException{
+
 		Select select = new Select(dd);
 		if(dd.isDisplayed()){
 			select.selectByValue(value);
@@ -275,17 +275,19 @@ public class Cliniops_ReusableMethodsTest {
 		else{
 			updateReport("Fail", "DropDown", "Not selected dd object by using Value",dr);
 		}
+
 	}
 
     public static void validateURL(String expectedURL,String ActualURL,String stepName,WebDriver dr) throws IOException{
-
     	if(expectedURL.trim().equals(ActualURL.trim())){
-    		updateReport("Pass","stepName","Actual URL matching with expected URL",dr);
+    		updateReport("Pass",stepName,"Actual URL matching with expected URL",dr);
     	}
     	else{
-    		updateReport("Fail","stepName","Actual URL matching with expected URL",dr);
+    		updateReport("Fail",stepName,"Actual URL matching with expected URL",dr);
     	}
+
     }
+
     
     /**
      * Read data from excel sheet
@@ -294,17 +296,20 @@ public class Cliniops_ReusableMethodsTest {
      * @return
      * @throws IOException
      */
-
 	public static String[][] readSheet(String filePath, String sheetName) throws IOException{
-
         /*Step 1: Get the XL Path*/
 		File xlFile = new File(filePath);
+
 		/*Step2: Access the Xl File*/
 		FileInputStream xlDoc = new FileInputStream(xlFile);
+
 		/*Step3: Access the work book */
 		HSSFWorkbook wb = new HSSFWorkbook(xlDoc);
+
+
 		/*Step4: Access the Sheet */
 		HSSFSheet sheet = wb.getSheet(sheetName);
+
 		int iRowCount =  sheet.getLastRowNum()+1;
 		int iColCount = sheet.getRow(0).getLastCellNum();//Row count starts from '0' in excel
 
@@ -313,37 +318,24 @@ public class Cliniops_ReusableMethodsTest {
 		String[][] xlData = new String[iRowCount][iColCount];
 
 		for(int i =0; i<iRowCount;i++){
-
 			for(int j = 0; j <iColCount;j++){
-
 				//xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
-
 				Cell cell = sheet.getRow(i).getCell(j);
-
 				switch(cell.getCellType()){
-
 					case Cell.CELL_TYPE_STRING:
-
 						xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
-
 						break;
-
 					case Cell.CELL_TYPE_NUMERIC:
-
 						xlData[i][j] = new Double(sheet.getRow(i).getCell(j).getNumericCellValue()).toString() ;
-
 						break;
-
 				}
-
 			}
+
 		}
 		wb.close();
-
         return xlData;
-
 	}
-
+    
 	/**
 	 * Start HTML report for the test script
 	 * @param scriptName
@@ -351,14 +343,13 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param browser
 	 * @throws IOException
 	 */
-
 	public static void startReport(String scriptName, String reportsPath,String browser) throws IOException{
 		browserName=browser;
 		if(reportFlag==0){
 			reportFlag=1;
 			String strResultPath = null;
-
 			String testScriptName =scriptName;
+			
 			Date curDate = new Date(); 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			String strTimeStamp = dateFormat.format(curDate);
@@ -367,41 +358,33 @@ public class Cliniops_ReusableMethodsTest {
 				reportsPath = "C:\\";
 			}
 			if (!reportsPath.endsWith("\\")) { 
-
 				reportsPath = reportsPath + "\\";
-
 			}
-
 			strResultPath = reportsPath + "Log" + "/" +testScriptName +"/"; 
 			File f = new File(strResultPath);
 			f.mkdirs();
 			htmlName = strResultPath  + testScriptName + "_" + strTimeStamp 
 				+ ".html";
+
 			bw = new BufferedWriter(new FileWriter(htmlName));
+
 			bw.write("<HTML><BODY><TABLE BORDER=0 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=27%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
 				+ browserName + "</B></FONT></TD></TR>");
-
 			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR COLS=7><TD BGCOLOR=#BDBDBD WIDTH=3%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>SL No</B></FONT></TD>"
-
 				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Step Name</B></FONT></TD>"
-
 				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
-
 				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
-
 				+ "<TD BGCOLOR=#BDBDBD WIDTH=47%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
-
 		}
 		else{
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=15%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
-
 					+ browserName + "</B></FONT></TD></TR>");
-
 			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+			
 		}
 
 	}
@@ -414,7 +397,6 @@ public class Cliniops_ReusableMethodsTest {
      * @param dr
      * @throws IOException
      */
-
     public static void updateReport(String resType,String action, String result,WebDriver dr) throws IOException {
 	    String strTime;
 	    Date execTime = new Date();
@@ -431,6 +413,7 @@ public class Cliniops_ReusableMethodsTest {
 				+ "Passed"
 				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
 				+ result + "</FONT></TD></TR>");
+
         }
 	    else if (resType.startsWith("Fail")) {
 		    String ss1Path= screenShot(dr);
@@ -446,34 +429,31 @@ public class Cliniops_ReusableMethodsTest {
 				+ "<a href= "
 				+ ss1Path
 				+ "  style=\"color: #FF0000\"> Failed </a>"
+
 				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
 				+ result + "</FONT></TD></TR>");
         } 
-
     }
-
+	
     /**
      * Screenshot generation in failed case
      * @param dr
      * @return
      * @throws IOException
      */
-
     public static String screenShot(WebDriver dr) throws IOException{
-
 	    Date execTime = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		strTime = dateFormat.format(execTime);
 		String  ss1Path = ".\\test-output\\Suite\\Screenshots\\"+ strTime+".png";
-
 		File scrFile = ((TakesScreenshot)dr).getScreenshotAs(OutputType.FILE);
 		File destFile=new File(ss1Path);
-
 		FileUtils.copyFile(scrFile, destFile);
 		String absPath=destFile.getAbsolutePath();
 		return absPath;
-    
+    	
 	}	
+	
     
     /**
      * To close report
@@ -486,8 +466,12 @@ public class Cliniops_ReusableMethodsTest {
 		htmlName = null;
 		bw.close();
 	}
+	/**
+	 * Login page module
+	 * @param dr
+	 * @throws IOException,InterruptedException
+    */	
     public static void login(WebDriver dr) throws InterruptedException, IOException{
-
 		dr.get("https://bridgetherapeutics.cliniops.com");
 		dr.findElement(By.id("username")).sendKeys("Abhishek");
 		Thread.sleep(2000);
@@ -499,6 +483,8 @@ public class Cliniops_ReusableMethodsTest {
 		Thread.sleep(3000);
 		dr.findElement(By.xpath("//*[text()='English']")).click();
 		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
-	}	
-}
+	}
+  
 
+
+}
