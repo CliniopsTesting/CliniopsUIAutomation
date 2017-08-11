@@ -161,6 +161,24 @@ public class Cliniops_ReusableMethodsTest {
 	}
 
     /**
+      * 
+      * @param expectedTextColor
+      * @param actualTextColor
+      * @param stepName
+      * @param dr
+      * @throws IOException
+      * */
+    
+    public static void checkHighlightText(String expectedTextColor,String actualTextColor,String stepName,WebDriver dr) throws IOException
+    {
+     if(expectedTextColor.trim().equals(actualTextColor.trim())){
+    	 updateReport("Pass",stepName, "Text highlighted",dr);
+     }
+     else{
+    	 updateReport("Fail",stepName, "Text not highlighted",dr);}
+    }
+    
+    /**
      * Read text box value
      * @param obj
      * @param objName

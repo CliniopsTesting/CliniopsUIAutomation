@@ -370,6 +370,49 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	validateText(profileInfo, expectedText4Profile, "Profile-Information", "Profile Tab", dr);
     	
     }
+    
+    @Test
+     public void auto_Clini_Confg_002() throws Exception{
+    	
+    	login(dr);
+    	Thread.sleep(2000);
+    	WebElement configure= dr.findElement(By.xpath("//*[contains(text(),'Configure')]"));
+    	clickElement(configure, "Configure", "Configure Tab details", dr);
+    	WebElement config=dr.findElement(By.xpath(".//*[text()='Configure']"));
+    	//Checking configure tab is highlighted
+        Actions action=new Actions(dr);
+        action.moveToElement(config).build().perform();
+        Thread.sleep(3000);
+        String expectedTextColor="rgba(255, 255, 255, 1)";
+        String ActualTextColor = dr.findElement(By.xpath("//*[text()='Configure']")).getCssValue("color");
+        Thread.sleep(2000);
+        checkHighlightText(expectedTextColor,ActualTextColor,"Configure tab highlight",dr);
+        
+        //checking study details tab is highlighted
+        String actualTextColorStudy= dr.findElement(By.xpath("//a[contains(text(),'Study Details')]")).getCssValue("color");
+        checkHighlightText(expectedTextColor, actualTextColorStudy, "Study Deatails highlight", dr); 
+        
+        //import study button is located
+        WebElement importStudy= dr.findElement(By.xpath("//a[contains(text(),'Import Study')]"));
+        checkObjectDisplay(importStudy, "Import Study", "Import Study Button located", dr);
+        
+        //Validating study Name
+        WebElement studyName=dr.findElement(By.xpath("//td[contains(text(),'Advanced Stage III')]"));
+        String expectedStudyName="Cisplatin/Etoposide/Radiotherapy +/- Consolidation...n Advanced Stage III Non-Small Cell Lung Cancer";
+        validateText(studyName, expectedStudyName, "Study Name", "Validating Study Name", dr);
+        
+        //Validating Study Description
+        WebElement studyDesc=dr.findElement(By.xpath("//tr[2]/td[2]"));
+        String expectedStudyDesc="Cisplatin/Etoposide/Radiotherapy +/- Consolidation...n Advanced Stage III Non-Small Cell Lung Cancer";
+        validateText(studyDesc, expectedStudyDesc, "Study Description", "Validating Study Description", dr);
+        
+        //Validating Protocol
+        WebElement protocol=dr.findElement(By.xpath("//tr[3]/td[2]"));
+        String expectedProtocol="Cisplatin/Etoposide/Radiotherapy +/- Consolidation...n Advanced Stage III Non-Small Cell Lung Cancer:";
+        validateText(protocol, expectedProtocol, "Protocol", "Validating Protocol", dr);
+        
+    	
+    }
     @AfterMethod
 
     public void closeBrowser(){
