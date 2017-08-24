@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest{
 
     WebDriver dr; 
+    Actions action=new Actions(dr);
     @BeforeMethod    
 	@Parameters({"browser"})
 	public void selectBrowser(String browser)throws IOException{
@@ -410,7 +411,79 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
         WebElement protocol=dr.findElement(By.xpath("//tr[3]/td[2]"));
         String expectedProtocol="Cisplatin/Etoposide/Radiotherapy +/- Consolidation...n Advanced Stage III Non-Small Cell Lung Cancer:";
         validateText(protocol, expectedProtocol, "Protocol", "Validating Protocol", dr);
-        
+        	
+    }
+    
+    @Test
+    public void auto_Clini_Manage_001() throws Exception{
+    	login(dr);
+    	//Manage Tab Highlighted
+    	WebElement manage= dr.findElement(By.xpath("//a[contains(text(),'Manage')]"));
+    	clickElement(manage, "Manage Tab", "Manage Tab details", dr);
+    	String expectedManageUrl="https://bridgetherapeutics.cliniops.com/investigator/managestudy/roles";
+    	String actualManageUrl=dr.getCurrentUrl();
+    	validateURL(expectedManageUrl,actualManageUrl,"Manage URL Check",dr);
+		action.moveToElement(dr.findElement(By.xpath("//a[contains(text(),'Manage')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor21="rgba(255, 255, 255, 1)";
+    	String actualTextColor21 = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor21,actualTextColor21,"Manage tab Highlight",dr);
+    	
+    }
+    @Test 
+    public void auto_Clini_Manage_002() throws Exception{
+    	login(dr);
+    	WebElement manage= dr.findElement(By.xpath("//a[contains(text(),'Manage')]"));
+    	clickElement(manage, "Manage Tab", "Manage Tab details", dr);
+    	//Checking Roles, Manage tab Highlighted
+    	action.moveToElement(dr.findElement(By.xpath("//a[contains(text(),'Manage')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor21="rgba(255, 255, 255, 1)";
+    	String actualTextColorManage = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor21,actualTextColorManage,"Manage tab Highlight",dr);
+    	
+    	String actualColorRoles=dr.findElement(By.xpath("//div[2]/div/ul/li/a")).getCssValue("color");
+    	checkHighlightText(actualColorRoles, actualTextColorManage, "Roles side tab", dr);
+    	
+    	String xpath="//*[@id='content-body']/div/div/div[2]/div[2]/div/table/tbody/tr/th";
+		WebElement studyUserRoles= dr.findElement(By.xpath(xpath));
+    	String expectedText4Manage="Role";
+    	validateText(studyUserRoles, expectedText4Manage, "Manage-Study User roles", "Manage Tab", dr);
+    	Thread.sleep(3000);   
+    	
+    	//check appearance of add roles 
+    	WebElement addRoles=dr.findElement(By.xpath("//a[contains(text(),'Add Roles')]"));
+    	checkObjectDisplay(addRoles, "Add Roles", "Add Roles Button", dr);
+    	//check appearance of role and action
+    	WebElement role=dr.findElement(By.xpath(xpath));
+    	checkObjectDisplay(role, "Role", "Role", dr);
+    	String xpathAction="//div[@id='content-body']/div/div/div[2]/div[2]/div/table/tbody/tr/th[2]";
+    	WebElement action=dr.findElement(By.xpath(xpathAction));
+    	checkObjectDisplay(action, "Action", "Action", dr);
+    	
+    	//check appearance of elements under Role
+    	WebElement projectManager=dr.findElement(By.xpath("//table/tbody/tr[2]/td"));
+    	checkObjectDisplay(projectManager, "Project Manager", "Project Manager", dr);
+    	WebElement studyAdmin=dr.findElement(By.xpath("//table/tbody/tr[3]/td"));
+    	checkObjectDisplay(studyAdmin, "Study Administrator", "Study Administrator", dr);
+    	WebElement dataManager=dr.findElement(By.xpath("//table/tbody/tr[4]/td"));
+    	checkObjectDisplay(dataManager, "Data Manager", "Data Manager", dr);
+    	WebElement siteCoordinator=dr.findElement(By.xpath("//table/tbody/tr[5]/td"));
+    	checkObjectDisplay(siteCoordinator, "Site Coordinator", "Site Coordinator", dr);
+    	
+    	//check appearance of elements under Action
+    	WebElement viewRecord=dr.findElement(By.xpath("//a[@title='View Record']"));
+    	checkObjectDisplay(viewRecord, "View Record Project Manager", "View record for Project Manager", dr);
+    	WebElement viewRecord2=dr.findElement(By.xpath("//tr[3]/td[2]/div/a/img"));
+    	checkObjectDisplay(viewRecord2, "View Record Study Administrator", "View record for Study Administrator", dr);
+    	WebElement dataManagerEdit=dr.findElement(By.xpath("//tr[4]/td[2]/div/a/img"));
+    	checkObjectDisplay(dataManagerEdit, "Data Manager Edit button", "Data Manager Edit button", dr);
+    	WebElement dataManagerDelete=dr.findElement(By.xpath("//a[2]/img"));
+    	checkObjectDisplay(dataManagerDelete, "Data Manager Delete button", "Data Manager Delete button", dr);
+    	WebElement siteAdminView=dr.findElement(By.xpath("//tr[5]/td[2]/div/a/img"));
+    	checkObjectDisplay(siteAdminView, "Site Admin View button", "Data Manager View button", dr);
+    	WebElement siteAdminDelete=dr.findElement(By.xpath("//tr[5]/td[2]/div/a[2]/img"));
+    	checkObjectDisplay(siteAdminDelete, "Site Admin Delete button", "Data Manager Delete button", dr);
     	
     }
     @AfterMethod
