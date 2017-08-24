@@ -645,7 +645,103 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 					 break;
 				 }
 			 }
+                @Test
+		 public void auto_Clini_Manage_009() throws InterruptedException,IOException{
+			 Login(dr);
+			 Thread.sleep(3000);
+			 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+			 WebElement Queries = dr.findElement(By.xpath(".//*[text()='Queries']"));
+			 clickElement(Queries,"Queries Tab", "Queries Tab", dr);
+			 Thread.sleep(2000);
+			 String actualText = dr.findElement(By.xpath("//*[@id='content-body']/div/div/h3")).getText();
+			 String expectedText ="Queries";
+			 checkContentsMatch(actualText,expectedText,"Queries","Queries",dr); 
+		 }
+		 @Test
+		 public void auto_Clini_Manage_010() throws InterruptedException,IOException{
+			 Login(dr);
+			 Actions mouseover = new Actions(dr);
+			 Thread.sleep(3000);
+			 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+			 dr.findElement(By.xpath(".//*[text()='Queries']")).click();
+			 String expectedTextColor1="rgba(255, 255, 255, 1)";
+			 String actualTextColor1 = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+			 checkHighlightText(expectedTextColor1,actualTextColor1,"Manage tab Highlight",dr);
+			 String expectedTextColor2 = "rgba(255, 255, 255, 1)";
+			 String actualTextColor2 = dr.findElement(By.xpath(".//*[text()='Queries']")).getCssValue("color");
+			 checkHighlightText(expectedTextColor2,actualTextColor2,"Queries bar Highlight",dr);
 
+
+			 WebElement search = dr.findElement(By.xpath("//*[@id='dataTables-example_filter']/label"));
+			 mouseover.moveToElement(search).build().perform();
+			 if(search.getText().equalsIgnoreCase("Search:"))
+			 {
+				 checkObjectDisplay(search, "Search Option", "Search Option", dr); 
+			 }
+
+			 WebElement Subject = dr.findElement(By.xpath(".//*[text()='Subject']"));
+			 mouseover.moveToElement(Subject).build().perform();
+			 if(Subject.getText().equalsIgnoreCase("Subject"))
+			 {
+				 checkObjectDisplay(Subject, "Subject Column", "Subject Column", dr); 
+			 }
+			 WebElement Entity = dr.findElement(By.xpath(".//*[text()='Entity']"));
+			 mouseover.moveToElement(Entity).build().perform();
+			 if(Entity.getText().equalsIgnoreCase("Entity"))
+			 {
+				 checkObjectDisplay(Entity, "Entity Column", "Entity Column", dr);
+			 }
+			 WebElement Type = dr.findElement(By.xpath(".//*[text()='Type']"));
+			 mouseover.moveToElement(Type).build().perform();
+			 if(Type.getText().equalsIgnoreCase("Type"))
+			 {
+				 checkObjectDisplay(Type, "Type Column", "Type Column", dr);
+			 }
+			 Thread.sleep(3000);
+			 WebElement Status = dr.findElement(By.xpath("//*[@id='dataTables-example']/thead/tr/th[4]"));
+			 mouseover.moveToElement(Status).build().perform();
+			 if(Status.getText().equalsIgnoreCase("Status"))
+			 {
+				 checkObjectDisplay(Status, "Status Column", "Status Column", dr);
+			 }
+			 WebElement assignedTo = dr.findElement(By.xpath(".//*[text()='Assigned To']"));
+			 mouseover.moveToElement(assignedTo).build().perform();
+			 if(assignedTo.getText().equalsIgnoreCase("Assigned To"))
+			 {
+				 checkObjectDisplay(assignedTo, "Assigned To Column", "Assigned To Column", dr);
+			 }
+
+			 WebElement dateUpdated = dr.findElement(By.xpath("//*[text()='Date Updated']"));
+			 mouseover.moveToElement(dateUpdated).build().perform();
+			 if(dateUpdated.getText().equalsIgnoreCase("Date Updated"))
+			 {
+				 checkObjectDisplay(dateUpdated, "Date Updated Column", "Date Updated Column", dr);
+			 }
+			 WebElement Action = dr.findElement(By.xpath(".//*[text()='Action']"));
+			 mouseover.moveToElement(Action).build().perform();
+			 if(Action.getText().equalsIgnoreCase("Action"))
+			 {
+				 checkObjectDisplay(Action, "Action Column", "Action Column", dr);
+			 }
+			 JavascriptExecutor jse = (JavascriptExecutor)dr;
+			 jse.executeScript("window.scrollBy(0,500)");
+			 //Thread.sleep(3000);
+			 WebElement previous = dr.findElement(By.xpath(".//*[text()='Previous']"));
+			 mouseover.moveToElement(dr.findElement(By.xpath(".//*[text()='Previous']"))).build().perform();
+			 checkObjectDisplay(previous, "Previous Button", "Previous Button", dr);
+			 
+			 WebElement next =dr.findElement(By.xpath(".//*[text()='Next']"));
+			 mouseover.moveToElement(dr.findElement(By.xpath(".//*[text()='Next']"))).build().perform();
+			 checkObjectDisplay(next, "Next Button", "Next Button", dr);
+			 
+
+
+
+
+		 }
+
+
+			 
 		 }
 	
     @AfterMethod
