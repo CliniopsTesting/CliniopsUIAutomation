@@ -733,12 +733,174 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 			 WebElement next =dr.findElement(By.xpath(".//*[text()='Next']"));
 			 mouseover.moveToElement(dr.findElement(By.xpath(".//*[text()='Next']"))).build().perform();
 			 checkObjectDisplay(next, "Next Button", "Next Button", dr);
-			 
+		
+
+		 }
+
+                 @Test
+		 public void auto_Clini_Manage_011() throws InterruptedException,IOException{
+			 Login(dr);
+			 Actions mouseover = new Actions(dr);
+			 Thread.sleep(1000);
+			 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+			 dr.findElement(By.xpath(".//*[text()='Queries']")).click();
+			
+			 String parentWindowId = dr.getWindowHandle();
+			 System.out.println(parentWindowId);
+			 dr.findElement(By.xpath("//*[@id='dataTables-example']/tbody/tr[1]/td[7]/div/a")).click();
+			
+			 for (String windowId: dr.getWindowHandles()) {
+				 System.out.println(windowId);
+				 dr.switchTo().window(windowId);
+				
+				 Thread.sleep(2000);
+				 String actualText = dr.findElement(By.xpath("//*[@id='ui-id-1']")).getText();
+				 String expectedText="Edit Query";
+				 System.out.println(actualText);
+				 checkContentsMatch(actualText,expectedText,"Edit Query pop up","Edit Query Pop Up",dr); 
+				 WebElement subjectID= dr.findElement(By.xpath(".//*[text()='Subject ID:']"));
+				 System.out.println(subjectID.getText());
+				 mouseover.moveToElement(subjectID).build().perform();
+				 if(subjectID.getText().equalsIgnoreCase("Subject ID:"))
+				 {
+					 checkObjectDisplay(subjectID, "SubjectID is displayed", "SubjectID  ", dr); 
+				 }
+
+				 WebElement Entity = dr.findElement(By.xpath(".//*[text()='Entity:']"));
+				 System.out.println(Entity.getText());
+				 mouseover.moveToElement(Entity).build().perform();
+				 if(Entity.getText().equalsIgnoreCase("Entity:"))
+				 {
+					 checkObjectDisplay(Entity, "Entity is displayed", "Entity ", dr); 
+				 }
+				 WebElement Type = dr.findElement(By.xpath(".//*[text()='Type:']"));
+				 System.out.println(Type.getText());
+				 mouseover.moveToElement(Type).build().perform();
+				 if(Type.getText().equalsIgnoreCase("Type:"))
+				 {
+					 checkObjectDisplay(Type, "Type is displayed", "Type ", dr); 
+				 }
+				 WebElement typeQuery = dr.findElement(By.xpath("//*[@id='querytype'][@disabled = 'disabled']")); 
+				
+				 WebElement status = dr.findElement(By.xpath("//*[@id='statussection']/fieldset/span"));
+				 System.out.println(status.getText());
+				 //mouseover.moveToElement(status).build().perform();
+				 if(status.getText().equalsIgnoreCase("Status* :"))
+				 {
+					 checkObjectDisplay(status, "Status is displayed", "Status ", dr); 
+				 }
+				 
+				 WebElement upDated = dr.findElement(By.xpath("//*[@id='querystatus']"));
+				 upDated.click();
+				 WebElement upDatedOption1 = dr.findElement(By.xpath("//*[@id='querystatus']/option[1]"));
+				 upDatedOption1.click();
+				
+				 String actualTextupDated =  upDatedOption1.getText(); 
+				 String expectedTextupDated ="Updated";
+				 System.out.println(actualTextupDated);
+				 checkContentsMatch(actualTextupDated,expectedTextupDated,"Updated is selected","Updated",dr);
+				 
+				 WebElement assigned = dr.findElement(By.xpath(".//*[text()='Assigned To']"));
+				 System.out.println(assigned.getText());
+				 mouseover.moveToElement(Type).build().perform();
+				 if(assigned.getText().equalsIgnoreCase("Assigned To"))
+				 {
+					 checkObjectDisplay(assigned, "Assigned To is displayed", "Assigned To ", dr); 
+				 }
+				 
+				 WebElement assignedTo = dr.findElement(By.xpath("//*[@id='assigned_to_user_id']"));
+				 assignedTo.click();
+				 WebElement assignedToName = dr.findElement(By.xpath("//*[@id='assigned_to_user_id']/option[5]"));
+				
+				
+				 String actualTextassigedTo =  assignedToName.getText(); 
+				 String expectedTextassigedTo ="Sarah Lee (sarah.lee)";
+				 System.out.println(actualTextassigedTo);
+				 checkContentsMatch(actualTextassigedTo,expectedTextassigedTo,"Sarah Lee (sarah.lee) is selected","Sarah Lee (sarah.lee)",dr);
+	   
+				 WebElement message = dr.findElement(By.xpath(".//*[text()='Message']"));
+				 System.out.println(message.getText());
+				
+				 if(message.getText().equalsIgnoreCase("Message* :"))
+				 {
+					 checkObjectDisplay(Type, "Message is displayed", "Message ", dr); 
+				 }
+				 WebElement textArea = dr.findElement(By.xpath("//*[@id='message']"));
+				 textArea.click();
+				
+				 String actualTexttextArea =  textArea.getText(); 
+				 String expectedTexttextArea ="";
+				 System.out.println(actualTexttextArea);
+				 checkContentsMatch(actualTexttextArea,expectedTexttextArea,"Text area is selected","TextArea",dr);
+				 
+				 WebElement PrevMessage = dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[5]/span"));
+			
+				 String actualTextPrevMessage =  PrevMessage.getText(); 
+				 String expectedTextPrevMessage ="Previous Messages";
+				 System.out.println(actualTextPrevMessage);
+				 checkContentsMatch(actualTextPrevMessage,expectedTextPrevMessage," Previous message is displayed","Previous Message",dr);
+				 
+				 WebElement Date = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[1]"));
+					
+				 String actualTextDate =  Date.getText(); 
+				 String expectedTextDate ="Date";
+				 System.out.println(actualTextDate);
+				 checkContentsMatch(actualTextDate,expectedTextDate," Date is displayed","Date",dr);
+				
+				 WebElement User = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[2]"));
+					
+				 String actualTextUser =  User.getText(); 
+				 String expectedTextUser ="User";
+				 System.out.println(actualTextUser);
+				 checkContentsMatch(actualTextUser,expectedTextUser," User is displayed","User",dr);
+				 
+				 WebElement statusTable = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[3]"));
+					
+				 String actualTextStatus =  statusTable.getText(); 
+				 String expectedTextStatus ="Status";
+				 System.out.println(actualTextStatus);
+				 checkContentsMatch(actualTextStatus,expectedTextStatus," Status is displayed","Status",dr);
+		
+				 WebElement msg = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[4]"));
+					
+				 String actualTextMsg =  msg.getText(); 
+				 String expectedTextMsg ="Message";
+				 System.out.println(actualTextMsg);
+				 checkContentsMatch(actualTextMsg,expectedTextMsg," Message is displayed","Message",dr);
+				 
+				 WebElement assignTo = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[5]"));
+					
+				 String actualTextassignTo =  assignTo.getText(); 
+				 String expectedTextassignTo ="Assigned To";
+				 System.out.println(actualTextassignTo);
+				 checkContentsMatch(actualTextassignTo,expectedTextassignTo," assigned To is displayed","assigned To",dr);
+				 
+				 WebElement UpdateQueryBtn = dr.findElement(By.xpath("//*[@id='editQuerySubmit']"));
+				 mouseover.moveToElement(dr.findElement(By.xpath("//*[@id='editQuerySubmit']"))).build().perform();
+				 checkObjectDisplay(UpdateQueryBtn, "Update Query Button", "Update Query Button", dr);
+				 
+				 WebElement cancelBtn = dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[6]/div/div/input[2]"));
+				 mouseover.moveToElement(dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[6]/div/div/input[2]"))).build().perform();
+				 checkObjectDisplay(cancelBtn, "cancel Button", "cancel Button", dr);
+				 Thread.sleep(3000);
+				 
+				 WebElement closeBtn = dr.findElement(By.xpath("/html/body/div[4]/div[1]/button/span[1]"));
+				 mouseover.moveToElement(dr.findElement(By.xpath("/html/body/div[4]/div[1]/button/span[1]"))).click().build().perform();
+				 checkObjectDisplay(closeBtn, "close Button", "close Button", dr);
+				 
+				 Thread.sleep(3000);
+				
+           
+
+			 }
+
+
 
 
 
 
 		 }
+
 
 
 			 
