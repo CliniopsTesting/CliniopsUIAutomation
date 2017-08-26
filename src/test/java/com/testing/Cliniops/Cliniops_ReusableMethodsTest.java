@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Cliniops_ReusableMethodsTest {   
-    static String htmlName=null;
+	static String htmlName=null;
 	static BufferedWriter bw = null;
 	static String exeStatus = "True";
 	static int report;
@@ -32,23 +32,23 @@ public class Cliniops_ReusableMethodsTest {
 	private static String browserName=null;
 	private static int reportFlag=0;
 	static String strTime;
-
 	/**
-	 * Check if the object is enabled or not
-	 * @param obj
-	 * @param objName
+	 * 
+	 * @param expectedTextColor
+	 * @param actualTextColor
+	 * @param stepName
+	 * @param dr
 	 * @throws IOException
-    */		
-	public static void checkDisabled(WebElement obj,String objName,WebDriver dr) throws IOException{
-	    if(obj.getAttribute("disabled").trim().contains("true")){
-		    updateReport("Pass","Checkdisabled",objName+" is disabled",dr);
-		}
-		else{
-		    updateReport("Fail","Checkdisabled",objName+" is not disabled",dr);
-	    }
+	 * */
+
+	public static void checkHighlightText(String expectedTextColor,String actualTextColor,String stepName,WebDriver dr) throws IOException
+	{if(expectedTextColor.trim().equals(actualTextColor.trim())){
+		updateReport("Pass",stepName, "Text highlighted",dr);
+	}else{
+		updateReport("Fail",stepName, "Text not highlighted",dr);
 	}
-	
-	
+
+	}
 	/**
 	 * 
 	 * @param actualText
@@ -65,40 +65,94 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
 		}
 	}
-	
-    /**
-     * To click on specific object
-     * @param obj:WebElement to be clicked
-     * @param objName:Name of WebElement to be clicked
-     * @throws IOException
-     */ 
-    public static void clickElement(WebElement obj, String objName,String stepName,WebDriver dr) throws IOException{
-	    if(obj.isDisplayed()){
-		    obj.click();
+
+
+	/**
+	 * Check if the object is enabled or not
+	 * @param obj
+	 * @param objName
+	 * @throws IOException
+	 */		
+	public static void checkDisabled(WebElement obj,String objName,WebDriver dr) throws IOException{
+		if(obj.getAttribute("disabled").trim().contains("true")){
+			updateReport("Pass","Checkdisabled",objName+" is disabled",dr);
+		}
+		else{
+			updateReport("Fail","Checkdisabled",objName+" is not disabled",dr);
+		}
+	}
+
+	/**
+	 * To click on specific object
+	 * @param obj:WebElement to be clicked
+	 * @param objName:Name of WebElement to be clicked
+	 * @throws IOException
+	 */ 
+	public static void clickElement(WebElement obj, String objName,String stepName,WebDriver dr) throws IOException{
+		if(obj.isDisplayed()){
+			obj.click();
 			updateReport("Pass", stepName, "clicked on selected object",dr);
 			System.out.println("Pass: "+ objName + " is clicked.");
 		}else{
-		    updateReport("Fail", stepName, "Not clicked on selected object",dr);
+			updateReport("Fail", stepName, "Not clicked on selected object",dr);
 		}
-    }
+	}
 
-	
-    /**
-     * To Select the dropdown
-     * @param dd:WebElement dropdown
-     * @param index:Index of element to be selected
-     * @throws IOException
-     */ 
-    public static void dropDown(WebElement dd, int index,WebDriver dr) throws IOException{
-        Select select = new Select(dd);
+
+	/**
+	 * To Select the dropdown
+	 * @param dd:WebElement dropdown
+	 * @param index:Index of element to be selected
+	 * @throws IOException
+	 */ 
+	public static void dropDown(WebElement dd, int index,WebDriver dr) throws IOException{
+		Select select = new Select(dd);
 		if(dd.isDisplayed()){
-		    select.selectByIndex(index);
+			select.selectByIndex(index);
 			updateReport("Pass", "DropDown", "selected dd object by using index",dr);
 		}
 		else{
 			updateReport("Fail", "DropDown", "Not selected dd object by using index",dr);
 		}
-    }
+	}
+
+	public static void checkDropdownDEnableSelectedOpt(WebElement dd,String value,String chkEnable,String stepName ,WebDriver dr) throws IOException{
+		Select select = new Select(dd);
+		if(chkEnable.equalsIgnoreCase("Enabled")){	
+			if(dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				updateReport("Pass", stepName, stepName + " dropdown is enabled and value "+ value + " is selected", dr);
+			}
+			else if(!dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				updateReport("Fail", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
+			}
+			else if(dd.isEnabled() && !select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				updateReport("Fail", stepName, stepName + " dropdown is enabled and value "+ value + " is selected", dr);
+				System.out.println("hellooo****");
+				System.out.println(select.getFirstSelectedOption().getText());
+			}
+			else{
+				updateReport("Fail", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
+			}
+		}
+		else{
+			if(chkEnable.equalsIgnoreCase("Disabled"))
+			{
+				if(!dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+					updateReport("Pass", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
+				}
+				else if(dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+					updateReport("Fail", stepName,stepName + " dropdown is enabled and value "+ value + " is selected" , dr);
+				}
+				else if(!dd.isEnabled() && !select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+					updateReport("Fail", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
+				}
+				else{
+					updateReport("Fail", stepName, stepName + " dropdown is enabled and value "+ value + " is selected", dr);
+				}
+			}
+		}
+
+	}
 
 	/** 
 	 * Used to enter text into text box field
@@ -108,17 +162,17 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param stepName:Name of step
 	 * @throws IOException
 	 */
-    public static void enterText(WebElement obj, String textVal, String objName,String stepName,WebDriver dr) throws IOException{
-	    if(obj.isDisplayed()){
-		    obj.sendKeys(textVal);
+	public static void enterText(WebElement obj, String textVal, String objName,String stepName,WebDriver dr) throws IOException{
+		if(obj.isDisplayed()){
+			obj.sendKeys(textVal);
 			updateReport("Pass",stepName,objName+" is entered in "+objName+" field",dr);
-        }else{
-		    updateReport("Fail",stepName,objName+" field is not displayed,please check application",dr);
-        }
-    }
-	
-    
-    /** 
+		}else{
+			updateReport("Fail",stepName,objName+" field is not displayed,please check application",dr);
+		}
+	}
+
+
+	/** 
 	 * To validate if the text on element matches expectedTest
 	 * @param obj:WebElement whose text needs to be verified
 	 * @param expectedText:Expected value of text
@@ -126,11 +180,11 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param stepName:Step Name
 	 * @param dr:Web driver
 	 */	
-    public static void validateText(WebElement obj, String expectedText, String objName,String stepName,WebDriver dr) throws IOException{
-	    if(obj.isDisplayed()){
-		    String actualText = obj.getText().trim();
+	public static void validateText(WebElement obj, String expectedText, String objName,String stepName,WebDriver dr) throws IOException{
+		if(obj.isDisplayed()){
+			String actualText = obj.getText().trim();
 			if(expectedText.equals(actualText)){
-			    updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+				updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
 			}else{
 				updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
 			}
@@ -139,32 +193,15 @@ public class Cliniops_ReusableMethodsTest {
 		}
 	}
 
-/**
-	 * 
-	 * @param actualText
+	/**
+	 * Read checkBox text	
+	 * @param obj
 	 * @param expectedText
 	 * @param objName
-	 * @param stepName
 	 * @param dr
 	 * @throws IOException
 	 */
-	public static void validateText(String actualText, String expectedText, String objName, String stepName, WebDriver dr) throws IOException{
-		if(expectedText.equals(actualText.trim())){
-			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
-		}else{
-			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
-		}
-	}
-
-    /**
-     * Read checkBox text	
-     * @param obj
-     * @param expectedText
-     * @param objName
-     * @param dr
-     * @throws IOException
-     */
-    public static void readingCheckbox(WebElement obj,String expectedText,String objName,WebDriver dr) throws IOException{
+	public static void readingCheckbox(WebElement obj,String expectedText,String objName,WebDriver dr) throws IOException{
 		if(obj.isDisplayed())
 		{
 			String Actualtext=obj.getAttribute("checked").trim();
@@ -179,18 +216,18 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail","readingCheckbox",objName+" is not displayed,please check your application",dr);
 		}
 	}
-    
-    /**
-     * Read text box value
-     * @param obj
-     * @param objName
-     * @param dr
-     * @throws IOException
-     */
-    public static void readingText(WebElement obj,String objName,WebDriver dr) throws IOException{
-	    if(obj.isDisplayed())
+
+	/**
+	 * Read text box value
+	 * @param obj
+	 * @param objName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void readingText(WebElement obj,String objName,WebDriver dr) throws IOException{
+		if(obj.isDisplayed())
 		{
-		    String Actualtext=obj.getText().trim();
+			String Actualtext=obj.getText().trim();
 			if(Actualtext.isEmpty())
 			{
 				updateReport("Fail","ReadingText",objName+" has No data",dr);
@@ -199,20 +236,20 @@ public class Cliniops_ReusableMethodsTest {
 				updateReport("Pass","ReadingText",objName+" contains "+Actualtext,dr);
 			}
 		}
-    }
-    
-    
-    /**
-     * Validate message displayed on the web page
-     * @param obj
-     * @param expectedText
-     * @param objName
-     * @param attributeName
-     * @param stepName
-     * @param dr
-     * @throws IOException
-     */
-    public static void validateTextAttribute(WebElement obj, String expectedText, String objName,String attributeName,String stepName,WebDriver dr) throws IOException{
+	}
+
+
+	/**
+	 * Validate message displayed on the web page
+	 * @param obj
+	 * @param expectedText
+	 * @param objName
+	 * @param attributeName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void validateTextAttribute(WebElement obj, String expectedText, String objName,String attributeName,String stepName,WebDriver dr) throws IOException{
 		if(obj.isEnabled()){	
 			String actualText = obj.getAttribute(attributeName);
 			if(expectedText.equals(actualText)){
@@ -225,16 +262,16 @@ public class Cliniops_ReusableMethodsTest {
 		}
 	}
 
-    
-    /**
-     * Check if an object is displayed
-     * @param obj
-     * @param objName
-     * @param stepName
-     * @param dr
-     * @throws IOException
-     */
-    public static void checkObjectDisplay(WebElement obj,String objName,String stepName,WebDriver dr) throws IOException{
+
+	/**
+	 * Check if an object is displayed
+	 * @param obj
+	 * @param objName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void checkObjectDisplay(WebElement obj,String objName,String stepName,WebDriver dr) throws IOException{
 		if(obj.isDisplayed()){
 			updateReport("Pass", stepName, objName+" appears",dr);
 		}
@@ -242,15 +279,15 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail", stepName, objName+" not displayed",dr);
 		}
 	}
-    
-    /**
-     * 
-     * @param obj
-     * @param objName
-     * @param dr
-     * @throws IOException
-     */
-    public static void checkEnabled(WebElement obj,String objName,WebDriver dr) throws IOException{
+
+	/**
+	 * 
+	 * @param obj
+	 * @param objName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void checkEnabled(WebElement obj,String objName,WebDriver dr) throws IOException{
 		if(obj.isEnabled()){
 			updateReport("Pass","checkEnabled",objName+" is enabled",dr);
 		}
@@ -258,15 +295,15 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail","checkEnabled",objName+" is not enabled",dr);
 		}
 	}
-    
-    /**
-     * Select drop down by value    
-     * @param dd
-     * @param value
-     * @param dr
-     * @throws IOException
-     */
-    public static void dropDownByValue(WebElement dd, String value,WebDriver dr) throws IOException{
+
+	/**
+	 * Select drop down by value    
+	 * @param dd
+	 * @param value
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void dropDownByValue(WebElement dd, String value,WebDriver dr) throws IOException{
 
 		Select select = new Select(dd);
 		if(dd.isDisplayed()){
@@ -279,26 +316,26 @@ public class Cliniops_ReusableMethodsTest {
 
 	}
 
-    public static void validateURL(String expectedURL,String ActualURL,String stepName,WebDriver dr) throws IOException{
-    	if(expectedURL.trim().equals(ActualURL.trim())){
-    		updateReport("Pass","stepName","Actual URL matching with expected URL",dr);
-    	}
-    	else{
-    		updateReport("Fail","stepName","Actual URL matching with expected URL",dr);
-    	}
+	public static void validateURL(String expectedURL,String ActualURL,String stepName,WebDriver dr) throws IOException{
+		if(expectedURL.trim().equals(ActualURL.trim())){
+			updateReport("Pass",stepName,"Actual URL matching with expected URL",dr);
+		}
+		else{
+			updateReport("Fail",stepName,"Actual URL matching with expected URL",dr);
+		}
 
-    }
+	}
 
-    
-    /**
-     * Read data from excel sheet
-     * @param filePath
-     * @param sheetName
-     * @return
-     * @throws IOException
-     */
+
+	/**
+	 * Read data from excel sheet
+	 * @param filePath
+	 * @param sheetName
+	 * @return
+	 * @throws IOException
+	 */
 	public static String[][] readSheet(String filePath, String sheetName) throws IOException{
-        /*Step 1: Get the XL Path*/
+		/*Step 1: Get the XL Path*/
 		File xlFile = new File(filePath);
 
 		/*Step2: Access the Xl File*/
@@ -323,20 +360,20 @@ public class Cliniops_ReusableMethodsTest {
 				//xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
 				Cell cell = sheet.getRow(i).getCell(j);
 				switch(cell.getCellType()){
-					case Cell.CELL_TYPE_STRING:
-						xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
-						break;
-					case Cell.CELL_TYPE_NUMERIC:
-						xlData[i][j] = new Double(sheet.getRow(i).getCell(j).getNumericCellValue()).toString() ;
-						break;
+				case Cell.CELL_TYPE_STRING:
+					xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
+					break;
+				case Cell.CELL_TYPE_NUMERIC:
+					xlData[i][j] = new Double(sheet.getRow(i).getCell(j).getNumericCellValue()).toString() ;
+					break;
 				}
 			}
 
 		}
 		wb.close();
-        return xlData;
+		return xlData;
 	}
-    
+
 	/**
 	 * Start HTML report for the test script
 	 * @param scriptName
@@ -350,7 +387,7 @@ public class Cliniops_ReusableMethodsTest {
 			reportFlag=1;
 			String strResultPath = null;
 			String testScriptName =scriptName;
-			
+
 			Date curDate = new Date(); 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			String strTimeStamp = dateFormat.format(curDate);
@@ -365,85 +402,85 @@ public class Cliniops_ReusableMethodsTest {
 			File f = new File(strResultPath);
 			f.mkdirs();
 			htmlName = strResultPath  + testScriptName + "_" + strTimeStamp 
-				+ ".html";
+					+ ".html";
 
 			bw = new BufferedWriter(new FileWriter(htmlName));
 
 			bw.write("<HTML><BODY><TABLE BORDER=0 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=27%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
-				+ browserName + "</B></FONT></TD></TR>");
+					+ browserName + "</B></FONT></TD></TR>");
 			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR COLS=7><TD BGCOLOR=#BDBDBD WIDTH=3%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>SL No</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Step Name</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=47%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Step Name</B></FONT></TD>"
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=47%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
 		}
 		else{
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=15%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
 					+ browserName + "</B></FONT></TD></TR>");
 			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
-			
+
 		}
 
 	}
 
 	/**
-     * Update HTML report for each step
-     * @param resType
-     * @param action
-     * @param result
-     * @param dr
-     * @throws IOException
-     */
-    public static void updateReport(String resType,String action, String result,WebDriver dr) throws IOException {
-	    String strTime;
-	    Date execTime = new Date();
-	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-	    strTime = dateFormat.format(execTime);
-	    if (resType.startsWith("Pass")) {
-		    bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
-				+ (rowCount++)
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-				+action
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-				+ strTime
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
-				+ "Passed"
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
-				+ result + "</FONT></TD></TR>");
+	 * Update HTML report for each step
+	 * @param resType
+	 * @param action
+	 * @param result
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void updateReport(String resType,String action, String result,WebDriver dr) throws IOException {
+		String strTime;
+		Date execTime = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		strTime = dateFormat.format(execTime);
+		if (resType.startsWith("Pass")) {
+			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
+					+ (rowCount++)
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
+					+action
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
+					+ strTime
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
+					+ "Passed"
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
+					+ result + "</FONT></TD></TR>");
 
-        }
-	    else if (resType.startsWith("Fail")) {
-		    String ss1Path= screenShot(dr);
-		    exeStatus = "Failed";
-		    report = 1;
-		    bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
-				+ (rowCount++)
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-				+action
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-				+ strTime
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
-				+ "<a href= "
-				+ ss1Path
-				+ "  style=\"color: #FF0000\"> Failed </a>"
+		}
+		else if (resType.startsWith("Fail")) {
+			String ss1Path= screenShot(dr);
+			exeStatus = "Failed";
+			report = 1;
+			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
+					+ (rowCount++)
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
+					+action
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
+					+ strTime
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
+					+ "<a href= "
+					+ ss1Path
+					+ "  style=\"color: #FF0000\"> Failed </a>"
 
 				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
 				+ result + "</FONT></TD></TR>");
-        } 
-    }
-	
-    /**
-     * Screenshot generation in failed case
-     * @param dr
-     * @return
-     * @throws IOException
-     */
-    public static String screenShot(WebDriver dr) throws IOException{
-	    Date execTime = new Date();
+		} 
+	}
+
+	/**
+	 * Screenshot generation in failed case
+	 * @param dr
+	 * @return
+	 * @throws IOException
+	 */
+	public static String screenShot(WebDriver dr) throws IOException{
+		Date execTime = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		strTime = dateFormat.format(execTime);
 		String  ss1Path = ".\\test-output\\Suite\\Screenshots\\"+ strTime+".png";
@@ -452,14 +489,14 @@ public class Cliniops_ReusableMethodsTest {
 		FileUtils.copyFile(scrFile, destFile);
 		String absPath=destFile.getAbsolutePath();
 		return absPath;
-    	
+
 	}	
-	
-    
-    /**
-     * To close report
-     * @throws IOException
-     */
+
+
+	/**
+	 * To close report
+	 * @throws IOException
+	 */
 	public static void closeReport() throws IOException{
 		rowCount = 1;
 		browserName = null;
@@ -467,22 +504,25 @@ public class Cliniops_ReusableMethodsTest {
 		htmlName = null;
 		bw.close();
 	}
-    
-    public static void login(WebDriver dr) throws InterruptedException, IOException{
+	/**   
+	 * Login page module
+	 * @param dr
+	 * @throws IOException,InterruptedException
+	 */	
+	public static void login(WebDriver dr) throws InterruptedException, IOException{
 		dr.get("https://bridgetherapeutics.cliniops.com");
 		dr.findElement(By.id("username")).sendKeys("Abhishek");
 		Thread.sleep(2000);
-		dr.findElement(By.id("password")).sendKeys("Welcome123#");
+		dr.findElement(By.id("password")).sendKeys("Testing@123");
 		Thread.sleep(2000);
 		dr.findElement(By.id("Authenticate")).click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 		dr.findElement(By.xpath("//*[text()='Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer']")).click();
 		Thread.sleep(3000);
 		dr.findElement(By.xpath("//*[text()='English']")).click();
 		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
 	}
-	
-	
+
 
 
 }
