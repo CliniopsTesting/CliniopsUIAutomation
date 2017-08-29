@@ -24,14 +24,19 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Cliniops_ReusableMethodsTest {   
-	static String htmlName=null;
-	static BufferedWriter bw = null;
-	static String exeStatus = "True";
-	static int report;
-	static int rowCount = 1;
+	private static String htmlName=null;
+	private static BufferedWriter bw = null;
+	private static String scriptPath = null;
+	private static int rowCount = 1;
 	private static String browserName=null;
 	private static int reportFlag=0;
-	static String strTime;
+	private static String strTime;
+	private static boolean isPass = true;
+	private static String testScriptName = null;
+	private static String firefoxRes=null;
+	private static String chromeRes=null;
+	private static String ieRes=null;
+
 	/**
 	 * 
 	 * @param expectedTextColor
@@ -386,7 +391,7 @@ public class Cliniops_ReusableMethodsTest {
 		if(reportFlag==0){
 			reportFlag=1;
 			String strResultPath = null;
-			String testScriptName =scriptName;
+		    testScriptName =scriptName;
 
 			Date curDate = new Date(); 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -399,12 +404,18 @@ public class Cliniops_ReusableMethodsTest {
 				reportsPath = reportsPath + "\\";
 			}
 			strResultPath = reportsPath + "Log" + "/" +testScriptName +"/"; 
+			//File f is only used to create directory for script result
 			File f = new File(strResultPath);
 			f.mkdirs();
 			htmlName = strResultPath  + testScriptName + "_" + strTimeStamp 
 					+ ".html";
-
-			bw = new BufferedWriter(new FileWriter(htmlName));
+			//Getting absolute path of script report to update reference in summary report
+			File rep = new File(htmlName);
+			FileWriter report = new FileWriter(rep);
+			scriptPath = rep.getAbsolutePath();
+			
+			//bw = new BufferedWriter(new FileWriter(htmlName));
+			bw = new BufferedWriter(report);
 
 			bw.write("<HTML><BODY><TABLE BORDER=0 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
@@ -416,10 +427,11 @@ public class Cliniops_ReusableMethodsTest {
 					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
 					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
 					+ "<TD BGCOLOR=#BDBDBD WIDTH=47%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
+			    startSummaryReport(reportsPath);
 		}
 		else{
 			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
-			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=15%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
+			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=23%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699 WIDTH=77%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
 					+ browserName + "</B></FONT></TD></TR>");
 			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
 
@@ -441,6 +453,9 @@ public class Cliniops_ReusableMethodsTest {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		strTime = dateFormat.format(execTime);
 		if (resType.startsWith("Pass")) {
+			if(isPass!=false){
+				isPass = true;
+			}
 			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
 					+ (rowCount++)
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
@@ -449,14 +464,13 @@ public class Cliniops_ReusableMethodsTest {
 					+ strTime
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
 					+ "Passed"
-					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=47%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
 					+ result + "</FONT></TD></TR>");
 
 		}
 		else if (resType.startsWith("Fail")) {
+			isPass = false;
 			String ss1Path= screenShot(dr);
-			exeStatus = "Failed";
-			report = 1;
 			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
 					+ (rowCount++)
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
@@ -468,7 +482,7 @@ public class Cliniops_ReusableMethodsTest {
 					+ ss1Path
 					+ "  style=\"color: #FF0000\"> Failed </a>"
 
-				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
+				+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=47%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
 				+ result + "</FONT></TD></TR>");
 		} 
 	}
@@ -501,7 +515,8 @@ public class Cliniops_ReusableMethodsTest {
 		rowCount = 1;
 		browserName = null;
 		reportFlag = 0;
-		htmlName = null;
+		scriptPath = null;
+		//htmlName = null;
 		bw.close();
 	}
 	/**   
@@ -522,7 +537,69 @@ public class Cliniops_ReusableMethodsTest {
 		dr.findElement(By.xpath("//*[text()='English']")).click();
 		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
 	}
+	
+	/**
+	 * Start the summary report for the test suite and record start time
+	 * @param scriptName
+	 * @param reportsPath
+	 * @throws IOException
+	 */
+	public static void startSummaryReport(String reportsPath) throws IOException{
 
+		//set SummaryReport start time
+		if(CliniopsSummaryReport.getExecutionStartTime() == 0)
+			CliniopsSummaryReport.setExecutionStartTime();
+		
+	}
+	
+	/**
+	 * Add test script execution result and script Location to CliniopsSummaryReport object
+	 * @throws IOException
+	 */
+	public static void updateSummaryReport() throws IOException{
+		CliniopsSummaryReport.setNumTests(CliniopsSummaryReport.getNumTests()+1);
+		CliniopsSummaryReport.updateTestResults(testScriptName, scriptPath, firefoxRes, chromeRes, ieRes);
+		firefoxRes = null;
+		chromeRes = null;
+		ieRes = null;
+		
+	}
+	
+	/**
+	 * Write the summary report at end of execution of all test cases
+	 * @param reportsPath
+	 */
+	public static void writeSummaryReport(String reportsPath){
+		CliniopsSummaryReport.writeReport(reportsPath);
+		firefoxRes = null;
+		chromeRes = null;
+		ieRes = null;
+	}
+	
+	
+	
+	public void updateResults(){
+
+		if(browserName.equalsIgnoreCase("Firefox")){
+			if(isPass)
+				firefoxRes = "Pass";
+			else
+				firefoxRes = "Fail";
+		}
+		else if(browserName.equalsIgnoreCase("Chrome")){
+			if(isPass)
+				chromeRes = "Pass";
+			else
+				chromeRes = "Fail";
+		}
+		else if(browserName.equalsIgnoreCase("IE")){
+			if(isPass)
+				ieRes = "Pass";
+			else
+				ieRes = "Fail";
+		}
+
+	}
 
 
 }

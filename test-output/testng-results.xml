@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="77999" started-at="2017-08-28T08:23:33Z" finished-at="2017-08-28T08:24:51Z">
+  <suite name="Default suite" duration-ms="151642" started-at="2017-08-29T06:40:21Z" finished-at="2017-08-29T06:42:52Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="77999" started-at="2017-08-28T08:23:33Z" finished-at="2017-08-28T08:24:51Z">
+    <test name="Default test" duration-ms="151642" started-at="2017-08-29T06:40:21Z" finished-at="2017-08-29T06:42:52Z">
       <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
-        <test-method status="PASS" signature="cliniopsDriver()[pri:0, instance:com.testing.Cliniops.Cliniops_DriverScriptTest@7dc7cbad]" name="cliniopsDriver" duration-ms="77982" started-at="2017-08-28T01:23:33Z" finished-at="2017-08-28T01:24:51Z">
+        <test-method status="PASS" signature="cliniopsDriver()[pri:0, instance:com.testing.Cliniops.Cliniops_DriverScriptTest@7dc7cbad]" name="cliniopsDriver" duration-ms="151628" started-at="2017-08-28T23:40:21Z" finished-at="2017-08-28T23:42:52Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- cliniopsDriver -->

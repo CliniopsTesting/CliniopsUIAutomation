@@ -1,6 +1,7 @@
 package com.testing.Cliniops;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		WebElement username=dr.findElement(By.id("username"));
 		enterText(username, "Abhishek", "Username", "Enter username", dr);
 		WebElement password=dr.findElement(By.id("password"));
-		enterText(password, "Welcome123#", "Password", "Enter password", dr);
+		enterText(password, "Testing@123", "Password", "Enter password", dr);
 		WebElement authenticate=dr.findElement(By.id("Authenticate"));
 		clickElement(authenticate, "Authenticate Button", "Click on authenticate", dr);
 		WebElement selectStudy= dr.findElement(By.id("investigator_study"));
@@ -829,7 +830,129 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		checkObjectDisplay(closeBtn, "Close Button", "Close Button", dr);
 	}
 	
-	public void auto_Clini_Manage004() throws InterruptedException, IOException
+	  @Test
+	    public void auto_Clini_Manage_001() throws Exception{
+	    	login(dr);
+	    	Actions action=new Actions(dr);
+	    	//Manage Tab Highlighted
+	    	WebElement manage= dr.findElement(By.xpath("//a[contains(text(),'Manage')]"));
+	    	clickElement(manage, "Manage Tab", "Manage Tab details", dr);
+	    	String expectedManageUrl="https://bridgetherapeutics.cliniops.com/investigator/managestudy/roles";
+	    	String actualManageUrl=dr.getCurrentUrl();
+	    	validateURL(expectedManageUrl,actualManageUrl,"Manage URL Check",dr);
+	    	action.moveToElement(dr.findElement(By.xpath("//a[contains(text(),'Manage')]"))).build().perform();
+	    	Thread.sleep(3000);
+	        String expectedTextColor21="rgba(255, 255, 255, 1)";
+	    	String actualTextColor21 = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+	    	checkHighlightText(expectedTextColor21,actualTextColor21,"Manage tab Highlight",dr);
+	    	
+	    }
+	    
+	  @Test 
+	    public void auto_Clini_Manage_002() throws Exception{
+	    	login(dr);
+	    	WebElement manage= dr.findElement(By.xpath("//a[contains(text(),'Manage')]"));
+	    	clickElement(manage, "Manage Tab", "Manage Tab details", dr);
+	    	Actions action = new Actions(dr);
+			//Checking Roles, Manage tab Highlighted
+	    	action.moveToElement(dr.findElement(By.xpath("//a[contains(text(),'Manage')]"))).build().perform();
+	    	Thread.sleep(3000);
+	        String expectedTextColor21="rgba(255, 255, 255, 1)";
+	    	String actualTextColorManage = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+	    	checkHighlightText(expectedTextColor21,actualTextColorManage,"Manage tab Highlight",dr);
+	    	
+	    	String actualColorRoles=dr.findElement(By.xpath("//div[2]/div/ul/li/a")).getCssValue("color");
+	    	checkHighlightText(actualColorRoles, actualTextColorManage, "Roles side tab", dr);
+	    	
+	    	String xpath="//*[@id='content-body']/div/div/div[2]/div[2]/div/table/tbody/tr/th";
+			WebElement studyUserRoles= dr.findElement(By.xpath(xpath));
+	    	String expectedText4Manage="Role";
+	    	validateText(studyUserRoles, expectedText4Manage, "Manage-Study User roles", "Manage Tab", dr);
+	    	Thread.sleep(3000);   
+	    	
+	    	//check appearance of add roles 
+	    	WebElement addRoles=dr.findElement(By.xpath("//a[contains(text(),'Add Roles')]"));
+	    	checkObjectDisplay(addRoles, "Add Roles", "Add Roles Button", dr);
+	    	//check appearance of role and action
+	    	WebElement role=dr.findElement(By.xpath(xpath));
+	    	checkObjectDisplay(role, "Role", "Role", dr);
+	    	String xpathAction="//div[@id='content-body']/div/div/div[2]/div[2]/div/table/tbody/tr/th[2]";
+	    	WebElement action1=dr.findElement(By.xpath(xpathAction));
+	    	checkObjectDisplay(action1, "Action", "Action", dr);
+	    	
+	    	//check appearance of elements under Role
+	    	WebElement projectManager=dr.findElement(By.xpath("//table/tbody/tr[2]/td"));
+	    	checkObjectDisplay(projectManager, "Project Manager", "Project Manager", dr);
+	    	WebElement studyAdmin=dr.findElement(By.xpath("//table/tbody/tr[3]/td"));
+	    	checkObjectDisplay(studyAdmin, "Study Administrator", "Study Administrator", dr);
+	    	WebElement dataManager=dr.findElement(By.xpath("//table/tbody/tr[4]/td"));
+	    	checkObjectDisplay(dataManager, "Data Manager", "Data Manager", dr);
+	    	WebElement siteCoordinator=dr.findElement(By.xpath("//table/tbody/tr[5]/td"));
+	    	checkObjectDisplay(siteCoordinator, "Site Coordinator", "Site Coordinator", dr);
+	    	
+	    	//check appearance of elements under Action
+	    	WebElement viewRecord=dr.findElement(By.xpath("//a[@title='View Record']"));
+	    	checkObjectDisplay(viewRecord, "View Record Project Manager", "View record for Project Manager", dr);
+	    	WebElement viewRecord2=dr.findElement(By.xpath("//tr[3]/td[2]/div/a/img"));
+	    	checkObjectDisplay(viewRecord2, "View Record Study Administrator", "View record for Study Administrator", dr);
+	    	WebElement dataManagerEdit=dr.findElement(By.xpath("//tr[4]/td[2]/div/a/img"));
+	    	checkObjectDisplay(dataManagerEdit, "Data Manager Edit button", "Data Manager Edit button", dr);
+	    	WebElement dataManagerDelete=dr.findElement(By.xpath("//a[2]/img"));
+	    	checkObjectDisplay(dataManagerDelete, "Data Manager Delete button", "Data Manager Delete button", dr);
+	    	WebElement siteAdminView=dr.findElement(By.xpath("//tr[5]/td[2]/div/a/img"));
+	    	checkObjectDisplay(siteAdminView, "Site Admin View button", "Data Manager View button", dr);
+	    	WebElement siteAdminDelete=dr.findElement(By.xpath("//tr[5]/td[2]/div/a[2]/img"));
+	    	checkObjectDisplay(siteAdminDelete, "Site Admin Delete button", "Data Manager Delete button", dr);
+	    	
+	    }
+	    
+	    @Test
+	    public void auto_Clini_Manage_003() throws InterruptedException,IOException{
+	    	Actions tooltip = new Actions(dr);
+	    	login(dr);
+	    	Thread.sleep(3000);
+	    	dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+	    	
+	    	WebElement addRoles=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/h3/span/a"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(addRoles).build().perform();
+	    	validateTextAttribute(addRoles, "Add Roles", "Add Roles tooltip", "title", "Add roles tooltip", dr);
+	    	
+	    	WebElement projectManagerViewRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[2]/td[2]/div/a"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(projectManagerViewRecord).build().perform();
+	    	validateTextAttribute(projectManagerViewRecord, "View Record", "View Record tooltip", "title", "Project manager View record tooltip", dr);
+	    	
+	    	WebElement studyAdminViewRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[3]/td[2]/div/a"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(studyAdminViewRecord).build().perform();
+	    	validateTextAttribute(studyAdminViewRecord, "View Record", "View Record tooltip", "title", "Study Administrator View record tooltip", dr);
+	    	
+	    	WebElement dataMgrEditRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[4]/td[2]/div/a[1]"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(dataMgrEditRecord).build().perform();
+	    	validateTextAttribute(dataMgrEditRecord, "Edit Record", "Edit Record tooltip", "title", "Data Manager Edit record tooltip", dr);
+	    	
+	    	WebElement siteCoordEditRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[5]/td[2]/div/a[1]"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(siteCoordEditRecord).build().perform();
+	    	validateTextAttribute(siteCoordEditRecord, "Edit Record", "Edit Record tooltip", "title", "Site Coordinator Edit record tooltip", dr);
+	    	
+	    	WebElement dataMgrDeleteRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[4]/td[2]/div/a[2]"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(dataMgrDeleteRecord).build().perform();
+	    	validateTextAttribute(dataMgrDeleteRecord, "Delete Record", "Delete Record tooltip", "title", "Data Manager Delete record tooltip", dr);
+	    	
+	    	WebElement siteCoordDeleteRecord=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[5]/td[2]/div/a[2]"));
+	    	Thread.sleep(3000);
+	    	tooltip.moveToElement(siteCoordDeleteRecord).build().perform();
+	    	validateTextAttribute(siteCoordDeleteRecord, "Delete Record", "Delete Record tooltip", "title", "Site Coordinator Delete record tooltip", dr);
+	    	    	
+	    }
+	    
+	    
+	   
+	public void auto_Clini_Manage_004() throws InterruptedException, IOException
 	{
 		login(dr);
 		//clicking on manage tab in home screen
@@ -1415,6 +1538,131 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   System.out.println("clicked on cancel button on site co_ordinator delete icon...........");
 	   
 	}
+	 @Test
+	    public void auto_Clini_Manage_005() throws InterruptedException,IOException,InvocationTargetException{
+	    	login(dr);
+	    	Actions mouseover=new Actions(dr);
+	    	Thread.sleep(3000);
+	    	dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+	    	
+	    	WebElement addRoles=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/h3/span/a"));
+	    	clickElement(addRoles, "Add Roles button", "Click Add Roles button", dr);
+	    	
+	    	WebElement roleName=dr.findElement(By.id("inv_role_name"));
+	    	if(roleName.getAttribute("value").equals("")){
+	    		updateReport("Pass", "Role Name textbox", "Role name Textbox is empty", dr);
+	    	}
+	    	else{
+	    		updateReport("Fail", "Role Name textbox", "Role name Textbox is not empty", dr);
+	    	}
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement studyDetails=dr.findElement(By.id("cs_studydetails"));
+	    	checkDropdownDEnableSelectedOpt(studyDetails, "None", "Enabled","Study Details" ,dr);
+	    	Thread.sleep(3000);
+	    	
+	    	WebElement sites=dr.findElement(By.id("cs_sites"));
+	    	checkDropdownDEnableSelectedOpt(sites, "None", "Enabled", "Sites", dr);
+	    	
+	    	WebElement trialArms=dr.findElement(By.id("cs_trialarms"));
+	    	checkDropdownDEnableSelectedOpt(trialArms, "None", "Enabled", "Trial Arms", dr);
+	    	
+	    	WebElement items=dr.findElement(By.id("cs_variable"));
+	    	checkDropdownDEnableSelectedOpt(items, "None", "Enabled", "Items", dr);
+	    	
+	    	WebElement itemGroup=dr.findElement(By.id("cs_itemgroup"));
+	    	checkDropdownDEnableSelectedOpt(itemGroup, "None", "Enabled", "Item-Group", dr);
+	    	
+	    	WebElement forms=dr.findElement(By.id("cs_forms"));
+	    	checkDropdownDEnableSelectedOpt(forms, "None", "Enabled", "Forms", dr);
+	    	
+	    	WebElement visits=dr.findElement(By.id("cs_visits"));
+	    	checkDropdownDEnableSelectedOpt(visits, "None", "Enabled", "Visits", dr);
+	    	
+	    	WebElement fileRepo=dr.findElement(By.id("cs_filerepository"));
+	    	checkDropdownDEnableSelectedOpt(fileRepo, "None", "Enabled", "Files Repository", dr);
+	    	
+	    	WebElement lock =dr.findElement(By.id("cs_lock"));
+	    	checkDropdownDEnableSelectedOpt(lock, "None", "Enabled", "Lock", dr);
+	    	
+	    	WebElement user=dr.findElement(By.id("ms_users"));
+	    	((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user);
+	    	checkDropdownDEnableSelectedOpt(user, "None", "Enabled", "User", dr);
+	    	
+	    	WebElement exportReports=dr.findElement(By.id("ms_export-reports"));
+	    	((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", exportReports);
+	    	Thread.sleep(5000);
+	    	checkDropdownDEnableSelectedOpt(exportReports, "None", "Enabled", "Export Reports", dr);
+	    	//Thread.sleep(3000);
+	  
+	    	
+	    	WebElement analyze=dr.findElement(By.id("analyze_study"));
+	    	checkDropdownDEnableSelectedOpt(analyze, "None", "Enabled", "Analyze", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement viewSubjects=dr.findElement(By.id("view_subjects"));
+	    	checkDropdownDEnableSelectedOpt(viewSubjects, "None", "Enabled", "View Subjects", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement audit=dr.findElement(By.id("investigator_audit"));
+	    	checkDropdownDEnableSelectedOpt(audit, "None", "Enabled", "Audit", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement role=dr.findElement(By.id("ms_roles"));
+	    	checkDropdownDEnableSelectedOpt(role, "None", "Enabled", "Role", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement queries =dr.findElement(By.id("ms_queries"));
+	    	checkDropdownDEnableSelectedOpt(queries, "None", "Enabled", "Queries", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement formReview=dr.findElement(By.id("form_review"));
+	    	checkDropdownDEnableSelectedOpt(formReview, "None", "Enabled", "Form Review", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement unlockSub=dr.findElement(By.id("unlock_subject"));
+	    	checkDropdownDEnableSelectedOpt(unlockSub, "None", "Enabled", "Unlock Subject/Sites", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement siteLock=dr.findElement(By.id("site_lock"));
+	    	checkDropdownDEnableSelectedOpt(siteLock, "None", "Enabled", "Site Lock", dr);
+	    	Thread.sleep(3000);
+	    	
+	    	WebElement registerSub=dr.findElement(By.id("ipad_registersubjects"));
+	    	checkDropdownDEnableSelectedOpt(registerSub, "None", "Enabled", "Register Subjects", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement consentVisit=dr.findElement(By.id("ipad_consentvisit"));
+	    	checkDropdownDEnableSelectedOpt(consentVisit, "None", "Enabled", "Consent Visit", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement syncData=dr.findElement(By.id("ipad_syncdata"));
+	    	checkDropdownDEnableSelectedOpt(syncData, "None", "Enabled", "Sync Data", dr);
+	    	Thread.sleep(3000);
+	    	
+	    	WebElement visitData=dr.findElement(By.id("ipad_visitdata"));
+	    	checkDropdownDEnableSelectedOpt(visitData, "None", "Enabled", "Visit Data", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement subIdentifier=dr.findElement(By.id("vs_identifier"));
+	    	checkDropdownDEnableSelectedOpt(subIdentifier, "None", "Enabled", "Subject Identifier", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement formVerification=dr.findElement(By.id("form_verify"));
+	    	checkDropdownDEnableSelectedOpt(formVerification, "None", "Enabled", "Form verification", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement submit=dr.findElement(By.id("inv_role_submit"));
+	    	checkObjectDisplay(submit, "Submit button", "Appearance of Submit button", dr);
+	    	//Thread.sleep(3000);
+	    	
+	    	WebElement cancel=dr.findElement(By.className("main-btn"));
+	    	checkObjectDisplay(cancel, "Cancel button", "Appearance of Cancel button", dr);
+	    	
+	    	System.out.println("done with tc 005......");
+	    	
+	    }
+	
 	@Test
 	public void auto_Clini_Manage_006() throws InterruptedException,IOException{
 	login(dr);
@@ -1486,10 +1734,259 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	checkObjectDisplay(next, "Next Button", "Next Button", dr);
 	Thread.sleep(3000);
 	}
+	
+	 @Test
+	 public void auto_Clini_Manage_009() throws InterruptedException,IOException{
+		 login(dr);
+		 Thread.sleep(3000);
+		 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+		 WebElement Queries = dr.findElement(By.xpath(".//*[text()='Queries']"));
+		 clickElement(Queries,"Queries Tab", "Queries Tab", dr);
+		 Thread.sleep(2000);
+		 String actualText = dr.findElement(By.xpath("//*[@id='content-body']/div/div/h3")).getText();
+		 String expectedText ="Queries";
+		 checkContentsMatch(actualText,expectedText,"Queries","Queries",dr); 
+	 }
+	 @Test
+	 public void auto_Clini_Manage_010() throws InterruptedException,IOException{
+		 login(dr);
+		 Actions mouseover = new Actions(dr);
+		 Thread.sleep(3000);
+		 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+		 dr.findElement(By.xpath(".//*[text()='Queries']")).click();
+		 String expectedTextColor1="rgba(255, 255, 255, 1)";
+		 String actualTextColor1 = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+		 checkHighlightText(expectedTextColor1,actualTextColor1,"Manage tab Highlight",dr);
+		 String expectedTextColor2 = "rgba(255, 255, 255, 1)";
+		 String actualTextColor2 = dr.findElement(By.xpath(".//*[text()='Queries']")).getCssValue("color");
+		 checkHighlightText(expectedTextColor2,actualTextColor2,"Queries bar Highlight",dr);
+
+
+		 WebElement search = dr.findElement(By.xpath("//*[@id='dataTables-example_filter']/label"));
+		 mouseover.moveToElement(search).build().perform();
+		 if(search.getText().equalsIgnoreCase("Search:"))
+		 {
+			 checkObjectDisplay(search, "Search Option", "Search Option", dr); 
+		 }
+
+		 WebElement Subject = dr.findElement(By.xpath(".//*[text()='Subject']"));
+		 mouseover.moveToElement(Subject).build().perform();
+		 if(Subject.getText().equalsIgnoreCase("Subject"))
+		 {
+			 checkObjectDisplay(Subject, "Subject Column", "Subject Column", dr); 
+		 }
+		 WebElement Entity = dr.findElement(By.xpath(".//*[text()='Entity']"));
+		 mouseover.moveToElement(Entity).build().perform();
+		 if(Entity.getText().equalsIgnoreCase("Entity"))
+		 {
+			 checkObjectDisplay(Entity, "Entity Column", "Entity Column", dr);
+		 }
+		 WebElement Type = dr.findElement(By.xpath(".//*[text()='Type']"));
+		 mouseover.moveToElement(Type).build().perform();
+		 if(Type.getText().equalsIgnoreCase("Type"))
+		 {
+			 checkObjectDisplay(Type, "Type Column", "Type Column", dr);
+		 }
+		 Thread.sleep(3000);
+		 WebElement Status = dr.findElement(By.xpath("//*[@id='dataTables-example']/thead/tr/th[4]"));
+		 mouseover.moveToElement(Status).build().perform();
+		 if(Status.getText().equalsIgnoreCase("Status"))
+		 {
+			 checkObjectDisplay(Status, "Status Column", "Status Column", dr);
+		 }
+		 WebElement assignedTo = dr.findElement(By.xpath(".//*[text()='Assigned To']"));
+		 mouseover.moveToElement(assignedTo).build().perform();
+		 if(assignedTo.getText().equalsIgnoreCase("Assigned To"))
+		 {
+			 checkObjectDisplay(assignedTo, "Assigned To Column", "Assigned To Column", dr);
+		 }
+
+		 WebElement dateUpdated = dr.findElement(By.xpath("//*[text()='Date Updated']"));
+		 mouseover.moveToElement(dateUpdated).build().perform();
+		 if(dateUpdated.getText().equalsIgnoreCase("Date Updated"))
+		 {
+			 checkObjectDisplay(dateUpdated, "Date Updated Column", "Date Updated Column", dr);
+		 }
+		 WebElement Action = dr.findElement(By.xpath(".//*[text()='Action']"));
+		 mouseover.moveToElement(Action).build().perform();
+		 if(Action.getText().equalsIgnoreCase("Action"))
+		 {
+			 checkObjectDisplay(Action, "Action Column", "Action Column", dr);
+		 }
+		 JavascriptExecutor jse = (JavascriptExecutor)dr;
+		 jse.executeScript("window.scrollBy(0,500)");
+		 //Thread.sleep(3000);
+		 WebElement previous = dr.findElement(By.xpath(".//*[text()='Previous']"));
+		 mouseover.moveToElement(dr.findElement(By.xpath(".//*[text()='Previous']"))).build().perform();
+		 checkObjectDisplay(previous, "Previous Button", "Previous Button", dr);
+		 
+		 WebElement next =dr.findElement(By.xpath(".//*[text()='Next']"));
+		 mouseover.moveToElement(dr.findElement(By.xpath(".//*[text()='Next']"))).build().perform();
+		 checkObjectDisplay(next, "Next Button", "Next Button", dr);
+	
+
+	 }
+	
+	 @Test
+	 public void auto_Clini_Manage_011() throws InterruptedException,IOException{
+		 login(dr);
+		 Actions mouseover = new Actions(dr);
+		 Thread.sleep(1000);
+		 dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).click();
+		 dr.findElement(By.xpath(".//*[text()='Queries']")).click();
+		
+		 String parentWindowId = dr.getWindowHandle();
+		 System.out.println(parentWindowId);
+		 dr.findElement(By.xpath("//*[@id='dataTables-example']/tbody/tr[1]/td[7]/div/a")).click();
+		
+		 for (String windowId: dr.getWindowHandles()) {
+			 System.out.println(windowId);
+			 dr.switchTo().window(windowId);
+			
+			 Thread.sleep(2000);
+			 String actualText = dr.findElement(By.xpath("//*[@id='ui-id-1']")).getText();
+			 String expectedText="Edit Query";
+			 System.out.println(actualText);
+			 checkContentsMatch(actualText,expectedText,"Edit Query pop up","Edit Query Pop Up",dr); 
+			 WebElement subjectID= dr.findElement(By.xpath(".//*[text()='Subject ID:']"));
+			 System.out.println(subjectID.getText());
+			 mouseover.moveToElement(subjectID).build().perform();
+			 if(subjectID.getText().equalsIgnoreCase("Subject ID:"))
+			 {
+				 checkObjectDisplay(subjectID, "SubjectID is displayed", "SubjectID  ", dr); 
+			 }
+
+			 WebElement Entity = dr.findElement(By.xpath(".//*[text()='Entity:']"));
+			 System.out.println(Entity.getText());
+			 mouseover.moveToElement(Entity).build().perform();
+			 if(Entity.getText().equalsIgnoreCase("Entity:"))
+			 {
+				 checkObjectDisplay(Entity, "Entity is displayed", "Entity ", dr); 
+			 }
+			 WebElement Type = dr.findElement(By.xpath(".//*[text()='Type:']"));
+			 System.out.println(Type.getText());
+			 mouseover.moveToElement(Type).build().perform();
+			 if(Type.getText().equalsIgnoreCase("Type:"))
+			 {
+				 checkObjectDisplay(Type, "Type is displayed", "Type ", dr); 
+			 }
+			 WebElement typeQuery = dr.findElement(By.xpath("//*[@id='querytype'][@disabled = 'disabled']")); 
+			
+			 WebElement status = dr.findElement(By.xpath("//*[@id='statussection']/fieldset/span"));
+			 System.out.println(status.getText());
+			 //mouseover.moveToElement(status).build().perform();
+			 if(status.getText().equalsIgnoreCase("Status* :"))
+			 {
+				 checkObjectDisplay(status, "Status is displayed", "Status ", dr); 
+			 }
+			 
+			 WebElement upDated = dr.findElement(By.xpath("//*[@id='querystatus']"));
+			 upDated.click();
+			 WebElement upDatedOption1 = dr.findElement(By.xpath("//*[@id='querystatus']/option[1]"));
+			 upDatedOption1.click();
+			
+			 String actualTextupDated =  upDatedOption1.getText(); 
+			 String expectedTextupDated ="Updated";
+			 System.out.println(actualTextupDated);
+			 checkContentsMatch(actualTextupDated,expectedTextupDated,"Updated is selected","Updated",dr);
+			 
+			 WebElement assigned = dr.findElement(By.xpath(".//*[text()='Assigned To']"));
+			 System.out.println(assigned.getText());
+			 mouseover.moveToElement(Type).build().perform();
+			 if(assigned.getText().equalsIgnoreCase("Assigned To"))
+			 {
+				 checkObjectDisplay(assigned, "Assigned To is displayed", "Assigned To ", dr); 
+			 }
+			 
+			 WebElement assignedTo = dr.findElement(By.xpath("//*[@id='assigned_to_user_id']"));
+			 assignedTo.click();
+			 WebElement assignedToName = dr.findElement(By.xpath("//*[@id='assigned_to_user_id']/option[5]"));
+			
+			
+			 String actualTextassigedTo =  assignedToName.getText(); 
+			 String expectedTextassigedTo ="Sarah Lee (sarah.lee)";
+			 System.out.println(actualTextassigedTo);
+			 checkContentsMatch(actualTextassigedTo,expectedTextassigedTo,"Sarah Lee (sarah.lee) is selected","Sarah Lee (sarah.lee)",dr);
+   
+			 WebElement message = dr.findElement(By.xpath(".//*[text()='Message']"));
+			 System.out.println(message.getText());
+			
+			 if(message.getText().equalsIgnoreCase("Message* :"))
+			 {
+				 checkObjectDisplay(Type, "Message is displayed", "Message ", dr); 
+			 }
+			 WebElement textArea = dr.findElement(By.xpath("//*[@id='message']"));
+			 textArea.click();
+			
+			 String actualTexttextArea =  textArea.getText(); 
+			 String expectedTexttextArea ="";
+			 System.out.println(actualTexttextArea);
+			 checkContentsMatch(actualTexttextArea,expectedTexttextArea,"Text area is selected","TextArea",dr);
+			 
+			 WebElement PrevMessage = dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[5]/span"));
+		
+			 String actualTextPrevMessage =  PrevMessage.getText(); 
+			 String expectedTextPrevMessage ="Previous Messages";
+			 System.out.println(actualTextPrevMessage);
+			 checkContentsMatch(actualTextPrevMessage,expectedTextPrevMessage," Previous message is displayed","Previous Message",dr);
+			 
+			 WebElement Date = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[1]"));
+				
+			 String actualTextDate =  Date.getText(); 
+			 String expectedTextDate ="Date";
+			 System.out.println(actualTextDate);
+			 checkContentsMatch(actualTextDate,expectedTextDate," Date is displayed","Date",dr);
+			
+			 WebElement User = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[2]"));
+				
+			 String actualTextUser =  User.getText(); 
+			 String expectedTextUser ="User";
+			 System.out.println(actualTextUser);
+			 checkContentsMatch(actualTextUser,expectedTextUser," User is displayed","User",dr);
+			 
+			 WebElement statusTable = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[3]"));
+				
+			 String actualTextStatus =  statusTable.getText(); 
+			 String expectedTextStatus ="Status";
+			 System.out.println(actualTextStatus);
+			 checkContentsMatch(actualTextStatus,expectedTextStatus," Status is displayed","Status",dr);
+	
+			 WebElement msg = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[4]"));
+				
+			 String actualTextMsg =  msg.getText(); 
+			 String expectedTextMsg ="Message";
+			 System.out.println(actualTextMsg);
+			 checkContentsMatch(actualTextMsg,expectedTextMsg," Message is displayed","Message",dr);
+			 
+			 WebElement assignTo = dr.findElement(By.xpath("//*[@id='querytable']/thead/tr/th[5]"));
+				
+			 String actualTextassignTo =  assignTo.getText(); 
+			 String expectedTextassignTo ="Assigned To";
+			 System.out.println(actualTextassignTo);
+			 checkContentsMatch(actualTextassignTo,expectedTextassignTo," assigned To is displayed","assigned To",dr);
+			 
+			 WebElement UpdateQueryBtn = dr.findElement(By.xpath("//*[@id='editQuerySubmit']"));
+			 mouseover.moveToElement(dr.findElement(By.xpath("//*[@id='editQuerySubmit']"))).build().perform();
+			 checkObjectDisplay(UpdateQueryBtn, "Update Query Button", "Update Query Button", dr);
+			 
+			 WebElement cancelBtn = dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[6]/div/div/input[2]"));
+			 mouseover.moveToElement(dr.findElement(By.xpath("//*[@id='editQuery']/div/fieldset[6]/div/div/input[2]"))).build().perform();
+			 checkObjectDisplay(cancelBtn, "cancel Button", "cancel Button", dr);
+			 Thread.sleep(3000);
+			 
+			 WebElement closeBtn = dr.findElement(By.xpath("/html/body/div[4]/div[1]/button/span[1]"));
+			 mouseover.moveToElement(dr.findElement(By.xpath("/html/body/div[4]/div[1]/button/span[1]"))).click().build().perform();
+			 checkObjectDisplay(closeBtn, "close Button", "close Button", dr);
+			 
+			 Thread.sleep(3000);
+			
+		 }
+	 }
 
 	@AfterMethod
 
 	public void closeBrowser(){
+		updateResults();
 		dr.close();
 		//dr.quit();
 	}
