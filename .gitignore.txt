@@ -1,3 +1,41 @@
 /bin/
-/target/
-/test-output/
+
+
+*target*
+*test-output*
+*.jar
+*.war
+*.ear
+*.class
+
+#exclude an folder(test-output)
+*/test-output/*
+test-output/*
+
+*/target/*
+target/*
+
+# eclipse specific git ignore
+
+*.png
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
