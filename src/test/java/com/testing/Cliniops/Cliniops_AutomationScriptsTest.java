@@ -1712,6 +1712,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	if(firstName.getText().equalsIgnoreCase("First Name")){checkObjectDisplay(firstName, "First Name Column", "First Name Column", dr); }
 	WebElement lastName=dr.findElement(By.xpath(".//*[text()='Last Name']"));
 	mouseover.moveToElement(lastName).build().perform();
+	
 	if(lastName.getText().equalsIgnoreCase("Last Name")){checkObjectDisplay(lastName, "Last Name Column", "Last Name Column", dr); }
 	WebElement role=dr.findElement(By.xpath("//*[text()='Role']"));
 	mouseover.moveToElement(role).build().perform();
