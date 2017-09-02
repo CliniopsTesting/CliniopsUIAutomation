@@ -1,18 +1,17 @@
 /bin/
 
 
-*target*
-*test-output*
+
+
 *.jar
 *.war
 *.ear
 *.class
 
-#exclude an folder(test-output)
-*/test-output/*
+#exclude an folder(test-output
 test-output/*
 
-*/target/*
+#*/target/*
 target/*
 
 # eclipse specific git ignore
