@@ -24,6 +24,7 @@ public class Cliniops_DriverScriptTest {
 
 			if (recData[i][1].equalsIgnoreCase("y")){
 
+				
 				tc = recData[i][2];
 				System.out.println("Testcase to run: "+recData[i][2]);
 
