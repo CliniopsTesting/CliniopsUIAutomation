@@ -995,7 +995,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 			 String expectedAllVisits="All Visits";
 			 String actualAllVisits = dr.findElement(By.xpath("//*[@id='visit']/option[2]")).getText();
 			 System.out.println("Actual All Visits:"+actualAllVisits);
-			 checkContentsMatch(actualAllVisits,expectedAllVisits,"All Visits is selected","All Visits",dr);
+			 checkContentsMatch1(actualAllVisits,expectedAllVisits,"All Visits is selected","All Visits",dr);
 			 Thread.sleep(2000);
 
 			 //Data Forms
