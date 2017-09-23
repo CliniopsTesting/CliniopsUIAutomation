@@ -65,7 +65,14 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
 		}
 	}
-
+        
+	public static void checkContentsMatch1(String actualText, String expectedText, String objName,String stepName, WebDriver dr) throws IOException{
+		if(expectedText.equals(actualText.trim())){
+			Update_Report("Pass", actualText, "is selected",dr);
+		}else{
+			Update_Report("Fail", actualText, " is not selected",dr);
+		}
+	}
 
 	/**
 	 * Check if the object is enabled or not
