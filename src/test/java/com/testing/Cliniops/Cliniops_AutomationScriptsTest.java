@@ -32,8 +32,9 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     @BeforeMethod    
 	@Parameters({"browser"})
 	public void selectBrowser(String browser)throws IOException{
-	    if(browser.equalsIgnoreCase("firefox")){
-			dr=new FirefoxDriver();	
+	    
+		if(browser.equalsIgnoreCase("firefox")){
+			dr=new FirefoxDriver();	    
 			dr.manage().window().maximize();
 			
 		}
