@@ -433,8 +433,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 				action.moveToElement(opt);
 				String optText = opt.getText();
 				System.out.println("Option text == " + optText);
-				String stepName = "Verify Download Link";
-				checkContentsMatch(optText, expMenuOption[j], "Chart Context Menu",stepName,dr);
+				String message = "Verify Download Link";
+				checkContentsMatch(optText, expMenuOption[j], message, "Chart Context Menu",dr);
 			}
 		}
 	}
