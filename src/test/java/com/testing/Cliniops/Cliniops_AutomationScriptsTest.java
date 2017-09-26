@@ -3,12 +3,12 @@ package com.testing.Cliniops;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,13 +19,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-   
+
 public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest{
 	WebDriver dr;
 
@@ -1897,17 +1894,74 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		}
 
 	}
-	
+
+
+	/**
+	 * Test Case for Analyse tab number 2
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	public void auto_Clini_Analyze_002() throws InterruptedException, IOException{
+		login(dr);
+		dr.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+
+		//Click on Analyze tab
+		WebElement analyze = dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		analyze.click();
+		checkContentsMatch(dr.getCurrentUrl(), "https://bridgetherapeutics.cliniops.com/investigator/analyzestudy", "Verify Current URL is for Analyze Tab","Current URL",dr);
+
+		//Locate the Select Export drop down
+		WebElement export = dr.findElement(By.id("exporttype"));
+		//Verify that the Excel Export option is selected by default
+		Select exportDD = new Select(export);
+		String selOption = exportDD.getFirstSelectedOption().getText();
+		checkContentsMatch(selOption, "Excel Export", "Verify default value of Select Export dropdown", "Select Export Drop Down",dr);
+
+		//Verify all the options
+		String[] expOptions = {"Excel Export", "CDISC ODM Export", "PDF Export", "Safety Report Export"};
+		List<WebElement> options = exportDD.getOptions();
+		for(int i=0; i< options.size(); i++){
+			String text = options.get(i).getText();
+			checkContentsMatch(text, expOptions[i], "Verify Select Export dropdown values " + expOptions[i], "Select Export Drop Down",dr);
+		}
+
+		//Locate Export the File dd
+		WebElement exportFile = dr.findElement(By.name("export_file_format"));
+		Select exportFileDD = new Select(exportFile);
+		String actualText = exportFileDD.getFirstSelectedOption().getText();
+		checkContentsMatch(actualText, "CSV", "Verify default value of Export File Format dropdown", "Export File Format", dr);
+
+		//Verify the contents of the drop down
+		String[] exportFormat = {"CSV", "Excel"};
+		List<WebElement> exportOptions = exportFileDD.getOptions();
+		for(int i=0; i< exportOptions.size(); i++){
+			String text = exportOptions.get(i).getText();
+			checkContentsMatch(text, exportFormat[i], "Verify values of Export File Format dropdown " + text, "Export File Format", dr);
+		}
+
+		//Select Excel option and verify it is selected
+		exportFileDD.selectByVisibleText("Excel");
+		actualText = exportFileDD.getFirstSelectedOption().getText();
+		checkContentsMatch(actualText, "Excel", "Verify selected value of Export File Format dropdown is Excel", "Export File Format", dr);
+
+		//Verify Export Report Button tooltip
+		WebElement exportRepBtn = dr.findElement(By.id("exportSubReport"));
+		Actions action = new Actions(dr);
+		action.moveToElement(exportRepBtn).build().perform();
+		String btnToolTip = exportRepBtn.getAttribute("title");
+		checkContentsMatch(btnToolTip, "Export Report", "Verify Export Report button tooltip", "Export Report Button", dr);
+
+	}
+
+
 	@Test
-
-	 public void auto_Clini_Analyze_004() throws InterruptedException, IOException
-
-	 { login(dr);
-	 Actions action = new Actions(dr);
-	 Thread.sleep(5000);
-	 WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
-	 clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
-	 //it will verify the dropdown's are enabled
+	public void auto_Clini_Analyze_004() throws InterruptedException, IOException{ 
+		login(dr);
+		Actions action = new Actions(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+		//it will verify the dropdown's are enabled
 		WebElement selectExport=dr.findElement(By.id("exporttype"));
 		if(selectExport.isDisplayed()){
 			Select select=new Select(selectExport);
@@ -1917,79 +1971,79 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		else{
 			updateReport("Fail", "Select Export", "\"Excel Export\" is not selected",dr);
 		}
-	 
-	 String expectedPopulation="Population";
-	 String actualPopulation = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[1]")).getText();
-	 checkContentsMatch(actualPopulation,expectedPopulation,"Population is Displayed","Population panel",dr);
-	 String expectedData="Data";
-	 String actualData = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[2]")).getText();
-	 checkContentsMatch(actualData,expectedData,"Data is Displayed","Data panel",dr);
-	 WebElement selectAllSites= dr.findElement(By.xpath("//*[@id='site']/option[2]"));
-	 boolean selAllSites=selectAllSites.isEnabled();
-	 Assert.assertEquals(selAllSites,true,"All Sites is enabled");
-	 Thread.sleep(2000);
-	 clickElement(selectAllSites, "All Sites Option", "All Sites Option", dr);
-	 String expectedAllSites="All Sites";
-	 String actualAllSites = dr.findElement(By.xpath("//*[@id='site']/option[2]")).getText();
-	 System.out.println("Actual All Sites:"+actualAllSites);
-     checkContentsMatch(actualAllSites,expectedAllSites,"All Sites is selected","All Sites",dr);
-	 Thread.sleep(2000);
-	 //Groups
-	 WebElement selectAllGroups= dr.findElement(By.xpath("//*[@id='groups']/option[2]"));
-	 boolean selAllGroups=selectAllGroups.isEnabled();
-	 Assert.assertEquals(selAllGroups,true,"All Groups is enabled");
-	 Thread.sleep(2000);
-	 clickElement(selectAllGroups, "All Groups Option", "All Groups Option", dr);
-	 String expectedAllGroups="All Groups";
-	 String actualAllGroups = dr.findElement(By.xpath("//*[@id='groups']/option[2]")).getText();
-	 System.out.println("Actual All Groups:"+actualAllGroups);
-	 checkContentsMatch(actualAllGroups,expectedAllGroups,"All Groups is selected","All Groups",dr);
-	 Thread.sleep(2000);
-	 //Form status
-	 WebElement selectAllStatus= dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]"));
-	 boolean selAllStatus=selectAllStatus.isEnabled();
-	 Assert.assertEquals(selAllSites,true,"All Status is enabled");
-	 Thread.sleep(2000);
-	 clickElement(selectAllStatus, "All Status Option", "All Status Option", dr);
-	 String expectedAllStatus="All Status";
-	 String actualAllStatus = dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]")).getText();
-	 System.out.println("Actual All Status:"+actualAllStatus);
-	 checkContentsMatch(actualAllStatus,expectedAllStatus,"All Status is selected","All Status",dr);
-	 Thread.sleep(2000);
-	 //Visits
-	 WebElement selectAllVisits= dr.findElement(By.xpath("//*[@id='visit']/option[2]"));
-	 boolean selAllVisits=selectAllVisits.isEnabled();
-	 Assert.assertEquals(selAllVisits,true,"All Visits is enabled");
-	 Thread.sleep(2000);
-	 clickElement(selectAllVisits, "All Visits Option", "All Visits Option", dr);
-	 String expectedAllVisits="All Visits";
-	 String actualAllVisits = dr.findElement(By.xpath("//*[@id='visit']/option[2]")).getText();
-	 System.out.println("Actual All Visits:"+actualAllVisits);
-	 checkContentsMatch(actualAllVisits,expectedAllVisits,"All Visits is selected","All Visits",dr);
-	 Thread.sleep(2000);
-	 //Data Forms
-	 WebElement selectAllForms= dr.findElement(By.xpath("//*[@id='subform']/option[2]"));
-	 boolean selAllForms=selectAllForms.isEnabled();
-	 Assert.assertEquals(selAllForms,true,"All Forms is enabled");
-     Thread.sleep(2000);
-     clickElement(selectAllForms, "All Forms Option", "All Forms Option", dr);
-	 String expectedAllForms="All Forms";
-	 String actualAllForms = dr.findElement(By.xpath("//*[@id='subform']/option[2]")).getText();
-	 System.out.println("Actual All Forms:"+actualAllForms);
-	 checkContentsMatch(actualAllSites,expectedAllSites,"All Forms is selected","All Forms",dr);
-	 Thread.sleep(2000);
-	 //Data ItemGroups
-	 WebElement selectAllItemGroup= dr.findElement(By.xpath("//*[@id='form_variables']/option[2]"));
-	 boolean selAllItemGroup=selectAllItemGroup.isEnabled();
-	 Assert.assertEquals(selAllItemGroup,true,"All Item Group is enabled");
-	 Thread.sleep(2000);
-	 clickElement(selectAllItemGroup, "All ItemGroup Option", "All ItemGroup Option", dr);
-	 String expectedAllItemGroup="All Item-Groups";
-	 String actualAllItemGroup = dr.findElement(By.xpath("//*[@id='form_variables']/option[2]")).getText();
-	 System.out.println("Actual All Item Group:"+actualAllItemGroup);
-	 checkContentsMatch(actualAllItemGroup,expectedAllItemGroup,"All Item Group is selected","All Item Group",dr);
-	 Thread.sleep(2000);
- }
+
+		String expectedPopulation="Population";
+		String actualPopulation = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[1]")).getText();
+		checkContentsMatch(actualPopulation,expectedPopulation,"Population is Displayed","Population panel",dr);
+		String expectedData="Data";
+		String actualData = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[2]")).getText();
+		checkContentsMatch(actualData,expectedData,"Data is Displayed","Data panel",dr);
+		WebElement selectAllSites= dr.findElement(By.xpath("//*[@id='site']/option[2]"));
+		boolean selAllSites=selectAllSites.isEnabled();
+		Assert.assertEquals(selAllSites,true,"All Sites is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllSites, "All Sites Option", "All Sites Option", dr);
+		String expectedAllSites="All Sites";
+		String actualAllSites = dr.findElement(By.xpath("//*[@id='site']/option[2]")).getText();
+		System.out.println("Actual All Sites:"+actualAllSites);
+		checkContentsMatch(actualAllSites,expectedAllSites,"All Sites is selected","All Sites",dr);
+		Thread.sleep(2000);
+		//Groups
+		WebElement selectAllGroups= dr.findElement(By.xpath("//*[@id='groups']/option[2]"));
+		boolean selAllGroups=selectAllGroups.isEnabled();
+		Assert.assertEquals(selAllGroups,true,"All Groups is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllGroups, "All Groups Option", "All Groups Option", dr);
+		String expectedAllGroups="All Groups";
+		String actualAllGroups = dr.findElement(By.xpath("//*[@id='groups']/option[2]")).getText();
+		System.out.println("Actual All Groups:"+actualAllGroups);
+		checkContentsMatch(actualAllGroups,expectedAllGroups,"All Groups is selected","All Groups",dr);
+		Thread.sleep(2000);
+		//Form status
+		WebElement selectAllStatus= dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]"));
+		boolean selAllStatus=selectAllStatus.isEnabled();
+		Assert.assertEquals(selAllSites,true,"All Status is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllStatus, "All Status Option", "All Status Option", dr);
+		String expectedAllStatus="All Status";
+		String actualAllStatus = dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]")).getText();
+		System.out.println("Actual All Status:"+actualAllStatus);
+		checkContentsMatch(actualAllStatus,expectedAllStatus,"All Status is selected","All Status",dr);
+		Thread.sleep(2000);
+		//Visits
+		WebElement selectAllVisits= dr.findElement(By.xpath("//*[@id='visit']/option[2]"));
+		boolean selAllVisits=selectAllVisits.isEnabled();
+		Assert.assertEquals(selAllVisits,true,"All Visits is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllVisits, "All Visits Option", "All Visits Option", dr);
+		String expectedAllVisits="All Visits";
+		String actualAllVisits = dr.findElement(By.xpath("//*[@id='visit']/option[2]")).getText();
+		System.out.println("Actual All Visits:"+actualAllVisits);
+		checkContentsMatch(actualAllVisits,expectedAllVisits,"All Visits is selected","All Visits",dr);
+		Thread.sleep(2000);
+		//Data Forms
+		WebElement selectAllForms= dr.findElement(By.xpath("//*[@id='subform']/option[2]"));
+		boolean selAllForms=selectAllForms.isEnabled();
+		Assert.assertEquals(selAllForms,true,"All Forms is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllForms, "All Forms Option", "All Forms Option", dr);
+		String expectedAllForms="All Forms";
+		String actualAllForms = dr.findElement(By.xpath("//*[@id='subform']/option[2]")).getText();
+		System.out.println("Actual All Forms:"+actualAllForms);
+		checkContentsMatch(actualAllSites,expectedAllSites,"All Forms is selected","All Forms",dr);
+		Thread.sleep(2000);
+		//Data ItemGroups
+		WebElement selectAllItemGroup= dr.findElement(By.xpath("//*[@id='form_variables']/option[2]"));
+		boolean selAllItemGroup=selectAllItemGroup.isEnabled();
+		Assert.assertEquals(selAllItemGroup,true,"All Item Group is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllItemGroup, "All ItemGroup Option", "All ItemGroup Option", dr);
+		String expectedAllItemGroup="All Item-Groups";
+		String actualAllItemGroup = dr.findElement(By.xpath("//*[@id='form_variables']/option[2]")).getText();
+		System.out.println("Actual All Item Group:"+actualAllItemGroup);
+		checkContentsMatch(actualAllItemGroup,expectedAllItemGroup,"All Item Group is selected","All Item Group",dr);
+		Thread.sleep(2000);
+	}
 
 
 
@@ -1998,7 +2052,6 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	 * @throws IOException
 	 */
 	@Test
-
 	public void auto_Clini_Analyze_005() throws InterruptedException,IOException{
 		login(dr);
 		Thread.sleep(7000);
@@ -2067,13 +2120,6 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 
 	}
-
-
-
-
-
-
-
 
 	@AfterMethod
 	public void closeBrowser(){

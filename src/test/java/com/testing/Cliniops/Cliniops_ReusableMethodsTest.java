@@ -52,23 +52,23 @@ public class Cliniops_ReusableMethodsTest {
 	}
 
 	}
-	/**        
+
+	/**
 	 * 
 	 * @param actualText
 	 * @param expectedText
-	 * @param objName
+	 * @param successMessage
 	 * @param stepName
 	 * @param dr
 	 * @throws IOException
 	 */
-	public static void checkContentsMatch(String actualText, String expectedText, String objName,String stepName, WebDriver dr) throws IOException{
+	public static void checkContentsMatch(String actualText, String expectedText, String successMessage,String stepName, WebDriver dr) throws IOException{
 		if(expectedText.equals(actualText.trim())){
-			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+			updateReport("Pass", stepName, successMessage,dr);
 		}else{
 			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
 		}
 	}
-
 
 	/**
 	 * Check if the object is enabled or not
