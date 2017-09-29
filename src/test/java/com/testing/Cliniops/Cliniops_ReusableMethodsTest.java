@@ -49,8 +49,8 @@ public class Cliniops_ReusableMethodsTest {
 	}else{
 		updateReport("Fail",stepName, "Text not highlighted",dr);
 	}
-
-	}
+	
+}
 	/**        
 	 * 
 	 * @param actualText
@@ -200,7 +200,7 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param dr
 	 * @throws IOException
 	 */
-	public static void readingCheckbox(WebElement obj,String expectedText,String objName,WebDriver dr) throws IOException{
+/*	public static void readingCheckbox(WebElement obj,String expectedText,String objName,WebDriver dr) throws IOException{
 		if(obj.isDisplayed())
 		{
 			String Actualtext=obj.getAttribute("checked").trim();
@@ -215,7 +215,33 @@ public class Cliniops_ReusableMethodsTest {
 			updateReport("Fail","readingCheckbox",objName+" is not displayed,please check your application",dr);
 		}
 	}
+*/
 
+	/**
+	 * Read checkBox text	
+	 * @param obj
+	 * @param expectedText
+	 * @param objName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void readingCheckbox(WebElement obj,String objName,WebDriver dr) throws IOException{
+		if(obj.isDisplayed())
+		{
+			String Actualtext=obj.getAttribute("checked").trim();
+			if(Actualtext.equals("true")){
+				updateReport("Pass","readingCheckbox",objName+" is checked",dr);
+			}
+			else{
+				updateReport("Fail","readingCheckbox",objName+" is not checked",dr);
+			}
+		}
+		else{
+			updateReport("Fail","readingCheckbox",objName+" is not displayed,please check your application",dr);
+		}
+	}
+	
+	
 	/**
 	 * Read text box value
 	 * @param obj
@@ -605,7 +631,7 @@ public class Cliniops_ReusableMethodsTest {
 		Cliniops_ReusableMethodsTest.findTheElement("login_UsernameTextbox",Cliniops_DriverScriptTest.browserRunning,dr).sendKeys("Abhishek");
 		Thread.sleep(2000);
 		//dr.findElement(By.id("password")).sendKeys("Testing@123");
-		Cliniops_ReusableMethodsTest.findTheElement("login_PasswordTextbox",Cliniops_DriverScriptTest.browserRunning,dr).sendKeys("Testing@123");
+		Cliniops_ReusableMethodsTest.findTheElement("login_PasswordTextbox",Cliniops_DriverScriptTest.browserRunning,dr).sendKeys("Welcome123#");
 		Thread.sleep(2000);
 		//dr.findElement(By.id("Authenticate")).click();
 		Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticateButton",Cliniops_DriverScriptTest.browserRunning,dr).click();

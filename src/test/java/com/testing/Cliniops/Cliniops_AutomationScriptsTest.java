@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,6 +18,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -1924,8 +1926,316 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 	}
 
+	
+
+	
+	/**
+	 * Test Case for Analyze tab number 1
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	public void auto_Clini_Analyze_001() throws InterruptedException, IOException{
+		login(dr);
+		Thread.sleep(2000);
+		WebElement analyze=dr.findElement(By.xpath(".//*[text()='Analyze']"));
+		Actions action=new Actions(dr);
+		action.moveToElement(analyze).build().perform();
+		Thread.sleep(3000);
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		String actualTextColor=dr.findElement(By.xpath(".//*[text()='Analyze']")).getCssValue("color");
+		Thread.sleep(3000);
+		checkHighlightText(expectedTextColor, actualTextColor, "Analyze Tab Highlight", dr);
+		clickElement(analyze, "Analyze tab", "Analyze Tab", dr);
+		String expectedURL="https://bridgetherapeutics.cliniops.com/investigator/analyzestudy";
+		String actualURL=dr.getCurrentUrl();
+		validateURL(expectedURL, actualURL, "Analyze URL check", dr);
+		//Study Analysis page appears
+		WebElement studyAnalysisPage=dr.findElement(By.xpath(".//*[@id='content-body']/div/div[1]/h3"));
+		String actualText=studyAnalysisPage.getText().substring(0,14);
+		String expectedText="Study Analysis";
+		checkContentsMatch(actualText, expectedText, "Study Analysis page", "Study Analysis page", dr);
+		//Analyze tab and export tab highlighted
+		String analyzeActualTextColor=dr.findElement(By.xpath(".//*[text()='Analyze']")).getCssValue("color");
+		checkHighlightText(expectedTextColor, analyzeActualTextColor, "Analyze Tab Highlighted", dr);
+		String exportActualTextColor=dr.findElement(By.xpath(".//*[@id='content-body']/div/div[1]/div[2]/ul/li[1]/a")).getCssValue("color");
+		checkHighlightText(expectedTextColor, exportActualTextColor, "Export tab highlighted", dr);
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Test Case for Analyse tab number 2
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	public void auto_Clini_Analyze_002() throws InterruptedException, IOException{
+		login(dr);
+		dr.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+
+		//Click on Analyze tab
+		WebElement analyze = dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		analyze.click();
+		checkContentsMatch(dr.getCurrentUrl(), "https://bridgetherapeutics.cliniops.com/investigator/analyzestudy", "Verify Current URL is for Analyze Tab","Current URL",dr);
+
+		//Locate the Select Export drop down
+		WebElement export = dr.findElement(By.id("exporttype"));
+		//Verify that the Excel Export option is selected by default
+		Select exportDD = new Select(export);
+		String selOption = exportDD.getFirstSelectedOption().getText();
+		checkContentsMatch(selOption, "Excel Export", "Verify default value of Select Export dropdown", "Select Export Drop Down",dr);
+
+		//Verify all the options
+		String[] expOptions = {"Excel Export", "CDISC ODM Export", "PDF Export", "Safety Report Export"};
+		List<WebElement> options = exportDD.getOptions();
+		for(int i=0; i< options.size(); i++){
+			String text = options.get(i).getText();
+			checkContentsMatch(text, expOptions[i], "Verify Select Export dropdown values " + expOptions[i], "Select Export Drop Down",dr);
+		}
+
+		//Locate Export the File dd
+		WebElement exportFile = dr.findElement(By.name("export_file_format"));
+		Select exportFileDD = new Select(exportFile);
+		String actualText = exportFileDD.getFirstSelectedOption().getText();
+		checkContentsMatch(actualText, "CSV", "Verify default value of Export File Format dropdown", "Export File Format", dr);
+
+		//Verify the contents of the drop down
+		String[] exportFormat = {"CSV", "Excel"};
+		List<WebElement> exportOptions = exportFileDD.getOptions();
+		for(int i=0; i< exportOptions.size(); i++){
+			String text = exportOptions.get(i).getText();
+			checkContentsMatch(text, exportFormat[i], "Verify values of Export File Format dropdown " + text, "Export File Format", dr);
+		}
+
+		//Select Excel option and verify it is selected
+		exportFileDD.selectByVisibleText("Excel");
+		actualText = exportFileDD.getFirstSelectedOption().getText();
+		checkContentsMatch(actualText, "Excel", "Verify selected value of Export File Format dropdown is Excel", "Export File Format", dr);
+
+		//Verify Export Report Button tooltip
+		WebElement exportRepBtn = dr.findElement(By.id("exportSubReport"));
+		Actions action = new Actions(dr);
+		action.moveToElement(exportRepBtn).build().perform();
+		String btnToolTip = exportRepBtn.getAttribute("title");
+		checkContentsMatch(btnToolTip, "Export Report", "Verify Export Report button tooltip", "Export Report Button", dr);
+
+	}
+	
+	@Test
+
+	public void auto_Clini_Analyze_003() throws InterruptedException, IOException{ 
+		login(dr);
+		Thread.sleep(2000);
+		WebElement analyze=dr.findElement(By.xpath(".//*[text()='Analyze']"));
+		clickElement(analyze, "Analyze tab", "Analyze Tab", dr);
+		
+		WebElement formdata=dr.findElement(By.xpath(".//*[@id='subjectdataform']/div/div[4]/input[1]"));
+		readingCheckbox(formdata, "Form Data Checkbox", dr);
+				
+		WebElement codeList=dr.findElement(By.name("codelist"));
+		clickElement(codeList, "Code List Checkbox", "Code List Checkbox", dr);
+		readingCheckbox(codeList, "Code List Checkbox", dr);
+		
+		WebElement queryData=dr.findElement(By.name("querydata"));
+		clickElement(queryData, "Query Data Checkbox", "Query Data Checkbox", dr);
+		readingCheckbox(codeList, "Query Data Checkbox", dr);
+		
+		WebElement auditData=dr.findElement(By.name("auditdata"));
+		clickElement(auditData, "Audit Data Checkbox", "Audit Data Checkbox", dr);
+		readingCheckbox(auditData, "Audit Data Checkbox", dr);
+		
+		WebElement esigData=dr.findElement(By.name("esigdata"));
+		clickElement(esigData, "esig Data Checkbox", "esig Data Checkbox", dr);
+		readingCheckbox(esigData, "esig Data Checkbox", dr);
+		
+		WebElement dataDictionary=dr.findElement(By.name("datadictionary"));
+		clickElement(dataDictionary, "data Dictionary checkbox", "data Dictionary checkbox", dr);
+		readingCheckbox(dataDictionary, "data Dictionary checkbox", dr);
+		
+		WebElement scheduleOfEvents=dr.findElement(By.name("scheduleofevents"));
+		clickElement(scheduleOfEvents, "Schedule of Events checkbox", "Schedule of Events checkbox", dr);
+		readingCheckbox(scheduleOfEvents, "Schedule of Events checkbox", dr);
+		
+		WebElement medicalCoding=dr.findElement(By.name("medicalcoding"));
+		clickElement(medicalCoding, "Medical Coding Checkbox", "Medical Coding Checkbox", dr);
+		readingCheckbox(medicalCoding, "Medical Coding Checkbox", dr);
+			
+	}
+	
+	
+	@Test
+
+	public void auto_Clini_Analyze_004() throws InterruptedException, IOException{ 
+		login(dr);
+		Actions action = new Actions(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+		//it will verify the dropdown's are enabled
+		WebElement selectExport=dr.findElement(By.id("exporttype"));
+		if(selectExport.isDisplayed()){
+			Select select=new Select(selectExport);
+			select.selectByIndex(0);
+			updateReport("Pass", "Select Export","\"Excel Export\" is selected",dr);
+		}
+		else{
+			updateReport("Fail", "Select Export", "\"Excel Export\" is not selected",dr);
+		}
+
+		String expectedPopulation="Population";
+		String actualPopulation = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[1]")).getText();
+		checkContentsMatch(actualPopulation,expectedPopulation,"Population is Displayed","Population panel",dr);
+		String expectedData="Data";
+		String actualData = dr.findElement(By.xpath("//*[@id='subjectdataform']/div/h2[2]")).getText();
+		checkContentsMatch(actualData,expectedData,"Data is Displayed","Data panel",dr);
+		WebElement selectAllSites= dr.findElement(By.xpath("//*[@id='site']/option[2]"));
+		boolean selAllSites=selectAllSites.isEnabled();
+		Assert.assertEquals(selAllSites,true,"All Sites is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllSites, "All Sites Option", "All Sites Option", dr);
+		String expectedAllSites="All Sites";
+		String actualAllSites = dr.findElement(By.xpath("//*[@id='site']/option[2]")).getText();
+		System.out.println("Actual All Sites:"+actualAllSites);
+		checkContentsMatch(actualAllSites,expectedAllSites,"All Sites is selected","All Sites",dr);
+		Thread.sleep(2000);
+		//Groups
+		WebElement selectAllGroups= dr.findElement(By.xpath("//*[@id='groups']/option[2]"));
+		boolean selAllGroups=selectAllGroups.isEnabled();
+		Assert.assertEquals(selAllGroups,true,"All Groups is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllGroups, "All Groups Option", "All Groups Option", dr);
+		String expectedAllGroups="All Groups";
+		String actualAllGroups = dr.findElement(By.xpath("//*[@id='groups']/option[2]")).getText();
+		System.out.println("Actual All Groups:"+actualAllGroups);
+		checkContentsMatch(actualAllGroups,expectedAllGroups,"All Groups is selected","All Groups",dr);
+		Thread.sleep(2000);
+		//Form status
+		WebElement selectAllStatus= dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]"));
+		boolean selAllStatus=selectAllStatus.isEnabled();
+		Assert.assertEquals(selAllSites,true,"All Status is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllStatus, "All Status Option", "All Status Option", dr);
+		String expectedAllStatus="All Status";
+		String actualAllStatus = dr.findElement(By.xpath("//*[@id='sub_statuses']/option[2]")).getText();
+		System.out.println("Actual All Status:"+actualAllStatus);
+		checkContentsMatch(actualAllStatus,expectedAllStatus,"All Status is selected","All Status",dr);
+		Thread.sleep(2000);
+		//Visits
+		WebElement selectAllVisits= dr.findElement(By.xpath("//*[@id='visit']/option[2]"));
+		boolean selAllVisits=selectAllVisits.isEnabled();
+		Assert.assertEquals(selAllVisits,true,"All Visits is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllVisits, "All Visits Option", "All Visits Option", dr);
+		String expectedAllVisits="All Visits";
+		String actualAllVisits = dr.findElement(By.xpath("//*[@id='visit']/option[2]")).getText();
+		System.out.println("Actual All Visits:"+actualAllVisits);
+		checkContentsMatch(actualAllVisits,expectedAllVisits,"All Visits is selected","All Visits",dr);
+		Thread.sleep(2000);
+		//Data Forms
+		WebElement selectAllForms= dr.findElement(By.xpath("//*[@id='subform']/option[2]"));
+		boolean selAllForms=selectAllForms.isEnabled();
+		Assert.assertEquals(selAllForms,true,"All Forms is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllForms, "All Forms Option", "All Forms Option", dr);
+		String expectedAllForms="All Forms";
+		String actualAllForms = dr.findElement(By.xpath("//*[@id='subform']/option[2]")).getText();
+		System.out.println("Actual All Forms:"+actualAllForms);
+		checkContentsMatch(actualAllSites,expectedAllSites,"All Forms is selected","All Forms",dr);
+		Thread.sleep(2000);
+		//Data ItemGroups
+		WebElement selectAllItemGroup= dr.findElement(By.xpath("//*[@id='form_variables']/option[2]"));
+		boolean selAllItemGroup=selectAllItemGroup.isEnabled();
+		Assert.assertEquals(selAllItemGroup,true,"All Item Group is enabled");
+		Thread.sleep(2000);
+		clickElement(selectAllItemGroup, "All ItemGroup Option", "All ItemGroup Option", dr);
+		String expectedAllItemGroup="All Item-Groups";
+		String actualAllItemGroup = dr.findElement(By.xpath("//*[@id='form_variables']/option[2]")).getText();
+		System.out.println("Actual All Item Group:"+actualAllItemGroup);
+		checkContentsMatch(actualAllItemGroup,expectedAllItemGroup,"All Item Group is selected","All Item Group",dr);
+		Thread.sleep(2000);
+	}
 
 
+
+	/**
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	@Test
+
+	public void auto_Clini_Analyze_005() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(7000);
+		WebElement analyze=dr.findElement(By.xpath(".//*[@id='nav']/ul/li[4]/a"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+		Thread.sleep(4000);
+		WebElement selectExport=dr.findElement(By.id("exporttype"));
+		if(selectExport.isDisplayed()){
+			Select select=new Select(selectExport);
+			select.selectByIndex(1);
+			updateReport("Pass", "Select Export","\"CDISC ODM Export\" is selected",dr);
+		}
+		else{
+			updateReport("Fail", "Select Export", "\"CDISC ODM Export\" is not selected",dr);
+		}
+		Thread.sleep(3000);
+		WebElement fileType=dr.findElement(By.xpath(".//select[@id='file_type']"));
+		checkObjectDisplay(fileType,"File Type Dropdown","File Type Dropdown",dr);
+		WebElement exportFormat=dr.findElement(By.xpath(".//*[@id='export_format']"));
+		checkObjectDisplay(exportFormat,"Export Format Dropdown","Export Format Dropdown",dr);
+		WebElement granularityCheckBoxes=dr.findElement(By.xpath(".//*[@id='odmexportform']/div/fieldset[3]/div"));
+		readingText(granularityCheckBoxes,"granularityCheckBoxes",dr);
+		WebElement metaDataCheckbox=dr.findElement(By.xpath(".//*[@id='metadata']"));
+		readingCheckbox(metaDataCheckbox,"Metadata Checkbox",dr);
+		WebElement adminDataCheckbox=dr.findElement(By.xpath(".//*[@id='admindata']"));
+		readingCheckbox(adminDataCheckbox,"Admin Data Checkbox",dr);
+		WebElement clinicalData=dr.findElement(By.xpath(".//*[@id='clinicaldata']"));
+		readingCheckbox(clinicalData,"Clinical Data Checkbox",dr);
+		WebElement exportButton=dr.findElement(By.xpath(".//*[@id='exportodm'][@type='submit']"));
+		checkObjectDisplay(exportButton,"Export Button","Export button",dr);
+		//check for "Export Format" dropdown default option
+		Thread.sleep(5000);
+		WebElement exportFormatDefaultOption=dr.findElement(By.xpath(".//*[@id='export_format']"));
+		Select sel1=new Select(exportFormatDefaultOption);
+		WebElement actualExportFormatDefaultOption=sel1.getFirstSelectedOption();
+		validateText(actualExportFormatDefaultOption, "CliniTrial ODM v1.3","ExportFormat Default Option","ExportFormat Default Option",dr);
+		//check for filetype drop down default value
+		WebElement fileTypeDefaultOption=dr.findElement(By.xpath(".//*[@id='file_type']"));
+		Select sel2=new Select(fileTypeDefaultOption);
+		WebElement actualFileTypeDefaultOption=sel2.getFirstSelectedOption();
+		validateText(actualFileTypeDefaultOption, "Select File Type","FileType Default Option","FileType Default Option",dr);
+		//check for all the drop down values for filetype dropdown field
+		clickElement(fileType, "fileType dropdown", "Click on fileType", dr);
+		if(fileType.getText().contains("Select File Type") & fileType.getText().contains("Snapshot") & fileType.getText().contains("Transactional"))
+		{updateReport("Pass", "File Type Dropdown Options","Select File type,Snapshot and Transactional options are visible in the dropdown list",dr);}
+		else{updateReport("Fail", "File Type Dropdown Options","Select File type,Snapshot and Transactional options are not visible in the dropdown list",dr);}
+		//verify the selection of snapshot option for the filetype drop down
+		WebElement fileTypeOption2=dr.findElement(By.xpath(".//*[@id='file_type']/option[2]"));
+		clickElement(fileTypeOption2, "file Type Option : Snapshot", "Click on file Type Option", dr);
+		WebElement snapShotOption=sel2.getFirstSelectedOption();
+		validateText(snapShotOption, "Snapshot","SnapShot Option","SnapShot Option",dr);
+		//check for the Exportformat" drop down values.
+		clickElement(exportFormat, "exportFormat dropdown", "Click on exportFormat", dr);
+		if(exportFormat.getText().contains("CliniTrial ODM v1.3") & exportFormat.getText().contains("Rave ODM v1.3"))
+		{updateReport("Pass", "Export Format Dropdown Options","CliniTrial ODM v 1.3 & Rave ODM v 1.3 are options visible in the dropdown list",dr);}
+		else{updateReport("Fail", "File Type Dropdown Options","CliniTrial ODM v 1.3 & Rave ODM v 1.3 are options not visible in the dropdown list",dr);}
+		//uncheck the clinicaldata checkbox
+		WebElement clinicalDataCheckbox=dr.findElement(By.xpath(".//*[@id='clinicaldata']"));
+		clickElement(clinicalDataCheckbox, "Uncheck Clinical Data Checkbox", "Uncheck Clinical Data  Checkbox", dr);
+		Thread.sleep(2000);
+		//verify export button tooltip and enabled
+		Actions tooltip = new Actions(dr);
+		tooltip.moveToElement(exportButton).build().perform();
+		validateTextAttribute(exportButton, "Export", "Export tooltip", "title","Export Tooltip",dr);
+		checkEnabled(exportButton,"Export Button",dr); 
+
+
+	}
+
+	
+	
 
 	@AfterMethod
 	public void closeBrowser(){
