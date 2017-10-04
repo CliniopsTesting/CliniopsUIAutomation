@@ -124,16 +124,17 @@ public class Cliniops_ReusableMethodsTest {
 	public static void checkDropdownDEnableSelectedOpt(WebElement dd,String value,String chkEnable,String stepName ,WebDriver dr) throws IOException{
 		Select select = new Select(dd);
 		if(chkEnable.equalsIgnoreCase("Enabled")){	
-			if(dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+			//System.out.println(select.getFirstSelectedOption().getText());
+			if(dd.isEnabled() && select.getFirstSelectedOption().getText().trim().equalsIgnoreCase(value)){
 				updateReport("Pass", stepName, stepName + " dropdown is enabled and value "+ value + " is selected", dr);
 			}
 			else if(!dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				
 				updateReport("Fail", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
 			}
 			else if(dd.isEnabled() && !select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
 				updateReport("Fail", stepName, stepName + " dropdown is enabled and value "+ value + " is selected", dr);
-				System.out.println("hellooo****");
-				System.out.println(select.getFirstSelectedOption().getText());
+				//System.out.println(select.getFirstSelectedOption().getText());
 			}
 			else{
 				updateReport("Fail", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
@@ -142,10 +143,15 @@ public class Cliniops_ReusableMethodsTest {
 		else{
 			if(chkEnable.equalsIgnoreCase("Disabled"))
 			{
-				if(!dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				System.out.println(select.getFirstSelectedOption().getText().length());
+				System.out.println(select.getFirstSelectedOption().getText());
+				System.out.println(value);
+				System.out.println(value.length());
+				if(!dd.isEnabled() && (select.getFirstSelectedOption().getText().trim().equalsIgnoreCase(value))){
+					
 					updateReport("Pass", stepName, stepName + " dropdown is disabled and value "+ value + " is selected", dr);
 				}
-				else if(dd.isEnabled() && select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
+				else if(dd.isEnabled() && select.getFirstSelectedOption().getText().trim().equalsIgnoreCase(value)){
 					updateReport("Fail", stepName,stepName + " dropdown is enabled and value "+ value + " is selected" , dr);
 				}
 				else if(!dd.isEnabled() && !select.getFirstSelectedOption().getText().equalsIgnoreCase(value)){
@@ -378,6 +384,8 @@ public class Cliniops_ReusableMethodsTest {
 		wb.close();
 		return xlData;
 	}
+	
+	
 
 	/**
 	 * Start HTML report for the test script
@@ -403,7 +411,8 @@ public class Cliniops_ReusableMethodsTest {
 			if (!reportsPath.endsWith("\\")) { 
 				reportsPath = reportsPath + "\\";
 			}
-			strResultPath = reportsPath + "Log" + "/" +testScriptName +"/"; 
+			//strResultPath = reportsPath + "Log" + "/" +testScriptName +"/"; 
+			strResultPath = reportsPath + "LogTC" + "/" +testScriptName +"/"; 
 			//File f is only used to create directory for script result
 			File f = new File(strResultPath);
 			f.mkdirs();
@@ -524,7 +533,7 @@ public class Cliniops_ReusableMethodsTest {
 	 * @param dr
 	 * @throws IOException,InterruptedException
 	 */	
-	public static void login(WebDriver dr) throws InterruptedException, IOException{
+	/*public static void login(WebDriver dr) throws InterruptedException, IOException{
 		dr.get("https://bridgetherapeutics.cliniops.com");
 		dr.findElement(By.id("username")).sendKeys("Abhishek");
 		Thread.sleep(2000);
@@ -536,6 +545,28 @@ public class Cliniops_ReusableMethodsTest {
 		Thread.sleep(3000);
 		dr.findElement(By.xpath("//*[text()='English']")).click();
 		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
+	}*/
+	
+	public static void login(WebDriver dr) throws InterruptedException, IOException
+	{
+		String[][] loginCred = readSheet("./src/test/java/propertyFiles/objectRepoForLogin.xlsx", "Sheet1");
+		for(int i=1; i<loginCred.length; i++)
+		{
+			//Enter URL
+			dr.get("loginCred[i][0]");
+			//Enter userName
+			dr.findElement(By.id("username")).sendKeys("loginCred[i][1]");
+			Thread.sleep(2000);
+			//Enter password
+			dr.findElement(By.id("password")).sendKeys("loginCred[i][2]");
+			Thread.sleep(2000);
+			dr.findElement(By.id("Authenticate")).click();
+			Thread.sleep(5000);
+			dr.findElement(By.xpath("//*[text()='Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer']")).click();
+			Thread.sleep(3000);
+			dr.findElement(By.xpath("//*[text()='English']")).click();
+			dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
+		}
 	}
 	
 	/**

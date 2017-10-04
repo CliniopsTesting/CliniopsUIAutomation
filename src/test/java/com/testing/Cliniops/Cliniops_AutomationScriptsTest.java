@@ -99,13 +99,23 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 	@Test
 	public void auto_Clini_Login_002() throws IOException, InterruptedException{
+		
+		JavascriptExecutor jse = (JavascriptExecutor)dr;
+		
 		dr.get("https://bridgetherapeutics.cliniops.com/login");
 		WebElement username=dr.findElement(By.id("username"));
 		enterText(username, "Abhishek", "Username", "Enter username", dr);
 		WebElement password=dr.findElement(By.id("password"));
-		enterText(password, "Testing@123", "Password", "Enter password", dr);
+		enterText(password, "Welcome123#", "Password", "Enter password", dr);
+		
 		WebElement authenticate=dr.findElement(By.id("Authenticate"));
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", authenticate);
 		clickElement(authenticate, "Authenticate Button", "Click on authenticate", dr);
+		
+//		WebElement lock = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
+//		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", lock);
+		
+		
 		WebElement selectStudy= dr.findElement(By.id("investigator_study"));
 		checkEnabled(selectStudy,"selectStudy",dr);
 		WebElement selectLang= dr.findElement(By.id("lang_type"));
@@ -127,7 +137,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		//String expectedLanguage="English";
 		//validateText(selectLanguageOption, expectedLanguage, "Language option", "Language option", dr);
 		clickElement(selectLanguageOption, "selectLanguageOption","selectLanguageOption",dr);
-
+		
 		Thread.sleep(2000);
 		clickElement(login, "login","login",dr);
 		Thread.sleep(3000);
@@ -144,6 +154,9 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 	@Test
 	public void auto_Clini_Login_003() throws IOException, InterruptedException{
+		
+		JavascriptExecutor jse = (JavascriptExecutor)dr;
+		
 		//validating Authentication error message
 		String expected = "Authenitcation failed !";
 		dr.get("https://bridgetherapeutics.cliniops.com");
@@ -152,14 +165,19 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 		WebElement passwordObj = dr.findElement(By.id("password"));
 		enterText(passwordObj, "xxx", "password object","Enter Password",dr);
+		
+		WebElement authenticate=dr.findElement(By.id("Authenticate"));
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", authenticate);
+		clickElement(authenticate, "Authenticate Button", "Click on authenticate", dr);
 
-		WebElement authenticateObj = dr.findElement(By.xpath(".//*[@id='Authenticate']"));
-		clickElement(authenticateObj, "Authentication button object","Click Authenticate",dr);
+//		WebElement authenticateObj = dr.findElement(By.xpath(".//*[@id='Authenticate']"));
+//		clickElement(authenticateObj, "Authentication button object","Click Authenticate",dr);
 
 		WebElement errMessageObj = dr.findElement(By.xpath(".//*[@id='showCustomErrMsg']"));
 
 		WebDriverWait wait = new WebDriverWait(dr, 30);
 		WebElement ele = wait.until(ExpectedConditions.visibilityOf(errMessageObj));
+		
 		String actual = ele.getText();
 		System.out.println(actual);
 
@@ -243,10 +261,13 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		String errorMsg;
 		String expectedErrorMsg;
 		dr.get("https://bridgetherapeutics.cliniops.com/login");
+		
+		JavascriptExecutor jse = (JavascriptExecutor)dr;
 
 		WebElement forgotPwd=dr.findElement(By.linkText("Forgot password..? Click here..."));
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", forgotPwd);
 		clickElement(forgotPwd, "Click Forgot Password", "Forgot Password",dr);
-
+		
 		WebElement email=dr.findElement(By.xpath("//input[@title='Enter Username']"));
 		enterText(email, "abc@gmail.com", "Email id", "Enter Email",dr);
 
@@ -951,10 +972,12 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    }
 	    
 	    
-	   
+	/*   
 	public void auto_Clini_Manage_004() throws InterruptedException, IOException
 	{
 		login(dr);
+		Thread.sleep(4000);
+		JavascriptExecutor jse = (JavascriptExecutor)dr;
 		//clicking on manage tab in home screen
 		WebElement manageTab = dr.findElement(By.xpath(".//*[@id='nav']/ul/li[3]/a"));
 	    clickElement(manageTab, "Manage tab", "clicked on manage tab", dr);
@@ -967,13 +990,14 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    System.out.println("-----------------------------------------------");
 	    
 	    //#1
+	    Thread.sleep(3000);
 	    //verifying the fields for action icon for project manager textbox
-	    WebElement rolrNameTab = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
-	    String expectedText = "Project Manager";
-	    String actual = rolrNameTab.getText();
-	    System.out.println(actual + " is actual value in the textbox");
-	    validateText(rolrNameTab, expectedText, "roleNameTab", "verify text present in roleName", dr);
-	    System.out.println("text is validated....");
+	    String actualRoleName = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+		String expectedRoleName = "Project Manager";
+		checkContentsMatch(actualRoleName,expectedRoleName,"RoleName","Role Name Text Validation",dr);
+		System.out.println("text for Project Manager is validated....");
+		System.out.println(actualRoleName);
+		System.out.println("***********************************************");
 	    
 	    //#2
 	    WebElement studydetails = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
@@ -1009,11 +1033,34 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    
 	    //#10
 	    WebElement lock = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
-	    checkDropdownDEnableSelectedOpt(lock, "Write", "Disabled", "verify Write is present in the lock dropdown textbox", dr);
+	    Select s = new Select(lock);
+	   List<WebElement> li =  s.getOptions();
+	   for(int i=0;i<li.size();i++)
+	   {
+		   System.out.println(li.get(i).getText());
+	   }
+	    //checkDropdownDEnableSelectedOpt(lock, "Write", "Disabled", "verify Write is present in the lock dropdown textbox", dr);
+	    String expectedlockTextboxValue = "Write";
+  		String actuallockTextboxValue  = (String) jse.executeScript("return arguments[0].value;",lock);
+  		checkContentsMatch(actuallockTextboxValue,expectedlockTextboxValue,"lock","lock Textbox text Validation",dr);
 	    
 	    //#11
-	    WebElement users = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
-	    checkDropdownDEnableSelectedOpt(users, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
+	  //WebDriverWait wait = new WebDriverWait(dr, 30);
+	  		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//*[@id='edit_ms_users']")));
+	  		//jse.executeScript("window.scrollBy(0,500)");
+	  		WebElement users = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+//	  		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", users);
+//	  		checkDropdownDEnableSelectedOpt(users, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
+	  		//WebElement users=(WebElement) jse.executeScript("document.getElementByXpath('.//*[@id='edit_ms_users']');");
+	  		//WebElement users=(WebElement) jse.executeScript("return document.getElementById('edit_ms_users');");
+	  		/*String users=jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath(".//*[@id='edit_ms_users']"))).toString();
+	  		String expectedUsers = "Write";
+	  		checkContentsMatch(users,expectedUsers,"verify Write is present in the users dropdown textbox","verify Write is present in the users dropdown textbox",dr);
+	  		
+	  		Thread.sleep(3000);
+	    
+//	    WebElement users = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+//	    checkDropdownDEnableSelectedOpt(users, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
 	    
 	    //#12
 	    WebElement export_reports = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
@@ -1097,14 +1144,14 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   System.out.println("clicked on study admin edit role.....");
 	   
 	   //#1
-	    //verifying the fields for action icon for project manager textbox
-	    WebElement rolrNameTab1 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
-	    String expectedText1 = "Study Administrator";
-	    String actual1 = rolrNameTab1.getText();
-	    System.out.println(actual1 + " is actual value in the textbox");
-	    validateText(rolrNameTab1, expectedText1, "roleNameTab", "verify text present in roleName", dr);
-	    System.out.println("text for study adminstrator is validated....");
-	    
+	    //verifying the fields for action icon for study Administrator textbox
+	   
+	   Thread.sleep(3000);
+		String actualRoleName2 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+		String expectedRoleName2 = "Study Administrator";
+		checkContentsMatch(actualRoleName2,expectedRoleName2,"RoleName","Role Name Text Validation",dr);
+		System.out.println("text for Study Administrator is validated....");
+	   
 	    //#2
 	    WebElement studydetails1 = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
 	    Thread.sleep(3000);
@@ -1144,8 +1191,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    
 	    //#11
 	    WebElement user1 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user1);
 	    checkDropdownDEnableSelectedOpt(user1, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
-	    
 	    //#12
 	    WebElement export_reports1 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
 	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", export_reports1);
@@ -1227,13 +1274,21 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   Thread.sleep(3000);
 	   
 	   //#1
-	    //verifying the fields for action icon for project manager textbox
-	    WebElement rolrNameTab2 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
-	    String expectedText2 = "Data Manager";
-	    String actual2 = rolrNameTab1.getText();
-	    System.out.println(actual2 + " is actual value in the textbox");
-	    validateText(rolrNameTab2, expectedText2, "roleNameTab", "verify text present in roleName", dr);
-	    System.out.println("text for study adminstrator is validated....");
+	    //verifying the fields for action icon for data manager textbox
+	   
+	   Thread.sleep(3000);
+		String actualRoleName3 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+		String expectedRoleName3 = "Data Manager";
+		checkContentsMatch(actualRoleName3,expectedRoleName3,"RoleName","Role Name Text Validation",dr);
+		System.out.println("text for Data Manager is validated....");
+		Thread.sleep(3000);
+	   
+//	    WebElement rolrNameTab2 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
+//	    String expectedText2 = "Data Manager";
+//	    String actual2 = rolrNameTab1.getText();
+//	    System.out.println(actual2 + " is actual value in the textbox");
+//	    validateText(rolrNameTab2, expectedText2, "roleNameTab", "verify text present in roleName", dr);
+//	    System.out.println("text for study adminstrator is validated....");
 	    
 	    //#2
 	    WebElement studydetails2 = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
@@ -1274,7 +1329,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    
 	    //#11
 	    WebElement user2 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
-	    checkDropdownDEnableSelectedOpt(user2, "Write", "Enabled", "verify Write is present in the users dropdown textbox", dr);
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user2);
+		checkDropdownDEnableSelectedOpt(user2, "Write", "Enabled", "verify Write is present in the users dropdown textbox", dr);
 	    
 	    //#12
 	    WebElement export_reports2 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
@@ -1387,11 +1443,10 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   Thread.sleep(3000);
 	 //#1
 	    //verifying the fields for action icon for site co_ordinator textbox
-	    WebElement rolrNameTab3 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
-	    String expectedText3 = "Site Coordinator";
-	    String actual3 = rolrNameTab3.getText();
-	    System.out.println(actual3 + " is actual value in the textbox");
-	    validateText(rolrNameTab3, expectedText3, "roleNameTab", "verify text present in roleName", dr);
+	    //WebElement rolrNameTab3 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_name']"));
+	   String actualRoleName4 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+		String expectedRoleName4 = "Site Coordinator";
+		checkContentsMatch(actualRoleName4,expectedRoleName4,"RoleName","Role Name Text Validation",dr);
 	    System.out.println("text for site coordinator is validated....");
 	    
 	    //#2
@@ -1410,6 +1465,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    //#5
 	    WebElement items3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_variable']"));
 	    checkDropdownDEnableSelectedOpt(items3DD, "None", "Enabled", "verify Write is present in the items dropdown textbox", dr);
+	    Thread.sleep(2000);
 	    
 	    //#6
 	    WebElement items_group_Obj3 = dr.findElement(By.xpath(".//*[@id='edit_cs_itemgroup']"));
@@ -1417,23 +1473,31 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    
 	    //#7
 	    WebElement forms3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_forms']"));
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", forms3DD);
 	    checkDropdownDEnableSelectedOpt(forms3DD, "Write", "Enabled", "verify Write is present in the forms dropdown textbox", dr);
+	    Thread.sleep(2000);
 	    
 	    //#8
 	    WebElement visits3 = dr.findElement(By.xpath(".//*[@id='edit_cs_visits']"));
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visits3);
 	    checkDropdownDEnableSelectedOpt(visits3, "None", "Enabled", "verify Write is present in the visits dropdown textbox", dr);
+	    Thread.sleep(2000);
 	    
 	    //#9
 	    WebElement fileRepository3 = dr.findElement(By.xpath(".//*[@id='edit_cs_filerepository']"));
 	    checkDropdownDEnableSelectedOpt(fileRepository3, "None", "Enabled", "verify Write is present in the fileRepsitory dropdown textbox", dr);
+	    Thread.sleep(2000);
 	    
 	    //#10
+	    Thread.sleep(3000);
 	    WebElement locks3 = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
-	    checkDropdownDEnableSelectedOpt(locks3, "None", "Enabled", "verify Write is present in the lock dropdown textbox", dr);
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", locks3);
+	    checkDropdownDEnableSelectedOpt(locks3, "None", "Enabled", "verify none is present in the lock dropdown textbox", dr);
 	    
 	    //#11
 	    WebElement user3 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
-	    checkDropdownDEnableSelectedOpt(user3, "None", "Enabled", "verify Write is present in the users dropdown textbox", dr);
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user3);
+	    checkDropdownDEnableSelectedOpt(user3, "None", "Enabled", "verify none is present in the users dropdown textbox", dr);
 	    
 	    //#12
 	    WebElement export_reports3 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
@@ -1443,7 +1507,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    //#13//performing scrolldown operation
 	    WebElement analyse3 = dr.findElement(By.xpath(".//*[@id='edit_analyze_study']"));
 	    System.out.println("performing scrolldown operation until a particular element...");
-  	((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse3);
+  	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse3);
 //	    JavascriptExecutor jse =  (JavascriptExecutor)dr;
 //	    jse.executeScript(scroll(0,200));
 	    
@@ -1460,11 +1524,11 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    //#16
 	    WebElement role3 = dr.findElement(By.xpath(".//*[@id='edit_ms_roles']"));
 	    checkDropdownDEnableSelectedOpt(role3, "None", "Enabled", "verify Write is present in the role dropdown textbox", dr);
-	    
+	    Thread.sleep(2000);
 	    //#17
 	    WebElement quries3 = dr.findElement(By.xpath(".//*[@id='edit_ms_queries']"));
 	    checkDropdownDEnableSelectedOpt(quries3, "None", "Enabled", "verify Write is present in the queries dropdown textbox", dr);
-	    
+	    Thread.sleep(2000);
 	    //#18
 	    WebElement formReview3 = dr.findElement(By.xpath(".//*[@id='edit_form_review']"));
 	    checkDropdownDEnableSelectedOpt(formReview3, "None", "Enabled", "verify Write is present in the formReview dropdown textbox", dr);
@@ -1472,7 +1536,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    //#19
 	    WebElement unlock_subject_site3 = dr.findElement(By.xpath(".//*[@id='edit_unlock_subject']"));
 	    checkDropdownDEnableSelectedOpt(unlock_subject_site3, "None", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
-	    
+	    Thread.sleep(2000);
 	    //#20
 	    WebElement siteLock3 = dr.findElement(By.xpath(".//*[@id='edit_site_lock']"));
 	    checkDropdownDEnableSelectedOpt(siteLock3, "None", "Enabled", "verify Write is present in the site_lock dropdown textbox", dr);
@@ -1480,17 +1544,20 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	    //#21
 	    WebElement registerSubjects3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_registersubjects']"));
 	    checkDropdownDEnableSelectedOpt(registerSubjects3, "Write", "Enabled", "verify Write is present in the register subjects dropdown textbox", dr);
-	    
+	    Thread.sleep(2000);
 	    //#22
 	    WebElement consent_visit3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_consentvisit']"));
+	    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", consent_visit3);
 	    checkDropdownDEnableSelectedOpt(consent_visit3, "write", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
-	    
+	    Thread.sleep(2000);
 	    //#23
 	    WebElement syncData3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_syncdata']"));
 	    checkDropdownDEnableSelectedOpt(syncData3, "Write", "Enabled", "verify Write is present in the sync_data dropdown textbox", dr);
+	    Thread.sleep(3000);
 	    
 	    //#24
 	   WebElement visitData3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_visitdata']"));
+	   ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visitData3);
 	   checkDropdownDEnableSelectedOpt(visitData3, "Write", "Enabled", "verify Write is present in the visitdata dropdown textbox", dr);
 	   
 	   //#25
@@ -1515,7 +1582,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   //#27
 	   clickElement(cancel_button3, "cancel button object", "click on cancel button", dr);
 	   
-	   System.out.println("clicking on site co-ordinator delete icon.............");
+	   System.out.println("clicking on site co-ordinator delete icon..............");
 	   System.out.println("-------------------------------------------------------");
 	   
 	   WebElement site_co_deleteIcon_obj = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[5]/td[2]/div/a[2]/img"));
@@ -1538,6 +1605,494 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	   System.out.println("clicked on cancel button on site co_ordinator delete icon...........");
 	   
 	}
+*/
+	    public void auto_Clini_Manage_004() throws InterruptedException, IOException
+
+		{
+
+			login(dr);
+			Thread.sleep(4000);
+			JavascriptExecutor jse = (JavascriptExecutor)dr;
+			//clicking on manage tab in home screen
+			WebElement manageTab = dr.findElement(By.xpath(".//*[@id='nav']/ul/li[3]/a"));
+			clickElement(manageTab, "Manage tab", "clicked on manage tab", dr);
+			System.out.println("clicked on manage tab.....");
+			//clicking on action icon for project manager
+			WebElement actionIcon_projManager = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[2]/td[2]/div/a/img"));
+			clickElement(actionIcon_projManager, "projectmanager action icon", "clicked on action icon for projectManager", dr);
+			System.out.println("clicked on action icon for project manager....");
+			System.out.println("-----------------------------------------------");
+			//#1
+			Thread.sleep(3000);
+			String actualRoleName = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+			String expectedRoleName = "Project Manager";
+			checkContentsMatch(actualRoleName,expectedRoleName,"RoleName","Role Name Text Validation",dr);
+			System.out.println("text for Project Manager is validated....");
+			//#2
+			WebElement studydetails = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
+			checkDropdownDEnableSelectedOpt(studydetails, "Write", "Disabled", "verify Write is present in the Study details textbox", dr);
+			//#3
+			WebElement sitesDD = dr.findElement(By.xpath(".//*[@id='edit_cs_sites']"));
+			checkDropdownDEnableSelectedOpt(sitesDD, "Write", "Disabled", "verify Write is present in the sites textbox", dr);
+			//#4
+			WebElement trialArmsDD = dr.findElement(By.xpath(".//*[@id='edit_cs_trialarms']"));
+			checkDropdownDEnableSelectedOpt(trialArmsDD, "Write", "Disabled","verify Write is present in the trailArms dropdown textbox", dr);
+	    	//#5
+			WebElement itemsDD = dr.findElement(By.xpath(".//*[@id='edit_cs_variable']"));
+			checkDropdownDEnableSelectedOpt(itemsDD, "Write", "Disabled", "verify Write is present in the items dropdown textbox", dr);
+			//#6
+			WebElement items_group_Obj = dr.findElement(By.xpath(".//*[@id='edit_cs_itemgroup']"));
+			checkDropdownDEnableSelectedOpt(items_group_Obj, "Write", "Disabled", "verify Write is present in the items_group dropdown textbox", dr);
+			//#7
+			WebElement formsDD = dr.findElement(By.xpath(".//*[@id='edit_cs_forms']"));
+			checkDropdownDEnableSelectedOpt(formsDD, "Write", "Disabled", "verify Write is present in the forms dropdown textbox", dr);
+			//#8
+			WebElement visits = dr.findElement(By.xpath(".//*[@id='edit_cs_visits']"));
+			checkDropdownDEnableSelectedOpt(visits, "Write", "Disabled", "verify Write is present in the visits dropdown textbox", dr);
+			//#9
+			WebElement fileRepository = dr.findElement(By.xpath(".//*[@id='edit_cs_filerepository']"));
+			checkDropdownDEnableSelectedOpt(fileRepository, "Write", "Disabled", "verify Write is present in the fileRepsitory dropdown textbox", dr);
+			//#10
+			WebElement lock = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", lock);
+			checkDropdownDEnableSelectedOpt(lock, "Write", "Disabled", "verify Write is present in the lock dropdown textbox", dr);
+			//#11
+			Thread.sleep(2000);
+			
+			
+			
+			//WebDriverWait wait = new WebDriverWait(dr, 30);
+			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//*[@id='edit_ms_users']")));
+			//jse.executeScript("window.scrollBy(0,500)");
+			WebElement users = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", users);
+			//WebElement users=(WebElement) jse.executeScript("document.getElementByXpath('.//*[@id='edit_ms_users']');");
+			//WebElement users=(WebElement) jse.executeScript("return document.getElementById('edit_ms_users');");
+			/*String users=jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath(".//*[@id='edit_ms_users']"))).toString();
+			String expectedUsers = "Write";
+			checkContentsMatch(users,expectedUsers,"verify Write is present in the users dropdown textbox","verify Write is present in the users dropdown textbox",dr);
+			*/
+			checkDropdownDEnableSelectedOpt(users, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
+			
+			
+			//#12
+			WebElement export_reports = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", export_reports);
+			checkDropdownDEnableSelectedOpt(export_reports, "Write", "Disabled", "verify Write is present in the export_reports dropdown textbox", dr);
+			//#13//performing scrolldown operation
+			WebElement analyse = dr.findElement(By.xpath(".//*[@id='edit_analyze_study']"));
+			System.out.println("performing scrolldown operation until a particular element...");
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse);
+			//	    JavascriptExecutor jse =  (JavascriptExecutor)dr;
+			//	    jse.executeScript(scroll(0,200));
+			checkDropdownDEnableSelectedOpt(analyse, "Write", "Disabled", "verify Write is present in the analyse dropdown textbox", dr);
+			//#14
+			WebElement viewSubjects = dr.findElement(By.xpath(".//*[@id='edit_view_subjects']"));
+			checkDropdownDEnableSelectedOpt(viewSubjects, "None", "Disabled", "verify Write is present in the viewSubjects dropdown textbox", dr);
+			//#15
+			WebElement audit = dr.findElement(By.xpath(".//*[@id='edit_investigator_audit']"));
+			checkDropdownDEnableSelectedOpt(audit, "Write", "Disabled", "verify Write is present in the audit dropdown textbox", dr);
+			//#16
+			WebElement role = dr.findElement(By.xpath(".//*[@id='edit_ms_roles']"));
+			checkDropdownDEnableSelectedOpt(role, "None", "Disabled", "verify Write is present in the role dropdown textbox", dr);
+			//#17
+			WebElement quries = dr.findElement(By.xpath(".//*[@id='edit_ms_queries']"));
+			checkDropdownDEnableSelectedOpt(quries, "None", "Disabled", "verify Write is present in the queries dropdown textbox", dr);
+			//#18
+			WebElement formReview = dr.findElement(By.xpath(".//*[@id='edit_form_review']"));
+	    	checkDropdownDEnableSelectedOpt(formReview, "None", "Disabled", "verify Write is present in the formReview dropdown textbox", dr);
+			//#19
+			WebElement unlock_subject_site = dr.findElement(By.xpath(".//*[@id='edit_unlock_subject']"));
+			checkDropdownDEnableSelectedOpt(unlock_subject_site, "None", "Disabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#20
+			WebElement siteLock = dr.findElement(By.xpath(".//*[@id='edit_site_lock']"));
+			checkDropdownDEnableSelectedOpt(siteLock, "None", "Disabled", "verify Write is present in the site_lock dropdown textbox", dr);
+			//#21
+			WebElement registerSubjects = dr.findElement(By.xpath(".//*[@id='edit_ipad_registersubjects']"));
+			checkDropdownDEnableSelectedOpt(registerSubjects, "None", "Disabled", "verify Write is present in the register subjects dropdown textbox", dr);
+			//#22
+			WebElement consent_visit = dr.findElement(By.xpath(".//*[@id='edit_ipad_consentvisit']"));
+			checkDropdownDEnableSelectedOpt(consent_visit, "None", "Disabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#23
+			WebElement syncData = dr.findElement(By.xpath(".//*[@id='edit_ipad_syncdata']"));
+			checkDropdownDEnableSelectedOpt(syncData, "None", "Disabled", "verify Write is present in the sync_data dropdown textbox", dr);
+			//#24
+			WebElement visitData = dr.findElement(By.xpath(".//*[@id='edit_ipad_visitdata']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visitData);
+			checkDropdownDEnableSelectedOpt(visitData, "None", "Disabled", "verify Write is present in the visitdata dropdown textbox", dr);
+			//#25
+			WebElement subjectIdentifier = dr.findElement(By.xpath(".//*[@id='edit_vs_identifier']"));
+			checkDropdownDEnableSelectedOpt(subjectIdentifier, "None", "Disabled", "verify Write is present in the subject identifier dropdown textbox", dr);
+			//#26
+			WebElement formVerification = dr.findElement(By.xpath(".//*[@id='edit_form_verify']"));
+			checkDropdownDEnableSelectedOpt(formVerification, "None", "Disabled", "verify Write is present in the formVerification dropdown textbox", dr);
+			//#27
+			WebElement cancel_button = dr.findElement(By.xpath(".//*[@id='editRole']/fieldset[27]/div/div/input[2]"));
+			clickElement(cancel_button, "cancel button object", "click on cancel button", dr);
+			System.out.println("clicked on cancel for project manager edit role......");
+			Thread.sleep(4000);
+			//clicking study administrator view record
+			System.out.println("clicking on study administrator view record......");
+			System.out.println("--------------------------------------------------");
+	    	WebElement study_administrator_obj = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[3]/td[2]/div/a/img"));
+			//	   WebDriverWait wait = new WebDriverWait(dr, 30);
+			//	   wait.until(ExpectedConditions.elementToBeClickable(study_administrator_obj)).click();
+			clickElement(study_administrator_obj, "study_administrator object", "study admin edit role icon", dr);
+			System.out.println("clicked on study admin edit role.....");
+			//#1
+			//verifying the fields for action icon for project manager textbox
+			Thread.sleep(3000);
+			String actualRoleName2 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+			String expectedRoleName2 = "Study Administrator";
+			checkContentsMatch(actualRoleName2,expectedRoleName2,"RoleName","Role Name Text Validation",dr);
+			System.out.println("text for Study Administrator is validated....");
+	    	//#2
+			WebElement studydetails1 = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
+			Thread.sleep(3000);
+			checkDropdownDEnableSelectedOpt(studydetails1, "Write", "Disabled", "verify Write is present in the Study details textbox", dr);
+			//#3
+			WebElement sites1DD = dr.findElement(By.xpath(".//*[@id='edit_cs_sites']"));
+			checkDropdownDEnableSelectedOpt(sites1DD, "Write", "Disabled", "verify Write is present in the sites textbox", dr);
+			//#4
+			WebElement trialArms1DD = dr.findElement(By.xpath(".//*[@id='edit_cs_trialarms']"));
+			checkDropdownDEnableSelectedOpt(trialArms1DD, "Write", "Disabled", "verify Write is present in the trailArms dropdown textbox", dr);
+			//#5
+			WebElement items1DD = dr.findElement(By.xpath(".//*[@id='edit_cs_variable']"));
+			checkDropdownDEnableSelectedOpt(items1DD, "Write", "Disabled", "verify Write is present in the items dropdown textbox", dr);
+			//#6
+			WebElement items_group_Obj1 = dr.findElement(By.xpath(".//*[@id='edit_cs_itemgroup']"));
+			checkDropdownDEnableSelectedOpt(items_group_Obj1, "Write", "Disabled", "verify Write is present in the items_group dropdown textbox", dr);
+			//#7
+			WebElement forms1DD = dr.findElement(By.xpath(".//*[@id='edit_cs_forms']"));
+			checkDropdownDEnableSelectedOpt(forms1DD, "Write", "Disabled", "verify Write is present in the forms dropdown textbox", dr);
+			//#8
+			WebElement visits1 = dr.findElement(By.xpath(".//*[@id='edit_cs_visits']"));
+			checkDropdownDEnableSelectedOpt(visits1, "Write", "Disabled", "verify Write is present in the visits dropdown textbox", dr);
+			//#9
+			WebElement fileRepository1 = dr.findElement(By.xpath(".//*[@id='edit_cs_filerepository']"));
+			checkDropdownDEnableSelectedOpt(fileRepository1, "Write", "Disabled", "verify Write is present in the fileRepsitory dropdown textbox", dr);
+			//#10
+			WebElement lock1 = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", lock1);
+			checkDropdownDEnableSelectedOpt(lock1, "Write", "Disabled", "verify Write is present in the lock dropdown textbox", dr);
+			//#11
+			Thread.sleep(3000);
+		    WebElement user1 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+		    ((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user1);
+		    checkDropdownDEnableSelectedOpt(user1, "Write", "Disabled", "verify Write is present in the users dropdown textbox", dr);
+			//#12
+			WebElement export_reports1 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", export_reports1);
+			checkDropdownDEnableSelectedOpt(export_reports1, "Write", "Disabled", "verify Write is present in the export_reports dropdown textbox", dr);
+			//#13//performing scrolldown operation
+			WebElement analyse1 = dr.findElement(By.xpath(".//*[@id='edit_analyze_study']"));
+			System.out.println("performing scrolldown operation until a particular element...");
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse1);
+			//	    JavascriptExecutor jse =  (JavascriptExecutor)dr;
+			//	    jse.executeScript(scroll(0,200));
+			checkDropdownDEnableSelectedOpt(analyse1, "Write", "Disabled", "verify Write is present in the analyse dropdown textbox", dr);
+			//#14
+			WebElement viewSubjects1 = dr.findElement(By.xpath(".//*[@id='edit_view_subjects']"));
+			checkDropdownDEnableSelectedOpt(viewSubjects1, "Write", "Disabled", "verify Write is present in the viewSubjects dropdown textbox", dr);
+			//#15
+			WebElement audit1 = dr.findElement(By.xpath(".//*[@id='edit_investigator_audit']"));
+			checkDropdownDEnableSelectedOpt(audit1, "Write", "Disabled", "verify Write is present in the audit dropdown textbox", dr);
+			//#16
+			WebElement role1 = dr.findElement(By.xpath(".//*[@id='edit_ms_roles']"));
+			checkDropdownDEnableSelectedOpt(role1, "Write", "Disabled", "verify Write is present in the role dropdown textbox", dr);
+			//#17
+			WebElement quries1 = dr.findElement(By.xpath(".//*[@id='edit_ms_queries']"));
+			checkDropdownDEnableSelectedOpt(quries1, "Write", "Disabled", "verify Write is present in the queries dropdown textbox", dr);
+			//#18
+			WebElement formReview1 = dr.findElement(By.xpath(".//*[@id='edit_form_review']"));
+			checkDropdownDEnableSelectedOpt(formReview1, "Write", "Disabled", "verify Write is present in the formReview dropdown textbox", dr);
+			//#19
+			WebElement unlock_subject_site1 = dr.findElement(By.xpath(".//*[@id='edit_unlock_subject']"));
+			checkDropdownDEnableSelectedOpt(unlock_subject_site1, "Write", "Disabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#20
+			WebElement siteLock1 = dr.findElement(By.xpath(".//*[@id='edit_site_lock']"));
+			checkDropdownDEnableSelectedOpt(siteLock1, "None", "Disabled", "verify Write is present in the site_lock dropdown textbox", dr);
+			//#21
+			WebElement registerSubjects1 = dr.findElement(By.xpath(".//*[@id='edit_ipad_registersubjects']"));
+			checkDropdownDEnableSelectedOpt(registerSubjects1, "Write", "Disabled", "verify Write is present in the register subjects dropdown textbox", dr);
+			//#22
+			WebElement consent_visit1 = dr.findElement(By.xpath(".//*[@id='edit_ipad_consentvisit']"));
+			checkDropdownDEnableSelectedOpt(consent_visit1, "Write", "Disabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#23
+			WebElement syncData1 = dr.findElement(By.xpath(".//*[@id='edit_ipad_syncdata']"));
+			checkDropdownDEnableSelectedOpt(syncData1, "Write", "Disabled", "verify Write is present in the sync_data dropdown textbox", dr);
+			//#24
+			WebElement visitData1 = dr.findElement(By.xpath(".//*[@id='edit_ipad_visitdata']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visitData1);
+			checkDropdownDEnableSelectedOpt(visitData1, "Write", "Disabled", "verify Write is present in the visitdata dropdown textbox", dr);
+			//#25
+			WebElement subjectIdentifier1 = dr.findElement(By.xpath(".//*[@id='edit_vs_identifier']"));
+			checkDropdownDEnableSelectedOpt(subjectIdentifier1, "Write", "Disabled", "verify Write is present in the subject identifier dropdown textbox", dr);
+			//#26
+			WebElement formVerification1 = dr.findElement(By.xpath(".//*[@id='edit_form_verify']"));
+			checkDropdownDEnableSelectedOpt(formVerification1, "Write", "Disabled", "verify Write is present in the formVerification dropdown textbox", dr);
+			//#27
+			WebElement cancel_button1 = dr.findElement(By.xpath(".//*[@id='editRole']/fieldset[27]/div/div/input[2]"));
+			clickElement(cancel_button1, "cancel button object", "click on cancel button", dr);
+			//clicking on DataManager edit record icon
+			System.out.println("clicking on DataManager edit record icon");
+			System.out.println("----------------------------------------");
+			WebElement data_Manager_editrole_obj = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[4]/td[2]/div/a[1]/img"));
+			Thread.sleep(3000);
+			clickElement(data_Manager_editrole_obj, "data_Manager_editrole_obj", "data manager edit role icon", dr);
+			System.out.println("clicked on data_Manager_editrole_obj.....");
+			Thread.sleep(3000);
+			//#1
+			//verifying the fields for action icon for project manager textbox
+			Thread.sleep(3000);
+			String actualRoleName3 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+			String expectedRoleName3 = "Data Manager";
+			checkContentsMatch(actualRoleName3,expectedRoleName3,"RoleName","Role Name Text Validation",dr);
+			System.out.println("text for Data Manager is validated....");
+			//#2
+			WebElement studydetails2 = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
+			Thread.sleep(3000);
+			checkDropdownDEnableSelectedOpt(studydetails2, "Write", "Enabled", "verify Write is present in the Study details textbox", dr);
+			//#3
+			WebElement sites2DD = dr.findElement(By.xpath(".//*[@id='edit_cs_sites']"));
+			checkDropdownDEnableSelectedOpt(sites2DD, "Write", "Enabled", "verify Write is present in the sites textbox", dr);
+			//#4
+			WebElement trialArms2DD = dr.findElement(By.xpath(".//*[@id='edit_cs_trialarms']"));
+			checkDropdownDEnableSelectedOpt(trialArms2DD, "Write", "Enabled", "verify Write is present in the trailArms dropdown textbox", dr);
+			//#5
+			WebElement items2DD = dr.findElement(By.xpath(".//*[@id='edit_cs_variable']"));
+			checkDropdownDEnableSelectedOpt(items2DD, "Write", "Enabled", "verify Write is present in the items dropdown textbox", dr);
+			//#6
+			WebElement items_group_Obj2 = dr.findElement(By.xpath(".//*[@id='edit_cs_itemgroup']"));
+			checkDropdownDEnableSelectedOpt(items_group_Obj2, "Write", "Enabled", "verify Write is present in the items_group dropdown textbox", dr);
+			//#7
+			WebElement forms2DD = dr.findElement(By.xpath(".//*[@id='edit_cs_forms']"));
+			checkDropdownDEnableSelectedOpt(forms2DD, "Write", "Enabled", "verify Write is present in the forms dropdown textbox", dr);
+			//#8
+			WebElement visits2 = dr.findElement(By.xpath(".//*[@id='edit_cs_visits']"));
+			checkDropdownDEnableSelectedOpt(visits2, "Write", "Enabled", "verify Write is present in the visits dropdown textbox", dr);
+	    	//#9
+			WebElement fileRepository2 = dr.findElement(By.xpath(".//*[@id='edit_cs_filerepository']"));
+			checkDropdownDEnableSelectedOpt(fileRepository2, "Write", "Enabled", "verify Write is present in the fileRepsitory dropdown textbox", dr);
+			//#10
+			WebElement locks2 = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", locks2);
+			checkDropdownDEnableSelectedOpt(locks2, "Write", "Enabled", "verify Write is present in the lock dropdown textbox", dr);
+			//#11
+			//Thread.sleep(3000);
+			WebElement user2 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user2);
+			checkDropdownDEnableSelectedOpt(user2, "Write", "Enabled", "verify Write is present in the users dropdown textbox", dr);
+			//#12
+			WebElement export_reports2 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", export_reports1);
+			checkDropdownDEnableSelectedOpt(export_reports2, "Write", "Enabled", "verify Write is present in the export_reports dropdown textbox", dr);
+			//#13//performing scrolldown operation
+			WebElement analyse2 = dr.findElement(By.xpath(".//*[@id='edit_analyze_study']"));
+			System.out.println("performing scrolldown operation until a particular element...");
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse2);
+			//	    JavascriptExecutor jse =  (JavascriptExecutor)dr;
+			//	    jse.executeScript(scroll(0,200));
+			checkDropdownDEnableSelectedOpt(analyse2, "Write", "Enabled", "verify Write is present in the analyse dropdown textbox", dr);
+			//#14
+			WebElement viewSubjects2 = dr.findElement(By.xpath(".//*[@id='edit_view_subjects']"));
+			checkDropdownDEnableSelectedOpt(viewSubjects2, "Write", "Enabled", "verify Write is present in the viewSubjects dropdown textbox", dr);
+			//#15
+			WebElement audit2 = dr.findElement(By.xpath(".//*[@id='edit_investigator_audit']"));
+			checkDropdownDEnableSelectedOpt(audit2, "Write", "Enabled", "verify Write is present in the audit dropdown textbox", dr);
+			//#16
+			WebElement role2 = dr.findElement(By.xpath(".//*[@id='edit_ms_roles']"));
+			checkDropdownDEnableSelectedOpt(role2, "Write", "Enabled", "verify Write is present in the role dropdown textbox", dr);
+	    	//#17
+			WebElement quries2 = dr.findElement(By.xpath(".//*[@id='edit_ms_queries']"));
+			checkDropdownDEnableSelectedOpt(quries2, "Write", "Enabled", "verify Write is present in the queries dropdown textbox", dr);
+			//#18
+			WebElement formReview2 = dr.findElement(By.xpath(".//*[@id='edit_form_review']"));
+			checkDropdownDEnableSelectedOpt(formReview2, "Write", "Enabled", "verify Write is present in the formReview dropdown textbox", dr);
+			//#19
+			WebElement unlock_subject_site2 = dr.findElement(By.xpath(".//*[@id='edit_unlock_subject']"));
+			checkDropdownDEnableSelectedOpt(unlock_subject_site2, "None", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#20
+			WebElement siteLock2 = dr.findElement(By.xpath(".//*[@id='edit_site_lock']"));
+			checkDropdownDEnableSelectedOpt(siteLock2, "None", "Enabled", "verify Write is present in the site_lock dropdown textbox", dr);
+			//#21
+			WebElement registerSubjects2 = dr.findElement(By.xpath(".//*[@id='edit_ipad_registersubjects']"));
+			checkDropdownDEnableSelectedOpt(registerSubjects2, "None", "Enabled", "verify Write is present in the register subjects dropdown textbox", dr);
+			//#22
+			WebElement consent_visit2 = dr.findElement(By.xpath(".//*[@id='edit_ipad_consentvisit']"));
+			checkDropdownDEnableSelectedOpt(consent_visit2, "None", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#23
+			WebElement syncData2 = dr.findElement(By.xpath(".//*[@id='edit_ipad_syncdata']"));
+			checkDropdownDEnableSelectedOpt(syncData2, "None", "Enabled", "verify Write is present in the sync_data dropdown textbox", dr);
+			//#24
+			WebElement visitData2 = dr.findElement(By.xpath(".//*[@id='edit_ipad_visitdata']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visitData2);
+			checkDropdownDEnableSelectedOpt(visitData2, "None", "Enabled", "verify Write is present in the visitdata dropdown textbox", dr);
+			//#25
+			WebElement subjectIdentifier2 = dr.findElement(By.xpath(".//*[@id='edit_vs_identifier']"));
+			checkDropdownDEnableSelectedOpt(subjectIdentifier2, "Write", "Enabled", "verify Write is present in the subject identifier dropdown textbox", dr);
+			//#26
+			WebElement formVerification2 = dr.findElement(By.xpath(".//*[@id='edit_form_verify']"));
+			checkDropdownDEnableSelectedOpt(formVerification2, "None", "Enabled", "verify Write is present in the formVerification dropdown textbox", dr);
+			WebElement update_obj = dr.findElement(By.xpath(".//*[@id='edit_inv_role_submit']"));
+			if(update_obj.isDisplayed())
+			{
+				System.out.println("update button is present in the DataManager edit role icon window......");
+			}
+			WebElement cancel_button2 = dr.findElement(By.xpath(".//*[@id='editRole']/fieldset[27]/div/div/input[2]"));
+			if(cancel_button2.isDisplayed())
+			{
+				System.out.println("cancel button is present in the DataManager edit role icon window......");
+			}
+			//#27
+			clickElement(cancel_button2, "cancel button object", "click on cancel button", dr);
+			System.out.println("clicking on data manager delete icon.............");
+			System.out.println("------------------------------------------------");
+			WebElement datamanager_deleteRecord_obj = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[4]/td[2]/div/a[2]/img"));
+			Thread.sleep(3000);
+			clickElement(datamanager_deleteRecord_obj, "data manager delete record object", "clicked on delete record icon ", dr);
+			Thread.sleep(3000);
+			WebElement cancel3 = dr.findElement(By.xpath("html/body/div[4]/div[3]/div/button[2]"));
+
+			if(cancel3.isDisplayed())
+			{
+				System.out.println("cancel button is present in the delete role icon window......");
+			}
+			WebElement ok_obj_deleteicon_dataManager = dr.findElement(By.xpath("html/body/div[4]/div[3]/div/button[1]"));
+			if(ok_obj_deleteicon_dataManager.isDisplayed())
+			{
+				System.out.println("ok button is present in the delete role icon window......");
+			}
+			clickElement(cancel3, "cancel button object", "clicked on delete role canceel button", dr);
+			System.out.println("clicked on cancel button on datamanager delete icon...........");
+			System.out.println("clicking on select co-ordinator edit record icon........");
+			System.out.println("--------------------------------------------------------");
+			WebElement site_co_ordinator_editRole_icon = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[5]/td[2]/div/a[1]/img"));
+			clickElement(site_co_ordinator_editRole_icon, "siteCoordinator edit record object", "clicked on site co-ord edit record object", dr);
+			Thread.sleep(3000);
+			//#1
+			//verifying the fields for action icon for site co_ordinator textbox
+			Thread.sleep(3000);
+			String actualRoleName4 = (String) jse.executeScript("return arguments[0].value;",dr.findElement(By.xpath("//*[@id='edit_inv_role_name']")));
+			String expectedRoleName4 = "Site Coordinator";
+			checkContentsMatch(actualRoleName4,expectedRoleName4,"RoleName","Role Name Text Validation",dr);
+			System.out.println("text for site coordinator is validated....");
+			//#2
+			WebElement studydetails3 = dr.findElement(By.xpath(".//*[@id='edit_cs_studydetails']"));
+			Thread.sleep(3000);
+			checkDropdownDEnableSelectedOpt(studydetails3, "None", "Enabled", "verify Write is present in the Study details textbox", dr);
+			//#3
+			WebElement sites3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_sites']"));
+			checkDropdownDEnableSelectedOpt(sites3DD, "None", "Enabled", "verify Write is present in the sites textbox", dr);
+			//#4
+			WebElement trialArms3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_trialarms']"));
+			checkDropdownDEnableSelectedOpt(trialArms3DD, "None", "Enabled", "verify Write is present in the trailArms dropdown textbox", dr);
+			//#5
+			WebElement items3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_variable']"));
+			checkDropdownDEnableSelectedOpt(items3DD, "None", "Enabled", "verify Write is present in the items dropdown textbox", dr);
+			//#6
+			WebElement items_group_Obj3 = dr.findElement(By.xpath(".//*[@id='edit_cs_itemgroup']"));
+			checkDropdownDEnableSelectedOpt(items_group_Obj3, "None", "Enabled", "verify Write is present in the items_group dropdown textbox", dr);
+	    	//#7
+			WebElement forms3DD = dr.findElement(By.xpath(".//*[@id='edit_cs_forms']"));
+			checkDropdownDEnableSelectedOpt(forms3DD, "Write", "Enabled", "verify Write is present in the forms dropdown textbox", dr);
+			//#8
+			WebElement visits3 = dr.findElement(By.xpath(".//*[@id='edit_cs_visits']"));
+			checkDropdownDEnableSelectedOpt(visits3, "None", "Enabled", "verify Write is present in the visits dropdown textbox", dr);
+			//#9
+	    	WebElement fileRepository3 = dr.findElement(By.xpath(".//*[@id='edit_cs_filerepository']"));
+			checkDropdownDEnableSelectedOpt(fileRepository3, "None", "Enabled", "verify Write is present in the fileRepsitory dropdown textbox", dr);
+			//#10
+			WebElement locks3 = dr.findElement(By.xpath(".//*[@id='edit_cs_lock']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", locks3);
+			checkDropdownDEnableSelectedOpt(locks3, "None", "Enabled", "verify Write is present in the lock dropdown textbox", dr);
+			//#11
+			Thread.sleep(3000);
+			WebElement user3 = dr.findElement(By.xpath(".//*[@id='edit_ms_users']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", user3);
+			checkDropdownDEnableSelectedOpt(user3, "None", "Enabled", "verify Write is present in the users dropdown textbox", dr);
+			//#12
+			WebElement export_reports3 = dr.findElement(By.xpath(".//*[@id='edit_ms_export-reports']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", export_reports1);
+			checkDropdownDEnableSelectedOpt(export_reports3, "None", "Enabled", "verify Write is present in the export_reports dropdown textbox", dr);
+			//#13//performing scrolldown operation
+			WebElement analyse3 = dr.findElement(By.xpath(".//*[@id='edit_analyze_study']"));
+			System.out.println("performing scrolldown operation until a particular element...");
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", analyse3);
+			//	    JavascriptExecutor jse =  (JavascriptExecutor)dr;
+			//	    jse.executeScript(scroll(0,200));
+			checkDropdownDEnableSelectedOpt(analyse3, "Write", "Enabled", "verify Write is present in the analyse dropdown textbox", dr);
+			//#14
+			WebElement viewSubjects3 = dr.findElement(By.xpath(".//*[@id='edit_view_subjects']"));
+			checkDropdownDEnableSelectedOpt(viewSubjects3, "Write", "Enabled", "verify Write is present in the viewSubjects dropdown textbox", dr);
+			//#15
+			WebElement audit3 = dr.findElement(By.xpath(".//*[@id='edit_investigator_audit']"));
+			checkDropdownDEnableSelectedOpt(audit3, "None", "Enabled", "verify Write is present in the audit dropdown textbox", dr);
+			//#16
+			WebElement role3 = dr.findElement(By.xpath(".//*[@id='edit_ms_roles']"));
+			checkDropdownDEnableSelectedOpt(role3, "None", "Enabled", "verify Write is present in the role dropdown textbox", dr);
+			//#17
+			WebElement quries3 = dr.findElement(By.xpath(".//*[@id='edit_ms_queries']"));
+			checkDropdownDEnableSelectedOpt(quries3, "None", "Enabled", "verify Write is present in the queries dropdown textbox", dr);
+			//#18
+	    	WebElement formReview3 = dr.findElement(By.xpath(".//*[@id='edit_form_review']"));
+			checkDropdownDEnableSelectedOpt(formReview3, "None", "Enabled", "verify Write is present in the formReview dropdown textbox", dr);
+			//#19
+			WebElement unlock_subject_site3 = dr.findElement(By.xpath(".//*[@id='edit_unlock_subject']"));
+			checkDropdownDEnableSelectedOpt(unlock_subject_site3, "None", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#20
+			WebElement siteLock3 = dr.findElement(By.xpath(".//*[@id='edit_site_lock']"));
+	    	checkDropdownDEnableSelectedOpt(siteLock3, "None", "Enabled", "verify Write is present in the site_lock dropdown textbox", dr);
+			//#21
+	    	WebElement registerSubjects3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_registersubjects']"));
+			checkDropdownDEnableSelectedOpt(registerSubjects3, "Write", "Enabled", "verify Write is present in the register subjects dropdown textbox", dr);
+			//#22
+			WebElement consent_visit3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_consentvisit']"));
+			checkDropdownDEnableSelectedOpt(consent_visit3, "write", "Enabled", "verify Write is present in the unlock_subject_site dropdown textbox", dr);
+			//#23
+			WebElement syncData3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_syncdata']"));
+			checkDropdownDEnableSelectedOpt(syncData3, "Write", "Enabled", "verify Write is present in the sync_data dropdown textbox", dr);
+			//#24
+			WebElement visitData3 = dr.findElement(By.xpath(".//*[@id='edit_ipad_visitdata']"));
+			((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);", visitData3);
+			checkDropdownDEnableSelectedOpt(visitData3, "Write", "Enabled", "verify Write is present in the visitdata dropdown textbox", dr);
+			//#25
+			WebElement subjectIdentifier3 = dr.findElement(By.xpath(".//*[@id='edit_vs_identifier']"));
+			checkDropdownDEnableSelectedOpt(subjectIdentifier3, "Write", "Enabled", "verify Write is present in the subject identifier dropdown textbox", dr);
+			//#26
+	    	WebElement formVerification3 = dr.findElement(By.xpath(".//*[@id='edit_form_verify']"));
+			checkDropdownDEnableSelectedOpt(formVerification3, "Write", "Enabled", "verify Write is present in the formVerification dropdown textbox", dr);
+			WebElement update_obj3 = dr.findElement(By.xpath(".//*[@id='edit_inv_role_submit']"));
+			if(update_obj3.isDisplayed())
+			{
+				System.out.println("update button is present in the site co-ordinator edit role icon window......");
+			}
+			WebElement cancel_button3 = dr.findElement(By.xpath(".//*[@id='editRole']/fieldset[27]/div/div/input[2]"));
+			if(cancel_button3.isDisplayed())
+			{
+				System.out.println("cancel button is present in the site co-ordinator edit role icon window......");
+			}
+			//#27
+			clickElement(cancel_button3, "cancel button object", "click on cancel button", dr);
+			System.out.println("clicking on site co-ordinator delete icon.............");
+			System.out.println("-------------------------------------------------------");
+			WebElement site_co_deleteIcon_obj = dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[2]/div[1]/table/tbody/tr[5]/td[2]/div/a[2]/img"));
+	    	Thread.sleep(3000);
+			clickElement(site_co_deleteIcon_obj, "site_co_ord_delete icon object", "clicking on site coOrdinator  delete icon", dr);
+			Thread.sleep(3000);
+			WebElement cancel4 = dr.findElement(By.xpath("html/body/div[4]/div[3]/div/button[2]"));
+	    	if(cancel4.isDisplayed())
+			{
+				System.out.println("cancel button is present in the delete role icon window for site co-ordinator......");
+			}
+			WebElement ok_obj_deleteicon_site_coOrdinator = dr.findElement(By.xpath("html/body/div[4]/div[3]/div/button[1]"));
+			if(ok_obj_deleteicon_site_coOrdinator.isDisplayed())
+			{
+				System.out.println("ok button is present in the delete role icon window for site coOrdinator......");
+			}
+			clickElement(cancel4, "cancel button object", "clicked on delete role cancel button", dr);
+			System.out.println("clicked on cancel button on site co_ordinator delete icon...........");
+		}
 	 @Test
 	    public void auto_Clini_Manage_005() throws InterruptedException,IOException,InvocationTargetException{
 	    	login(dr);

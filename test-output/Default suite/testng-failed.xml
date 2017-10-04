@@ -16,8 +16,12 @@
           <include name="auto_Clini_Login_002"/>
           <include name="auto_Clini_Manage_007"/>
           <include name="auto_Clini_Home_001"/>
+          <include name="auto_Clini_Manage_009"/>
           <include name="auto_Clini_Home_003"/>
+          <include name="auto_Clini_Manage_010"/>
+          <include name="auto_Clini_Manage_011"/>
           <include name="auto_Clini_Manage_001"/>
+          <include name="auto_Clini_Manage_002"/>
           <include name="auto_Clini_Manage_003"/>
           <include name="auto_Clini_Login_005"/>
           <include name="auto_Clini_Login_004"/>
