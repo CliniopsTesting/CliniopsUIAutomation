@@ -3,6 +3,7 @@ package com.testing.Cliniops;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -108,11 +109,13 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		
 		//WebElement password=dr.findElement(By.id("password"));
 		WebElement password=Cliniops_ReusableMethodsTest.findTheElement("login_PasswordTextbox",Cliniops_DriverScriptTest.browserRunning,dr);
-		enterText(password, "Testing@123", "Password", "Enter password", dr);
+		enterText(password, "Welcome123#", "Password", "Enter password", dr);
 		
 		//WebElement authenticate=dr.findElement(By.id("Authenticate"));
 		WebElement authenticate=Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticateButton",Cliniops_DriverScriptTest.browserRunning,dr);
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);",authenticate);
 		clickElement(authenticate, "Authenticate Button", "Click on authenticate", dr);
+		
 		
 		//WebElement selectStudy= dr.findElement(By.id("investigator_study"));
 		WebElement selectStudy=Cliniops_ReusableMethodsTest.findTheElement("login_SelectStudyDd",Cliniops_DriverScriptTest.browserRunning,dr);
@@ -174,8 +177,9 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 		//WebElement authenticateObj = dr.findElement(By.xpath(".//*[@id='Authenticate']"));
 		WebElement authenticateObj=Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticateButton",Cliniops_DriverScriptTest.browserRunning,dr);
-		clickElement(authenticateObj, "Authentication button object","Click Authenticate",dr);
-
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);",authenticateObj);
+		clickElement(authenticateObj, "Authenticate Button object", "Click on authenticate", dr);
+		
 		//WebElement errMessageObj = dr.findElement(By.xpath(".//*[@id='showCustomErrMsg']"));
 		WebElement errMessageObj=Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticationFailedMsg",Cliniops_DriverScriptTest.browserRunning,dr);
 		WebDriverWait wait = new WebDriverWait(dr, 30);
@@ -425,7 +429,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 			Thread.sleep(1000);
 			action.moveToElement(chartMenu).build().perform();
 			Thread.sleep(2000);
-			System.out.println("********1*********");
+			
 			//chartMenu.click();
 			String ExpectedBrowser="org.openqa.selenium.firefox.FirefoxDriver";
 			String ActualBrowser=dr.getClass().getName();
@@ -446,8 +450,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 				action.moveToElement(opt);
 				String optText = opt.getText();
 				System.out.println("Option text == " + optText);
-				String stepName = "Verify Download Link";
-				checkContentsMatch(optText, expMenuOption[j], "Chart Context Menu",stepName,dr);
+				String message = "Verify Download Link";
+				checkContentsMatch(optText, expMenuOption[j],message, "Chart Context Menu",dr);
 			}
 		}
 	}
@@ -2234,6 +2238,170 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 	}
 
+	public void auto_Clini_Analyze_006() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		dr.findElement(By.xpath("//a[contains(text(),'Analyze')]")).click();
+		Thread.sleep(3000);
+		
+		WebElement selectExport=dr.findElement(By.id("exporttype"));
+		clickElement(selectExport, "selectExport", "Select Export", dr);
+		dropDownByValue(selectExport, "3", dr);
+		Thread.sleep(5000);
+		
+		WebElement population=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/h2[1]"));
+		checkObjectDisplay(population, "population", "Population panel", dr);
+		
+		WebElement data=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/h2[2]"));
+		checkObjectDisplay(data, "data", "Data panel", dr);
+		
+		WebElement formDataChkbox=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[4]/input[1]"));
+		checkObjectDisplay(formDataChkbox, "Form Data", "Form Data Check box", dr);
+		readingCheckbox(formDataChkbox, "Form Data", dr);
+		formDataChkbox.click();
+				
+		WebElement informedConsentChkbox=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[4]/input[2]"));
+		checkObjectDisplay(informedConsentChkbox, "Informed Consent", "Informed Consent Check box", dr);
+		readingCheckbox(informedConsentChkbox, "Informed Consent", dr);
+				
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		WebElement allSites=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[1]/div[1]/fieldset/div/select/option[2]"));
+		allSites.click();
+		
+		String allSitesTextColor = allSites.getCssValue("color");
+		checkHighlightText(expectedTextColor,allSitesTextColor,"All Sites option",dr);
+
+		WebElement allGroups=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[1]/div[2]/fieldset/div/select/option[2]"));
+		allGroups.click();
+		String allGroupsTextColor = allGroups.getCssValue("color");
+		checkHighlightText(expectedTextColor,allGroupsTextColor,"All Groups option",dr);
+
+		WebElement allStatus=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[1]/div[3]/fieldset/div/select/option[2]"));
+		allStatus.click();
+		String allStatusTextColor = allStatus.getCssValue("color");
+		checkHighlightText(expectedTextColor,allStatusTextColor,"All Status option",dr);
+
+		WebElement forms=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[2]/div[2]/fieldset/div/select"));
+		Select formsopt=new Select(forms);
+		if(formsopt.getOptions().isEmpty()){
+			System.out.println("Forms dropdown in empty");
+		}
+		else{
+			System.out.println("Forms dropdown is not empty");
+		}
+		
+		WebElement allVisits=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[2]/div[1]/fieldset/div/select/option[2]"));
+		allVisits.click();
+		String allVisitsTextColor=allVisits.getCssValue("color");
+		checkHighlightText(expectedTextColor, allVisitsTextColor, "All Visits option", dr);
+		Thread.sleep(2000);
+		if(formsopt.getOptions().isEmpty()){
+			updateReport("Fail", "Select options in Forms Dropdown", "Select options does not appear in Forms dropdown", dr);
+		}
+		else{
+			updateReport("Pass", "Select options in Forms Dropdown", "Select options appear in Forms dropdown", dr);
+		}
+		
+		WebElement itemGroups=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[2]/div[3]/fieldset/div/select"));
+		Select itemGroupsopt=new Select(itemGroups);
+		if(itemGroupsopt.getOptions().isEmpty()){
+			System.out.println("Item-Groups dropdown in empty");
+		}
+		else{
+			System.out.println("Item-Groups dropdown is not empty");
+		}
+		
+		WebElement allForms=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[2]/div[2]/fieldset/div/select/option[2]"));
+		allForms.click();
+		String allFormsTextColor=allForms.getCssValue("color");
+		checkHighlightText(expectedTextColor, allFormsTextColor, "All Forms option", dr);
+		Thread.sleep(2000);
+		if(itemGroupsopt.getOptions().isEmpty()){
+			updateReport("Fail", "Select options in Item-Groups Dropdown", "Select options does not appear in Item-Groups dropdown", dr);
+		}
+		else{
+			updateReport("Pass", "Select options in Item-Groups Dropdown", "Select options appear in Item-Groups dropdown", dr);
+		}
+		
+		WebElement allItemGroups=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[2]/div[3]/fieldset/div/select/option[2]"));
+		allItemGroups.click();
+		String allItemGroupsTextColor=allItemGroups.getCssValue("color");
+		checkHighlightText(expectedTextColor, allItemGroupsTextColor, "All Item-Groups option", dr);
+		
+		WebElement exportReport=dr.findElement(By.id("exportSubReport"));
+		checkEnabled(exportReport, "Export Report button", dr);
+		String expectedTooltip="Export Report";
+		String actualTooltip=exportReport.getAttribute("value");
+		checkContentsMatch(actualTooltip, expectedTooltip, "Export Report button", "Tooltip of Export report button", dr);
+		
+		
+	}
+
+	
+	public void auto_Clini_Analyze_008() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+
+		WebElement report=dr.findElement(By.xpath(".//*[@id='content-body']/div/div[1]/div[2]/ul/li[2]/a"));
+		clickElement(report, "Click report tab", "Click Report tab", dr);
+		
+		String expectedURL="https://bridgetherapeutics.cliniops.com/investigator/analyzestudy/analysisreport";
+		String actualURL=dr.getCurrentUrl();
+		validateURL(expectedURL, actualURL, "Report tab URL check", dr);
+		//Study Analysis page appears
+		WebElement studyAnalysisPage=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div/h3"));
+		String actualText=studyAnalysisPage.getText().substring(0, 14);
+		String expectedText="Study Analysis";
+		checkContentsMatch(actualText, expectedText, "Study Analysis page", "Study Analysis Page", dr);
+		//Report tab highlighted
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		String reportActualTextColor=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div/div[2]/ul/li[2]/a")).getCssValue("color");
+		checkHighlightText(expectedTextColor, reportActualTextColor, "Report tab highlighted", dr);
+		
+			
+	}
+	
+	
+	public void auto_Clini_Analyze_009() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+
+		WebElement report=dr.findElement(By.xpath(".//*[@id='content-body']/div/div[1]/div[2]/ul/li[2]/a"));
+		clickElement(report, "Click report tab", "Click Report tab", dr);
+
+		Thread.sleep(3000);
+		WebElement selectReport=dr.findElement(By.id("reporttype"));
+		checkObjectDisplay(selectReport, "Select Report dropdown", "Visibility of Select Report dropdown", dr);
+
+		Select selectReportdd=new Select(selectReport);
+		String actualOpt=selectReportdd.getFirstSelectedOption().getText();
+		checkContentsMatch(actualOpt, "-Select a Report-", "select report", "Select Report default value", dr);
+		
+		clickElement(selectReport, "Select Report", "Select report Clicked", dr);
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		String selectReportColor=selectReportdd.getFirstSelectedOption().getCssValue("color");
+		checkHighlightText(expectedTextColor, selectReportColor, "Select a Report Highlighted", dr);
+		
+		List<WebElement> selectReportOptions=selectReportdd.getOptions();
+		//System.out.println(selectReportOptions);
+		List<String> expectedOptions=Arrays.asList("-Select a Report-","SYS: Data Download","SYS: Data Upload Error","SYS: Data Upload","Demography Report","Open Queries","SAE Report","Tumor Grade report");
+		List<String> actualOptions=new ArrayList<String>();
+		for(int i=0;i<selectReportOptions.size();i++){
+			//System.out.println(selectReportOptions.get(i).getText());
+			actualOptions.add(selectReportOptions.get(i).getText());
+		}
+		if(expectedOptions.equals(actualOptions)){
+			updateReport("Pass", "Select Report dropdown options", "Actual options is matching with expected options",dr);
+		}
+		else{
+			updateReport("Fail", "Select Report dropdown options", "Actual options is not matching with expected options",dr);
+		}
+		
+	}
 	
 	
 

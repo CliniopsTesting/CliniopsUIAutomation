@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -634,7 +635,9 @@ public class Cliniops_ReusableMethodsTest {
 		Cliniops_ReusableMethodsTest.findTheElement("login_PasswordTextbox",Cliniops_DriverScriptTest.browserRunning,dr).sendKeys("Welcome123#");
 		Thread.sleep(2000);
 		//dr.findElement(By.id("Authenticate")).click();
-		Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticateButton",Cliniops_DriverScriptTest.browserRunning,dr).click();
+		WebElement authenticate=Cliniops_ReusableMethodsTest.findTheElement("login_AuthenticateButton",Cliniops_DriverScriptTest.browserRunning,dr);
+		((JavascriptExecutor) dr).executeScript("arguments[0].scrollIntoView(true);",authenticate);
+		authenticate.click();
 		Thread.sleep(7000);
 		WebDriverWait wait = new WebDriverWait(dr, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer']")));
