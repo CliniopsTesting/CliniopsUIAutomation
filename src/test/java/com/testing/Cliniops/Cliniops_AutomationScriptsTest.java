@@ -1940,14 +1940,14 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	 */
 	public void auto_Clini_Analyze_001() throws InterruptedException, IOException{
 		login(dr);
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		WebElement analyze=dr.findElement(By.xpath(".//*[text()='Analyze']"));
 		Actions action=new Actions(dr);
 		action.moveToElement(analyze).build().perform();
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		String expectedTextColor="rgba(255, 255, 255, 1)";
 		String actualTextColor=dr.findElement(By.xpath(".//*[text()='Analyze']")).getCssValue("color");
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		checkHighlightText(expectedTextColor, actualTextColor, "Analyze Tab Highlight", dr);
 		clickElement(analyze, "Analyze tab", "Analyze Tab", dr);
 		String expectedURL="https://bridgetherapeutics.cliniops.com/investigator/analyzestudy";
@@ -2031,14 +2031,15 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
 	public void auto_Clini_Analyze_003() throws InterruptedException, IOException{ 
 		login(dr);
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		WebElement analyze=dr.findElement(By.xpath(".//*[text()='Analyze']"));
 		clickElement(analyze, "Analyze tab", "Analyze Tab", dr);
 		
 		WebElement formdata=dr.findElement(By.xpath(".//*[@id='subjectdataform']/div/div[4]/input[1]"));
 		readingCheckbox(formdata, "Form Data Checkbox", dr);
-				
+		
 		WebElement codeList=dr.findElement(By.name("codelist"));
+		((JavascriptExecutor)dr).executeScript("arguments[0].scrollIntoView(true);", codeList);
 		clickElement(codeList, "Code List Checkbox", "Code List Checkbox", dr);
 		readingCheckbox(codeList, "Code List Checkbox", dr);
 		
@@ -2258,8 +2259,9 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		WebElement formDataChkbox=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[4]/input[1]"));
 		checkObjectDisplay(formDataChkbox, "Form Data", "Form Data Check box", dr);
 		readingCheckbox(formDataChkbox, "Form Data", dr);
+		((JavascriptExecutor)dr).executeScript("arguments[0].scrollIntoView(true);", formDataChkbox);
 		formDataChkbox.click();
-				
+		
 		WebElement informedConsentChkbox=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[4]/form/div/div[4]/input[2]"));
 		checkObjectDisplay(informedConsentChkbox, "Informed Consent", "Informed Consent Check box", dr);
 		readingCheckbox(informedConsentChkbox, "Informed Consent", dr);
@@ -2337,6 +2339,62 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		
 	}
 
+	public void auto_Clini_Analyze_007() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		//Click Analyze tab
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+		//Select SafetyReportExport from dropdown
+		Thread.sleep(3000);
+		WebElement selectExport=dr.findElement(By.id("exporttype"));
+		if(selectExport.isDisplayed()){
+			Select select=new Select(selectExport);
+			select.selectByIndex(3);
+			updateReport("Pass", "Select Export","\"Safety Report Export\" is selected",dr);
+		}
+		else{
+			updateReport("Fail", "Select Export", "\"Safety Report Export\" is not selected",dr);
+		}
+
+		//Verify default option in E2B Format
+		WebElement e2bFormat=dr.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[1]/div[3]/div[3]/form/div/fieldset/div/select"));
+		Select e2bDD=new Select(e2bFormat);
+		String selOption=e2bDD.getFirstSelectedOption().getText();
+		checkContentsMatch(selOption, "R2", "Verify default value of E2B format dropdown", "E2B format dropdown", dr);
+		//Get all options in E2BForat dd
+		List <WebElement> e2bFormatdd= dr.findElements(By.xpath("//*[@id='file_type']"));
+		List<String> opt=new ArrayList();
+		for (WebElement option : e2bFormatdd){
+			Thread.sleep(2000);
+			if(option.getText().length()>0)
+				opt.add(option.getText().trim());
+			Thread.sleep(2000);
+		}
+		System.out.println(opt);
+		List<String> expectedOpt=Arrays.asList("R2");
+		if(opt.equals(expectedOpt)){
+			updateReport("Pass", "Options in e2bFormat dd", "Options in e2b Format dd are as expected. Options are : "+opt, dr);
+		}
+		else{
+			updateReport("Fail", "Options in e2bFormat dd", "Options in e2b Format dd are not as expected. Options are : "+opt, dr);
+		}
+		
+				
+		//tooltip for Export
+		WebElement exportButton = dr.findElement(By.xpath("//*[@id='export_safety_report']"));
+		new Actions(dr).moveToElement(exportButton).build().perform();
+		
+		validateTextAttribute(exportButton, "Export", "Export button tooltip", "title", "Tooltip for Export button", dr);
+		//System.out.println("tooltip: " + exportInput.getAttribute("title") );
+		
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		//String ActualTextColor = dr.findElement(By.xpath("//a[contains(text(),'Home')]")).getCssValue("color");
+		String ActualTextColor=dr.findElement(By.xpath("//*[@id='export_safety_report']")).getCssValue("color");
+		checkHighlightText(expectedTextColor,ActualTextColor,"Export Button Highlight",dr);
+	}
+	
+	
 	
 	public void auto_Clini_Analyze_008() throws InterruptedException,IOException{
 		login(dr);
@@ -2384,6 +2442,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		clickElement(selectReport, "Select Report", "Select report Clicked", dr);
 		String expectedTextColor="rgba(255, 255, 255, 1)";
 		String selectReportColor=selectReportdd.getFirstSelectedOption().getCssValue("color");
+		//System.out.println(selectReportdd.getFirstSelectedOption().getText().toString());
+		//System.out.println(selectReportColor);
 		checkHighlightText(expectedTextColor, selectReportColor, "Select a Report Highlighted", dr);
 		
 		List<WebElement> selectReportOptions=selectReportdd.getOptions();
@@ -2403,7 +2463,164 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		
 	}
 	
+	public void auto_Clini_Analyze_010() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+
+		//select analytics 
+		WebElement analytics = dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div[1]/div[2]/ul/li[3]/a"));
+		analytics.click();
+		String actualURL=dr.getCurrentUrl();
+		String expectedURL="https://bridgetherapeutics.cliniops.com/investigator/analyzestudy/analytics";
+		validateURL(expectedURL, actualURL, "Analytics tab URL", dr);
+		
+		WebElement dataAnalytics=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div[1]/h3"));
+		String actualText=dataAnalytics.getText().substring(0,14);
+		String expectedText="Data Analytics";
+		checkContentsMatch(actualText, expectedText, "Data Analytics Page", "Data Analytics Page", dr);
+		
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		//String ActualTextColor = dr.findElement(By.xpath("//a[contains(text(),'Home')]")).getCssValue("color");
+		String ActualTextColor=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div[1]/div[2]/ul/li[3]/a")).getCssValue("color");
+		checkHighlightText(expectedTextColor,ActualTextColor,"Analytics Tab Highlight",dr);
+
+	}
 	
+
+	public void auto_Clini_Analyze_011() throws InterruptedException,IOException{
+		login(dr);
+		Thread.sleep(5000);
+		WebElement analyze=dr.findElement(By.xpath("//a[contains(text(),'Analyze')]"));
+		clickElement(analyze, "Analyze Tab", "Click on Analyze tab", dr);
+		
+		//select analytics 
+		WebElement analytics = dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div[1]/div[2]/ul/li[3]/a"));
+		clickElement(analytics, "Analytics tab", "Click Analytics tab", dr);
+
+		//Check visibility of text
+		WebElement text = dr.findElement(By.xpath("//*[@id='scatterchart']"));
+		validateText(text, "Please select the axes and data category", "Text displayed", "Text displayed in Data Analytics page", dr);
+
+		//Default value in Data Analytics dd
+		WebElement dataAnalyticsDropdown = dr.findElement(By.xpath("//*[@id='analyticstype']"));
+		Select dataAnalyticsDd = new Select(dataAnalyticsDropdown);
+		String actualDefaultOpt=dataAnalyticsDd.getFirstSelectedOption().getText();
+		checkContentsMatch(actualDefaultOpt, "Subject Visit Data", "Data Analytics dropdown", "Data Analytics drpdown Default option", dr);
+		
+		//Options in Data Analytics dd
+		//dataAnalyticsDropdown.click();
+		List <WebElement> options = dataAnalyticsDropdown.findElements(By.tagName("option"));
+		List<String> actualOpt=new ArrayList();
+		for (WebElement option : options){
+			actualOpt.add(option.getText());
+		}
+		List<String> expectedOpt=Arrays.asList("Subject Visit Data","Study Visit Data","Study Data");
+		if(expectedOpt.equals(actualOpt)){
+			updateReport("Pass", "Options in Data Analytics dd", "Options in Data Analytics tab are as expected", dr);
+		}
+		else{
+			updateReport("Fail", "Options in Data Analytics dd", "Options in Data Analytics tab are not as expected", dr);
+		}
+	
+		//Actions a=new Actions(dr);
+		//"Subject Visit Data is highlighted"
+		dataAnalyticsDropdown.click();
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		//((JavascriptExecutor)dr).executeScript("arguments[0].scrollIntoView(true);", dataAnalyticsDd.getFirstSelectedOption());
+		//WebElement selOpt=options.get(0);
+		//a.moveToElement(selOpt).build().perform();
+		String ActualTextColor=dataAnalyticsDd.getFirstSelectedOption().getCssValue("color");
+		//String ActualTextColor=selOpt.getCssValue("color");
+		System.out.println(ActualTextColor);
+		checkHighlightText(expectedTextColor,ActualTextColor,"Subject Visit Data Highlight",dr);
+	
+		//Default value in X-Axis dropdown
+		WebElement xAxisDropdown = dr.findElement(By.xpath("//*[@id='xaxis']"));
+		Select xAxisdd=new Select(xAxisDropdown);
+		actualDefaultOpt=xAxisdd.getFirstSelectedOption().getText();
+		checkContentsMatch(actualDefaultOpt, "None", "XAxis dropdown", "Default value in xAxis dropwdown", dr);
+
+		//Options in X-Axis dd
+		//xAxisDropdown.click();
+		List <WebElement> optionsX = xAxisDropdown.findElements(By.tagName("option"));
+		actualOpt.clear();
+		System.out.println("ActualOpt-->"+actualOpt);
+		for (WebElement option : optionsX){
+			//Thread.sleep(2000);
+			//System.out.println(option.getText());
+			//Thread.sleep(2000);
+			actualOpt.add(option.getText());
+			System.out.println("count");
+		}
+		//expectedOpt.clear();
+		
+		//System.out.println("Exp Opt-->"+expectedOpt);
+		expectedOpt=Arrays.asList("None","Systolic Blood Pressure","Diastolic Blood Pressure","Pulse Rate","Temperature","Height","Weight","BMI","Mitotic Count","Percent of Cancer in Specimen");
+		if(expectedOpt.equals(actualOpt)){
+			updateReport("Pass", "Options in X-Axis dd", "Options in X-Axis dropdown are as expected", dr);
+		}
+		else{
+			updateReport("Fail", "Options in X-Axis dd", "Options in X-Axis dropdown are not as expected", dr);
+		}
+
+		//None is highlighted
+		xAxisDropdown.click();
+		ActualTextColor=xAxisdd.getFirstSelectedOption().getCssValue("color");
+		checkHighlightText(expectedTextColor,ActualTextColor,"None Highlight in X-Axis dd",dr);
+			
+		
+
+		//Default value in Y-Axis dropdown
+		WebElement yAxisDropdown = dr.findElement(By.xpath("//*[@id='yaxis']"));
+		Select yAxisdd=new Select(xAxisDropdown);
+		actualDefaultOpt=yAxisdd.getFirstSelectedOption().getText();
+		checkContentsMatch(actualDefaultOpt, "None", "YAxis dropdown", "Default value in yAxis dropwdown", dr);
+	
+		//Options in Y-Axis dd
+		//xAxisDropdown.click();
+		List <WebElement> optionsY = yAxisDropdown.findElements(By.tagName("option"));
+		actualOpt.clear();
+		for (WebElement option : optionsY){
+			//Thread.sleep(2000);
+			//System.out.println(option.getText());
+			//Thread.sleep(2000);
+			actualOpt.add(option.getText());
+		}
+		//expectedOpt.clear();
+		expectedOpt=Arrays.asList("None","Systolic Blood Pressure","Diastolic Blood Pressure","Pulse Rate","Temperature","Height","Weight","BMI","Mitotic Count","Percent of Cancer in Specimen");
+		if(expectedOpt.equals(actualOpt)){
+			updateReport("Pass", "Options in Y-Axis dd", "Options in Y-Axis dropdown are as expected", dr);
+		}
+		else{
+			updateReport("Fail", "Options in Y-Axis dd", "Options in Y-Axis dropdown are not as expected", dr);
+		}
+	
+		//None is highlighted
+		yAxisDropdown.click();
+		ActualTextColor=yAxisdd.getFirstSelectedOption().getCssValue("color");
+		checkHighlightText(expectedTextColor,ActualTextColor,"None Highlight in Y-Axis dd",dr);
+				
+		
+		//Data Category dropdown
+		WebElement dataDropdown = dr.findElement(By.xpath("//*[@id='subjectdata']/div[2]/fieldset[3]"));
+		checkObjectDisplay(dataDropdown, "Data Category dropdown", "Visibilty of Data Category dd", dr);
+		List <WebElement> optionsData = dataDropdown.findElements(By.tagName("option"));
+		if(optionsData.size()>1){
+			updateReport("Pass", "Options in Data Category dropdown", "Data Category dd has multiple options", dr);
+		}
+		else{
+			updateReport("Fail", "Options in Data Category dropdown", "Data Category dd has no multiple options", dr);
+		}
+		/*for (WebElement option : optionsData){
+			Thread.sleep(2000);
+			System.out.println(option.getText());
+			Thread.sleep(2000);
+		}*/
+		
+		
+	}
 
 	@AfterMethod
 	public void closeBrowser(){

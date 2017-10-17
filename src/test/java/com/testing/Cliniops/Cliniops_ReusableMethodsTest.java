@@ -279,12 +279,12 @@ public class Cliniops_ReusableMethodsTest {
 		if(obj.isEnabled()){	
 			String actualText = obj.getAttribute(attributeName);
 			if(expectedText.equals(actualText)){
-				updateReport("Pass","validateMsg_Attribute","Actual message matching with expected message:"+ actualText,dr);
+				updateReport("Pass",stepName,"Actual message matching with expected message:"+ actualText,dr);
 			}else{
-				updateReport("Fail","validateMsg_Attribute","Actual message not matching with expected message:"+actualText,dr);
+				updateReport("Fail",stepName,"Actual message not matching with expected message:"+actualText,dr);
 			}
 		}else{
-			updateReport("Fail","validateMsg_Attribute",objName +"is not displayed, please check your application",dr);
+			updateReport("Fail",stepName,objName +"is not displayed, please check your application",dr);
 		}
 	}
 

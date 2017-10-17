@@ -55,11 +55,11 @@ function toggleAllBoxes() {
 <body>
 <h2 align='center'>Default test</h2><table border='1' align="center">
 <tr>
-<td>Tests passed/Failed/Skipped:</td><td>0/0/1</td>
+<td>Tests passed/Failed/Skipped:</td><td>0/0/28</td>
 </tr><tr>
-<td>Started on:</td><td>Fri Sep 08 20:28:34 PDT 2017</td>
+<td>Started on:</td><td>Thu Oct 12 11:29:48 PDT 2017</td>
 </tr>
-<tr><td>Total time:</td><td>0 seconds (63 ms)</td>
+<tr><td>Total time:</td><td>0 seconds (162 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -75,19 +75,24 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='com.testing.Cliniops.Cliniops_DriverScriptTest.beforeSuiteExecution()'><b>beforeSuiteExecution</b><br>Test class: com.testing.Cliniops.Cliniops_DriverScriptTest</td>
-<td><div><pre>java.lang.NullPointerException
-	at com.testing.Cliniops.Cliniops_ReusableMethodsTest.readSheet(Cliniops_ReusableMethodsTest.java:402)
-	at com.testing.Cliniops.Cliniops_DriverScriptTest.beforeSuiteExecution(Cliniops_DriverScriptTest.java:22)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:85)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:510)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:211)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:298)
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td><div><pre>org.testng.TestNGException: 
+Parameter &apos;browser&apos; is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
+in C:\Users\Zunaira&apos;s\AppData\Local\Temp\testng-eclipse--1255976186\testng-customsuite.xml
+	at org.testng.internal.Parameters.createParameters(Parameters.java:154)
+	at org.testng.internal.Parameters.createParameters(Parameters.java:361)
+	at org.testng.internal.Parameters.createConfigurationParameters(Parameters.java:84)
+	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:197)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:585)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:816)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1124)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:108)
+	at org.testng.TestRunner.privateRun(TestRunner.java:774)
+	at org.testng.TestRunner.run(TestRunner.java:624)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:359)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:354)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:312)
 	at org.testng.SuiteRunner.run(SuiteRunner.java:261)
 	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
 	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
@@ -97,19 +102,24 @@ function toggleAllBoxes() {
 	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:132)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:230)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:76)
-</pre></div><a href='#' onClick='toggleBox("stack-trace6615576", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
-<div class='stack-trace' id='stack-trace6615576'><pre>java.lang.NullPointerException
-	at com.testing.Cliniops.Cliniops_ReusableMethodsTest.readSheet(Cliniops_ReusableMethodsTest.java:402)
-	at com.testing.Cliniops.Cliniops_DriverScriptTest.beforeSuiteExecution(Cliniops_DriverScriptTest.java:22)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:85)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:510)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:211)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:298)
+</pre></div><a href='#' onClick='toggleBox("stack-trace19597309", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace19597309'><pre>org.testng.TestNGException: 
+Parameter &apos;browser&apos; is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
+in C:\Users\Zunaira&apos;s\AppData\Local\Temp\testng-eclipse--1255976186\testng-customsuite.xml
+	at org.testng.internal.Parameters.createParameters(Parameters.java:154)
+	at org.testng.internal.Parameters.createParameters(Parameters.java:361)
+	at org.testng.internal.Parameters.createConfigurationParameters(Parameters.java:84)
+	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:197)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:585)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:816)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1124)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:108)
+	at org.testng.TestRunner.privateRun(TestRunner.java:774)
+	at org.testng.TestRunner.run(TestRunner.java:624)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:359)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:354)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:312)
 	at org.testng.SuiteRunner.run(SuiteRunner.java:261)
 	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
 	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
@@ -121,7 +131,290 @@ function toggleAllBoxes() {
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:76)
 </pre></div></td>
 <td>0</td>
-<td>null</td></tr>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-skipped'>
+<tr><td colspan='4' align='center'><b>SKIPPED CONFIGURATIONS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.selectBrowser()'><b>selectBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser()'><b>closeBrowser</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
 </table><p>
 <table width='100%' border='1' class='invocation-skipped'>
 <tr><td colspan='4' align='center'><b>SKIPPED TESTS</b></td></tr>
@@ -131,10 +424,145 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='com.testing.Cliniops.Cliniops_DriverScriptTest.cliniopsDriver()'><b>cliniopsDriver</b><br>Test class: com.testing.Cliniops.Cliniops_DriverScriptTest</td>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Analyze_003()'><b>auto_Clini_Analyze_003</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
 <td></td>
 <td>0</td>
-<td>com.testing.Cliniops.Cliniops_DriverScriptTest@15b007d</td></tr>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Analyze_004()'><b>auto_Clini_Analyze_004</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Analyze_005()'><b>auto_Clini_Analyze_005</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_001()'><b>auto_Clini_Confg_001</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_002()'><b>auto_Clini_Confg_002</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_003()'><b>auto_Clini_Confg_003</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_004()'><b>auto_Clini_Confg_004</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_005()'><b>auto_Clini_Confg_005</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_007()'><b>auto_Clini_Confg_007</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Confg_008()'><b>auto_Clini_Confg_008</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Home_001()'><b>auto_Clini_Home_001</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Home_002()'><b>auto_Clini_Home_002</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Home_003()'><b>auto_Clini_Home_003</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Login_001()'><b>auto_Clini_Login_001</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Login_002()'><b>auto_Clini_Login_002</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Login_003()'><b>auto_Clini_Login_003</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Login_004()'><b>auto_Clini_Login_004</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Login_005()'><b>auto_Clini_Login_005</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_001()'><b>auto_Clini_Manage_001</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_002()'><b>auto_Clini_Manage_002</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_003()'><b>auto_Clini_Manage_003</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_005()'><b>auto_Clini_Manage_005</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_006()'><b>auto_Clini_Manage_006</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_007()'><b>auto_Clini_Manage_007</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_008()'><b>auto_Clini_Manage_008</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_009()'><b>auto_Clini_Manage_009</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_010()'><b>auto_Clini_Manage_010</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
+<tr>
+<td title='com.testing.Cliniops.Cliniops_AutomationScriptsTest.auto_Clini_Manage_011()'><b>auto_Clini_Manage_011</b><br>Test class: com.testing.Cliniops.Cliniops_AutomationScriptsTest</td>
+<td></td>
+<td>0</td>
+<td>com.testing.Cliniops.Cliniops_AutomationScriptsTest@653222</td></tr>
 </table><p>
 </body>
 </html>
